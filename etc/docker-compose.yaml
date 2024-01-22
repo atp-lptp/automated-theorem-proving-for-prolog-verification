@@ -1,0 +1,23 @@
+services:
+
+  prolog-verification:
+    env_file:
+      - '../.env.local'
+    build:
+      context: '../'
+      dockerfile: './etc/Dockerfile'
+      args:
+        - OWNER_UID=${PROGRAM_OWNER_UID:-1000}
+        - OWNER_GID=${PROGRAM_OWNER_GID:-1000}
+      tags:
+        - "ghcr.io/thierrymarianne/automated-theorem-proving-for-prolog-verification:base"
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+      test: ["CMD", "/bin/bash", "-c", "( test $(ps ax | grep -E 'tini' -c) -gt 0 )"]
+    labels:
+      org.opencontainers.image.source: 'https://github.com/thierrymarianne/automated-theorem-proving-for-prolog-verification'
+    restart:  'always'
+    platform: 'linux/amd64'

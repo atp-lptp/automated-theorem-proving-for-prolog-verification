@@ -1,0 +1,107 @@
+fof(id1,axiom,! [Xx3] : ~ ('0' = s(Xx3))).
+fof(id2,axiom,~ ('0' = nil)).
+fof(id3,axiom,! [Xx4,Xx5] : ~ ('0' = cons(Xx4,Xx5))).
+fof(id4,axiom,! [Xx6] : ! [Xx7] : (s(Xx6) = s(Xx7) => Xx6 = Xx7)).
+fof(id5,axiom,! [Xx8] : ~ (nil = s(Xx8))).
+fof(id6,axiom,! [Xx9] : ! [Xx10,Xx11] : ~ (s(Xx9) = cons(Xx10,Xx11))).
+fof(id7,axiom,! [Xx12,Xx13] : ~ (nil = cons(Xx12,Xx13))).
+fof(id8,axiom,! [Xx14,Xx15] : ! [Xx16,Xx17] : (cons(Xx14,Xx15) = cons(Xx16,Xx17) => Xx15 = Xx17)).
+fof(id9,axiom,! [Xx18,Xx19] : ! [Xx20,Xx21] : (cons(Xx18,Xx19) = cons(Xx20,Xx21) => Xx18 = Xx20)).
+fof(id10,axiom,gr('0')).
+fof(id11,axiom,! [Xx22] : (gr(Xx22) <=> gr(s(Xx22)))).
+fof(id12,axiom,gr(nil)).
+fof(id13,axiom,! [Xx23,Xx24] : ((gr(Xx23) & gr(Xx24)) <=> gr(cons(Xx23,Xx24)))).
+fof(id14,axiom,! [Xx25] : ~ ((nat_list_succeeds(Xx25) & nat_list_fails(Xx25)))).
+fof(id15,axiom,! [Xx25] : (nat_list_terminates(Xx25) => (nat_list_succeeds(Xx25) | nat_list_fails(Xx25)))).
+fof(id16,axiom,! [Xx26,Xx27,Xx28] : ~ ((times_succeeds(Xx26,Xx27,Xx28) & times_fails(Xx26,Xx27,Xx28)))).
+fof(id17,axiom,! [Xx26,Xx27,Xx28] : (times_terminates(Xx26,Xx27,Xx28) => (times_succeeds(Xx26,Xx27,Xx28) | times_fails(Xx26,Xx27,Xx28)))).
+fof(id18,axiom,! [Xx29,Xx30,Xx31] : ~ ((plus_succeeds(Xx29,Xx30,Xx31) & plus_fails(Xx29,Xx30,Xx31)))).
+fof(id19,axiom,! [Xx29,Xx30,Xx31] : (plus_terminates(Xx29,Xx30,Xx31) => (plus_succeeds(Xx29,Xx30,Xx31) | plus_fails(Xx29,Xx30,Xx31)))).
+fof(id20,axiom,! [Xx32,Xx33] : ~ (('@=<_succeeds'(Xx32,Xx33) & '@=<_fails'(Xx32,Xx33)))).
+fof(id21,axiom,! [Xx32,Xx33] : ('@=<_terminates'(Xx32,Xx33) => ('@=<_succeeds'(Xx32,Xx33) | '@=<_fails'(Xx32,Xx33)))).
+fof(id22,axiom,! [Xx34,Xx35] : ~ (('@<_succeeds'(Xx34,Xx35) & '@<_fails'(Xx34,Xx35)))).
+fof(id23,axiom,! [Xx34,Xx35] : ('@<_terminates'(Xx34,Xx35) => ('@<_succeeds'(Xx34,Xx35) | '@<_fails'(Xx34,Xx35)))).
+fof(id24,axiom,! [Xx36] : ~ ((nat_succeeds(Xx36) & nat_fails(Xx36)))).
+fof(id25,axiom,! [Xx36] : (nat_terminates(Xx36) => (nat_succeeds(Xx36) | nat_fails(Xx36)))).
+fof(id26,axiom,! [Xx1] : (nat_list_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = cons(Xx2,Xx3) & (nat_succeeds(Xx2) & nat_list_succeeds(Xx3))) | Xx1 = nil))).
+fof(id27,axiom,! [Xx1] : (nat_list_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = cons(Xx2,Xx3)) | (nat_fails(Xx2) | nat_list_fails(Xx3))) & ~ (Xx1 = nil)))).
+fof(id28,axiom,! [Xx1] : (nat_list_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = cons(Xx2,Xx3)) | (nat_terminates(Xx2) & (nat_fails(Xx2) | nat_list_terminates(Xx3))))) & $true))).
+fof(id29,axiom,! [Xx1,Xx2,Xx3] : (times_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = s(Xx4) & (times_succeeds(Xx4,Xx2,Xx5) & plus_succeeds(Xx2,Xx5,Xx3))) | (Xx1 = '0' & Xx3 = '0')))).
+fof(id30,axiom,! [Xx1,Xx2,Xx3] : (times_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = s(Xx4)) | (times_fails(Xx4,Xx2,Xx5) | plus_fails(Xx2,Xx5,Xx3))) & (~ (Xx1 = '0') | ~ (Xx3 = '0'))))).
+fof(id31,axiom,! [Xx1,Xx2,Xx3] : (times_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = s(Xx4)) | (times_terminates(Xx4,Xx2,Xx5) & (times_fails(Xx4,Xx2,Xx5) | plus_terminates(Xx2,Xx5,Xx3))))) & ($true & (~ (Xx1 = '0') | $true))))).
+fof(id32,axiom,! [Xx1,Xx2,Xx3] : (plus_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = s(Xx4) & (Xx3 = s(Xx5) & plus_succeeds(Xx4,Xx2,Xx5))) | (Xx1 = '0' & Xx3 = Xx2)))).
+fof(id33,axiom,! [Xx1,Xx2,Xx3] : (plus_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = s(Xx4)) | (~ (Xx3 = s(Xx5)) | plus_fails(Xx4,Xx2,Xx5))) & (~ (Xx1 = '0') | ~ (Xx3 = Xx2))))).
+fof(id34,axiom,! [Xx1,Xx2,Xx3] : (plus_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = s(Xx4)) | ($true & (~ (Xx3 = s(Xx5)) | plus_terminates(Xx4,Xx2,Xx5))))) & ($true & (~ (Xx1 = '0') | $true))))).
+fof(id35,axiom,! [Xx1,Xx2] : ('@=<_succeeds'(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx1 = s(Xx3) & (Xx2 = s(Xx4) & '@=<_succeeds'(Xx3,Xx4))) | Xx1 = '0'))).
+fof(id36,axiom,! [Xx1,Xx2] : ('@=<_fails'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx1 = s(Xx3)) | (~ (Xx2 = s(Xx4)) | '@=<_fails'(Xx3,Xx4))) & ~ (Xx1 = '0')))).
+fof(id37,axiom,! [Xx1,Xx2] : ('@=<_terminates'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = s(Xx3)) | ($true & (~ (Xx2 = s(Xx4)) | '@=<_terminates'(Xx3,Xx4))))) & $true))).
+fof(id38,axiom,! [Xx1,Xx2] : ('@<_succeeds'(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx1 = s(Xx3) & (Xx2 = s(Xx4) & '@<_succeeds'(Xx3,Xx4))) | ? [Xx5] : (Xx1 = '0' & Xx2 = s(Xx5))))).
+fof(id39,axiom,! [Xx1,Xx2] : ('@<_fails'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx1 = s(Xx3)) | (~ (Xx2 = s(Xx4)) | '@<_fails'(Xx3,Xx4))) & ! [Xx5] : (~ (Xx1 = '0') | ~ (Xx2 = s(Xx5)))))).
+fof(id40,axiom,! [Xx1,Xx2] : ('@<_terminates'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = s(Xx3)) | ($true & (~ (Xx2 = s(Xx4)) | '@<_terminates'(Xx3,Xx4))))) & ! [Xx5] : ($true & (~ (Xx1 = '0') | $true))))).
+fof(id41,axiom,! [Xx1] : (nat_succeeds(Xx1) <=> (? [Xx2] : (Xx1 = s(Xx2) & nat_succeeds(Xx2)) | Xx1 = '0'))).
+fof(id42,axiom,! [Xx1] : (nat_fails(Xx1) <=> (! [Xx2] : (~ (Xx1 = s(Xx2)) | nat_fails(Xx2)) & ~ (Xx1 = '0')))).
+fof(id43,axiom,! [Xx1] : (nat_terminates(Xx1) <=> (! [Xx2] : ($true & (~ (Xx1 = s(Xx2)) | nat_terminates(Xx2))) & $true))).
+fof('(@+)/2',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xx) => ('@+'(Xx,Xy) = Xz <=> plus_succeeds(Xx,Xy,Xz)))).
+fof('(@*)/2',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ('@*'(Xx,Xy) = Xz <=> times_succeeds(Xx,Xy,Xz)))).
+fof('lemma-(nat:termination)',axiom,! [Xx] : (nat_succeeds(Xx) => nat_terminates(Xx))).
+fof('lemma-(nat:ground)',axiom,! [Xx] : (nat_succeeds(Xx) => gr(Xx))).
+fof('lemma-(plus:termination:1)',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xx) => plus_terminates(Xx,Xy,Xz))).
+fof('lemma-(plus:termination:2)',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xz) => plus_terminates(Xx,Xy,Xz))).
+fof('lemma-(plus:types:1)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => nat_succeeds(Xx))).
+fof('lemma-(plus:types:2)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & nat_succeeds(Xy)) => nat_succeeds(Xz))).
+fof('lemma-(plus:types:3)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & nat_succeeds(Xz)) => nat_succeeds(Xy))).
+fof('lemma-(plus:termination:3)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => plus_terminates(Xx,Xy,Xz))).
+fof('lemma-(plus:ground:1)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => gr(Xx))).
+fof('lemma-(plus:ground:2)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & gr(Xy)) => gr(Xz))).
+fof('lemma-(plus:ground:3)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & gr(Xz)) => gr(Xy))).
+fof('lemma-(plus:existence)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => ? [Xz] : plus_succeeds(Xx,Xy,Xz))).
+fof('lemma-(plus:uniqueness)',axiom,! [Xx,Xy,Xz1,Xz2] : ((plus_succeeds(Xx,Xy,Xz1) & plus_succeeds(Xx,Xy,Xz2)) => Xz1 = Xz2)).
+fof('corollary-(plus:zero)',axiom,! [Xy] : '@+'('0',Xy) = Xy).
+fof('corollary-(plus:successor)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@+'(s(Xx),Xy) = s('@+'(Xx,Xy)))).
+fof('corollary-(plus:types)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => nat_succeeds('@+'(Xx,Xy)))).
+fof('theorem-(plus:associative)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@+'('@+'(Xx,Xy),Xz) = '@+'(Xx,'@+'(Xy,Xz)))).
+fof('lemma-(plus:zero)',axiom,! [Xx] : (nat_succeeds(Xx) => '@+'(Xx,'0') = Xx)).
+fof('lemma-(plus:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@+'(Xx,s(Xy)) = '@+'(s(Xx),Xy))).
+fof('theorem-(plus:commutative)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@+'(Xx,Xy) = '@+'(Xy,Xx))).
+fof('lemma-(plus:injective:second)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@+'(Xx,Xy) = '@+'(Xx,Xz)) => Xy = Xz)).
+fof('lemma-(times:types:1)',axiom,! [Xx,Xy,Xz] : (times_succeeds(Xx,Xy,Xz) => nat_succeeds(Xx))).
+fof('lemma-(times:types:2)',axiom,! [Xx,Xy,Xz] : ((times_succeeds(Xx,Xy,Xz) & nat_succeeds(Xy)) => nat_succeeds(Xz))).
+fof('lemma-(times:ground:1)',axiom,! [Xx,Xy,Xz] : (times_succeeds(Xx,Xy,Xz) => gr(Xx))).
+fof('lemma-(times:ground:2)',axiom,! [Xx,Xy,Xz] : ((times_succeeds(Xx,Xy,Xz) & gr(Xy)) => gr(Xz))).
+fof('lemma-(times:termination)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => times_terminates(Xx,Xy,Xz))).
+fof('lemma-(times:existence)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ? [Xz] : times_succeeds(Xx,Xy,Xz))).
+fof('lemma-(times:uniqueness)',axiom,! [Xx,Xy,Xz1,Xz2] : ((times_succeeds(Xx,Xy,Xz1) & times_succeeds(Xx,Xy,Xz2)) => Xz1 = Xz2)).
+fof('corollary-(times:zero)',axiom,! [Xy] : (nat_succeeds(Xy) => '@*'('0',Xy) = '0')).
+fof('corollary-(times:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@*'(s(Xx),Xy) = '@+'(Xy,'@*'(Xx,Xy)))).
+fof('corollary-(times:types)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => nat_succeeds('@*'(Xx,Xy)))).
+fof('theorem-(plus:times:distributive)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'('@+'(Xx,Xy),Xz) = '@+'('@*'(Xx,Xz),'@*'(Xy,Xz)))).
+fof('theorem-(times:associative)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'('@*'(Xx,Xy),Xz) = '@*'(Xx,'@*'(Xy,Xz)))).
+fof('lemma-(times:zero)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(Xx,'0') = '0')).
+fof('lemma-(times:successor)',axiom,! [Xy,Xx] : ((nat_succeeds(Xy) & nat_succeeds(Xx)) => '@+'('@*'(Xy,Xx),Xy) = '@*'(Xy,s(Xx)))).
+fof('theorem-(times:commutative)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@*'(Xx,Xy) = '@*'(Xy,Xx))).
+fof('lemma-(times:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(s('0'),Xx) = Xx)).
+fof('corollary-(times:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(Xx,s('0')) = Xx)).
+fof('corollary-(plus:times:distributive)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'(Xz,'@+'(Xx,Xy)) = '@+'('@*'(Xz,Xx),'@*'(Xz,Xy)))).
+fof('lemma-(less:termination:1)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@<_terminates'(Xx,Xy))).
+fof('lemma-(less:termination:2)',axiom,! [Xx,Xy] : (nat_succeeds(Xy) => '@<_terminates'(Xx,Xy))).
+fof('lemma-(less:types)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => nat_succeeds(Xx))).
+fof('lemma-(less:successor)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : Xy = s(Xz))).
+fof('lemma-(less:transitive:successor)',axiom,! [Xx,Xy,Xz] : (('@<_succeeds'(Xx,Xy) & '@<_succeeds'(Xy,s(Xz))) => '@<_succeeds'(Xx,Xz))).
+fof('lemma-(less:weakening)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => '@<_succeeds'(Xx,s(Xy)))).
+fof('theorem-(less:transitive)',axiom,! [Xx,Xy,Xz] : (('@<_succeeds'(Xx,Xy) & '@<_succeeds'(Xy,Xz)) => '@<_succeeds'(Xx,Xz))).
+fof('lemma-(less:failure)',axiom,! [Xx] : (nat_succeeds(Xx) => '@<_fails'(Xx,Xx))).
+fof('theorem-(less:strictness)',axiom,! [Xx] : (nat_succeeds(Xx) => ~ ('@<_succeeds'(Xx,Xx)))).
+fof('lemma-(less:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@<_succeeds'(Xx,s(Xx)))).
+fof('lemma-(less:axiom:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xy) & '@<_succeeds'(Xx,s(Xy))) => ('@<_succeeds'(Xx,Xy) | Xx = Xy))).
+fof('theorem-(less:totality)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => (('@<_succeeds'(Xx,Xy) | Xx = Xy) | '@<_succeeds'(Xy,Xx)))).
+fof('lemma-(less:different:zero)',axiom,! [Xx] : ((nat_succeeds(Xx) & ~ (Xx = '0')) => '@<_succeeds'('0',Xx))).
+fof('lemma-(leq:termination:1)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@=<_terminates'(Xx,Xy))).
+fof('lemma-(leq:termination:2)',axiom,! [Xx,Xy] : (nat_succeeds(Xy) => '@=<_terminates'(Xx,Xy))).
+fof('lemma-(leq:types)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => nat_succeeds(Xx))).
+fof('lemma-(leq:plus)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => ? [Xz] : plus_succeeds(Xx,Xz,Xy))).
+fof('corollary-(leq:plus)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => ? [Xz] : '@+'(Xx,Xz) = Xy)).
+fof('lemma-(less:plus)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : plus_succeeds(Xx,s(Xz),Xy))).
+fof('corollary-(less:plus)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : '@+'(Xx,s(Xz)) = Xy)).
+fof('lemma-(less:leq)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => '@=<_succeeds'(Xx,Xy))).
+fof(induction,axiom,(! [Xx] : ((? [Xx2] : (Xx = s(Xx2) & (nat_succeeds(Xx2) & '@=<_succeeds'(Xx2,Xx2))) | Xx = '0') => '@=<_succeeds'(Xx,Xx)) => ! [Xx] : (nat_succeeds(Xx) => '@=<_succeeds'(Xx,Xx)))).
+fof('theorem-(leq:reflexive)',conjecture,! [Xx] : (nat_succeeds(Xx) => '@=<_succeeds'(Xx,Xx))).

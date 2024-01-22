@@ -1,0 +1,7 @@
+target conjecture: "./src/example_avl/avl-all1.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all1.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/avl-all2.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all2.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/avl-all3.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all3.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/avl-all4.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all4.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/avl-all5.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all5.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/avl-all6.fof" apply prover command: "eprover --auto --cpu-limit=10 -s ./src/example_avl/avl-all6.fof >> $(pwd)/out/tmp_output_e_prover" status code: "0", successful application (yes: 1, no: 0): 1
+6 lemmas, 6 proved,  ratio: 100

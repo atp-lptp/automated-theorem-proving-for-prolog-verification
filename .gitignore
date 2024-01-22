@@ -1,0 +1,15 @@
+ATP-LPTP-LaTeX-1/.texpadtmp
+*\.DS_Store
+*\.aux
+*\.dvi
+*\.log
+*\.out
+*\.bbl
+*\.blg
+*\.toc
+*-all*.fof
+*-all.pr
+*-all.pl
+*-all.gr
+tmp_*
+*\.env.local
