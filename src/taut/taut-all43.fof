@@ -1,0 +1,154 @@
+fof(id1,axiom,! [Xx4,Xx5] : ~ (nil = cons(Xx4,Xx5))).
+fof(id2,axiom,~ (nil = '1')).
+fof(id3,axiom,~ (nil = '0')).
+fof(id4,axiom,! [Xx6] : ~ (nil = p(Xx6))).
+fof(id5,axiom,! [Xx7] : ~ (nil = neg(Xx7))).
+fof(id6,axiom,! [Xx8,Xx9] : ~ (nil = and(Xx8,Xx9))).
+fof(id7,axiom,! [Xx10,Xx11] : ~ (nil = or(Xx10,Xx11))).
+fof(id8,axiom,! [Xx12,Xx13] : ! [Xx14,Xx15] : (cons(Xx12,Xx13) = cons(Xx14,Xx15) => Xx13 = Xx15)).
+fof(id9,axiom,! [Xx16,Xx17] : ! [Xx18,Xx19] : (cons(Xx16,Xx17) = cons(Xx18,Xx19) => Xx16 = Xx18)).
+fof(id10,axiom,! [Xx20,Xx21] : ~ ('1' = cons(Xx20,Xx21))).
+fof(id11,axiom,! [Xx22,Xx23] : ~ ('0' = cons(Xx22,Xx23))).
+fof(id12,axiom,! [Xx24,Xx25] : ! [Xx26] : ~ (cons(Xx24,Xx25) = p(Xx26))).
+fof(id13,axiom,! [Xx27,Xx28] : ! [Xx29] : ~ (cons(Xx27,Xx28) = neg(Xx29))).
+fof(id14,axiom,! [Xx30,Xx31] : ! [Xx32,Xx33] : ~ (cons(Xx30,Xx31) = and(Xx32,Xx33))).
+fof(id15,axiom,! [Xx34,Xx35] : ! [Xx36,Xx37] : ~ (cons(Xx34,Xx35) = or(Xx36,Xx37))).
+fof(id16,axiom,~ ('1' = '0')).
+fof(id17,axiom,! [Xx38] : ~ ('1' = p(Xx38))).
+fof(id18,axiom,! [Xx39] : ~ ('1' = neg(Xx39))).
+fof(id19,axiom,! [Xx40,Xx41] : ~ ('1' = and(Xx40,Xx41))).
+fof(id20,axiom,! [Xx42,Xx43] : ~ ('1' = or(Xx42,Xx43))).
+fof(id21,axiom,! [Xx44] : ~ ('0' = p(Xx44))).
+fof(id22,axiom,! [Xx45] : ~ ('0' = neg(Xx45))).
+fof(id23,axiom,! [Xx46,Xx47] : ~ ('0' = and(Xx46,Xx47))).
+fof(id24,axiom,! [Xx48,Xx49] : ~ ('0' = or(Xx48,Xx49))).
+fof(id25,axiom,! [Xx50] : ! [Xx51] : (p(Xx50) = p(Xx51) => Xx50 = Xx51)).
+fof(id26,axiom,! [Xx52] : ! [Xx53] : ~ (p(Xx52) = neg(Xx53))).
+fof(id27,axiom,! [Xx54] : ! [Xx55,Xx56] : ~ (p(Xx54) = and(Xx55,Xx56))).
+fof(id28,axiom,! [Xx57] : ! [Xx58,Xx59] : ~ (p(Xx57) = or(Xx58,Xx59))).
+fof(id29,axiom,! [Xx60] : ! [Xx61] : (neg(Xx60) = neg(Xx61) => Xx60 = Xx61)).
+fof(id30,axiom,! [Xx62] : ! [Xx63,Xx64] : ~ (neg(Xx62) = and(Xx63,Xx64))).
+fof(id31,axiom,! [Xx65] : ! [Xx66,Xx67] : ~ (neg(Xx65) = or(Xx66,Xx67))).
+fof(id32,axiom,! [Xx68,Xx69] : ! [Xx70,Xx71] : (and(Xx68,Xx69) = and(Xx70,Xx71) => Xx69 = Xx71)).
+fof(id33,axiom,! [Xx72,Xx73] : ! [Xx74,Xx75] : (and(Xx72,Xx73) = and(Xx74,Xx75) => Xx72 = Xx74)).
+fof(id34,axiom,! [Xx76,Xx77] : ! [Xx78,Xx79] : ~ (and(Xx76,Xx77) = or(Xx78,Xx79))).
+fof(id35,axiom,! [Xx80,Xx81] : ! [Xx82,Xx83] : (or(Xx80,Xx81) = or(Xx82,Xx83) => Xx81 = Xx83)).
+fof(id36,axiom,! [Xx84,Xx85] : ! [Xx86,Xx87] : (or(Xx84,Xx85) = or(Xx86,Xx87) => Xx84 = Xx86)).
+fof(id37,axiom,gr(nil)).
+fof(id38,axiom,! [Xx88,Xx89] : ((gr(Xx88) & gr(Xx89)) <=> gr(cons(Xx88,Xx89)))).
+fof(id39,axiom,gr('1')).
+fof(id40,axiom,gr('0')).
+fof(id41,axiom,! [Xx90] : (gr(Xx90) <=> gr(p(Xx90)))).
+fof(id42,axiom,! [Xx91] : (gr(Xx91) <=> gr(neg(Xx91)))).
+fof(id43,axiom,! [Xx92,Xx93] : ((gr(Xx92) & gr(Xx93)) <=> gr(and(Xx92,Xx93)))).
+fof(id44,axiom,! [Xx94,Xx95] : ((gr(Xx94) & gr(Xx95)) <=> gr(or(Xx94,Xx95)))).
+fof(id45,axiom,! [Xx96,Xx97] : ~ ((defined_succeeds(Xx96,Xx97) & defined_fails(Xx96,Xx97)))).
+fof(id46,axiom,! [Xx96,Xx97] : (defined_terminates(Xx96,Xx97) => (defined_succeeds(Xx96,Xx97) | defined_fails(Xx96,Xx97)))).
+fof(id47,axiom,! [Xx98,Xx99,Xx100] : ~ ((eval_succeeds(Xx98,Xx99,Xx100) & eval_fails(Xx98,Xx99,Xx100)))).
+fof(id48,axiom,! [Xx98,Xx99,Xx100] : (eval_terminates(Xx98,Xx99,Xx100) => (eval_succeeds(Xx98,Xx99,Xx100) | eval_fails(Xx98,Xx99,Xx100)))).
+fof(id49,axiom,! [Xx101,Xx102,Xx103] : ~ ((false_succeeds(Xx101,Xx102,Xx103) & false_fails(Xx101,Xx102,Xx103)))).
+fof(id50,axiom,! [Xx101,Xx102,Xx103] : (false_terminates(Xx101,Xx102,Xx103) => (false_succeeds(Xx101,Xx102,Xx103) | false_fails(Xx101,Xx102,Xx103)))).
+fof(id51,axiom,! [Xx104,Xx105,Xx106] : ~ ((true_succeeds(Xx104,Xx105,Xx106) & true_fails(Xx104,Xx105,Xx106)))).
+fof(id52,axiom,! [Xx104,Xx105,Xx106] : (true_terminates(Xx104,Xx105,Xx106) => (true_succeeds(Xx104,Xx105,Xx106) | true_fails(Xx104,Xx105,Xx106)))).
+fof(id53,axiom,! [Xx107] : ~ ((satisfiable_succeeds(Xx107) & satisfiable_fails(Xx107)))).
+fof(id54,axiom,! [Xx107] : (satisfiable_terminates(Xx107) => (satisfiable_succeeds(Xx107) | satisfiable_fails(Xx107)))).
+fof(id55,axiom,! [Xx108] : ~ ((valid_succeeds(Xx108) & valid_fails(Xx108)))).
+fof(id56,axiom,! [Xx108] : (valid_terminates(Xx108) => (valid_succeeds(Xx108) | valid_fails(Xx108)))).
+fof(id57,axiom,! [Xx109] : ~ ((incon_succeeds(Xx109) & incon_fails(Xx109)))).
+fof(id58,axiom,! [Xx109] : (incon_terminates(Xx109) => (incon_succeeds(Xx109) | incon_fails(Xx109)))).
+fof(id59,axiom,! [Xx110] : ~ ((interpretation_succeeds(Xx110) & interpretation_fails(Xx110)))).
+fof(id60,axiom,! [Xx110] : (interpretation_terminates(Xx110) => (interpretation_succeeds(Xx110) | interpretation_fails(Xx110)))).
+fof(id61,axiom,! [Xx111] : ~ ((literal_list_succeeds(Xx111) & literal_list_fails(Xx111)))).
+fof(id62,axiom,! [Xx111] : (literal_list_terminates(Xx111) => (literal_list_succeeds(Xx111) | literal_list_fails(Xx111)))).
+fof(id63,axiom,! [Xx112] : ~ ((literal_succeeds(Xx112) & literal_fails(Xx112)))).
+fof(id64,axiom,! [Xx112] : (literal_terminates(Xx112) => (literal_succeeds(Xx112) | literal_fails(Xx112)))).
+fof(id65,axiom,! [Xx113] : ~ ((formula_succeeds(Xx113) & formula_fails(Xx113)))).
+fof(id66,axiom,! [Xx113] : (formula_terminates(Xx113) => (formula_succeeds(Xx113) | formula_fails(Xx113)))).
+fof(id67,axiom,! [Xx114,Xx115] : ~ ((member_succeeds(Xx114,Xx115) & member_fails(Xx114,Xx115)))).
+fof(id68,axiom,! [Xx114,Xx115] : (member_terminates(Xx114,Xx115) => (member_succeeds(Xx114,Xx115) | member_fails(Xx114,Xx115)))).
+fof(id69,axiom,! [Xx116] : ~ ((list_succeeds(Xx116) & list_fails(Xx116)))).
+fof(id70,axiom,! [Xx116] : (list_terminates(Xx116) => (list_succeeds(Xx116) | list_fails(Xx116)))).
+fof(id71,axiom,! [Xx1,Xx2] : (defined_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx1 = or(Xx3,Xx4) & (defined_succeeds(Xx3,Xx2) & defined_succeeds(Xx4,Xx2))) | (? [Xx5] : ? [Xx6] : (Xx1 = and(Xx5,Xx6) & (defined_succeeds(Xx5,Xx2) & defined_succeeds(Xx6,Xx2))) | (? [Xx7] : (Xx1 = neg(Xx7) & defined_succeeds(Xx7,Xx2)) | (? [Xx8] : (Xx1 = p(Xx8) & member_succeeds(neg(p(Xx8)),Xx2)) | ? [Xx9] : (Xx1 = p(Xx9) & member_succeeds(p(Xx9),Xx2)))))))).
+fof(id72,axiom,! [Xx1,Xx2] : (defined_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx1 = or(Xx3,Xx4)) | (defined_fails(Xx3,Xx2) | defined_fails(Xx4,Xx2))) & (! [Xx5] : ! [Xx6] : (~ (Xx1 = and(Xx5,Xx6)) | (defined_fails(Xx5,Xx2) | defined_fails(Xx6,Xx2))) & (! [Xx7] : (~ (Xx1 = neg(Xx7)) | defined_fails(Xx7,Xx2)) & (! [Xx8] : (~ (Xx1 = p(Xx8)) | member_fails(neg(p(Xx8)),Xx2)) & ! [Xx9] : (~ (Xx1 = p(Xx9)) | member_fails(p(Xx9),Xx2)))))))).
+fof(id73,axiom,! [Xx1,Xx2] : (defined_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = or(Xx3,Xx4)) | (defined_terminates(Xx3,Xx2) & (defined_fails(Xx3,Xx2) | defined_terminates(Xx4,Xx2))))) & (! [Xx5] : ! [Xx6] : ($true & (~ (Xx1 = and(Xx5,Xx6)) | (defined_terminates(Xx5,Xx2) & (defined_fails(Xx5,Xx2) | defined_terminates(Xx6,Xx2))))) & (! [Xx7] : ($true & (~ (Xx1 = neg(Xx7)) | defined_terminates(Xx7,Xx2))) & (! [Xx8] : ($true & (~ (Xx1 = p(Xx8)) | member_terminates(neg(p(Xx8)),Xx2))) & ! [Xx9] : ($true & (~ (Xx1 = p(Xx9)) | member_terminates(p(Xx9),Xx2))))))))).
+fof(id74,axiom,! [Xx1,Xx2,Xx3] : (eval_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = or(Xx4,Xx5) & (Xx3 = '0' & (eval_succeeds(Xx4,Xx2,'0') & eval_succeeds(Xx5,Xx2,'0')))) | (? [Xx6] : ? [Xx7] : (Xx1 = or(Xx6,Xx7) & (Xx3 = '1' & eval_succeeds(Xx7,Xx2,'1'))) | (? [Xx8] : ? [Xx9] : (Xx1 = or(Xx8,Xx9) & (Xx3 = '1' & eval_succeeds(Xx8,Xx2,'1'))) | (? [Xx10] : ? [Xx11] : (Xx1 = and(Xx10,Xx11) & (Xx3 = '0' & eval_succeeds(Xx11,Xx2,'0'))) | (? [Xx12] : ? [Xx13] : (Xx1 = and(Xx12,Xx13) & (Xx3 = '0' & eval_succeeds(Xx12,Xx2,'0'))) | (? [Xx14] : ? [Xx15] : (Xx1 = and(Xx14,Xx15) & (Xx3 = '1' & (eval_succeeds(Xx14,Xx2,'1') & eval_succeeds(Xx15,Xx2,'1')))) | (? [Xx16] : (Xx1 = neg(Xx16) & (Xx3 = '0' & eval_succeeds(Xx16,Xx2,'1'))) | (? [Xx17] : (Xx1 = neg(Xx17) & (Xx3 = '1' & eval_succeeds(Xx17,Xx2,'0'))) | (? [Xx18] : (Xx1 = p(Xx18) & (Xx3 = '0' & member_succeeds(neg(p(Xx18)),Xx2))) | ? [Xx19] : (Xx1 = p(Xx19) & (Xx3 = '1' & member_succeeds(p(Xx19),Xx2)))))))))))))).
+fof(id75,axiom,! [Xx1,Xx2,Xx3] : (eval_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = or(Xx4,Xx5)) | (~ (Xx3 = '0') | (eval_fails(Xx4,Xx2,'0') | eval_fails(Xx5,Xx2,'0')))) & (! [Xx6] : ! [Xx7] : (~ (Xx1 = or(Xx6,Xx7)) | (~ (Xx3 = '1') | eval_fails(Xx7,Xx2,'1'))) & (! [Xx8] : ! [Xx9] : (~ (Xx1 = or(Xx8,Xx9)) | (~ (Xx3 = '1') | eval_fails(Xx8,Xx2,'1'))) & (! [Xx10] : ! [Xx11] : (~ (Xx1 = and(Xx10,Xx11)) | (~ (Xx3 = '0') | eval_fails(Xx11,Xx2,'0'))) & (! [Xx12] : ! [Xx13] : (~ (Xx1 = and(Xx12,Xx13)) | (~ (Xx3 = '0') | eval_fails(Xx12,Xx2,'0'))) & (! [Xx14] : ! [Xx15] : (~ (Xx1 = and(Xx14,Xx15)) | (~ (Xx3 = '1') | (eval_fails(Xx14,Xx2,'1') | eval_fails(Xx15,Xx2,'1')))) & (! [Xx16] : (~ (Xx1 = neg(Xx16)) | (~ (Xx3 = '0') | eval_fails(Xx16,Xx2,'1'))) & (! [Xx17] : (~ (Xx1 = neg(Xx17)) | (~ (Xx3 = '1') | eval_fails(Xx17,Xx2,'0'))) & (! [Xx18] : (~ (Xx1 = p(Xx18)) | (~ (Xx3 = '0') | member_fails(neg(p(Xx18)),Xx2))) & ! [Xx19] : (~ (Xx1 = p(Xx19)) | (~ (Xx3 = '1') | member_fails(p(Xx19),Xx2)))))))))))))).
+fof(id76,axiom,! [Xx1,Xx2,Xx3] : (eval_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = or(Xx4,Xx5)) | ($true & (~ (Xx3 = '0') | (eval_terminates(Xx4,Xx2,'0') & (eval_fails(Xx4,Xx2,'0') | eval_terminates(Xx5,Xx2,'0'))))))) & (! [Xx6] : ! [Xx7] : ($true & (~ (Xx1 = or(Xx6,Xx7)) | ($true & (~ (Xx3 = '1') | eval_terminates(Xx7,Xx2,'1'))))) & (! [Xx8] : ! [Xx9] : ($true & (~ (Xx1 = or(Xx8,Xx9)) | ($true & (~ (Xx3 = '1') | eval_terminates(Xx8,Xx2,'1'))))) & (! [Xx10] : ! [Xx11] : ($true & (~ (Xx1 = and(Xx10,Xx11)) | ($true & (~ (Xx3 = '0') | eval_terminates(Xx11,Xx2,'0'))))) & (! [Xx12] : ! [Xx13] : ($true & (~ (Xx1 = and(Xx12,Xx13)) | ($true & (~ (Xx3 = '0') | eval_terminates(Xx12,Xx2,'0'))))) & (! [Xx14] : ! [Xx15] : ($true & (~ (Xx1 = and(Xx14,Xx15)) | ($true & (~ (Xx3 = '1') | (eval_terminates(Xx14,Xx2,'1') & (eval_fails(Xx14,Xx2,'1') | eval_terminates(Xx15,Xx2,'1'))))))) & (! [Xx16] : ($true & (~ (Xx1 = neg(Xx16)) | ($true & (~ (Xx3 = '0') | eval_terminates(Xx16,Xx2,'1'))))) & (! [Xx17] : ($true & (~ (Xx1 = neg(Xx17)) | ($true & (~ (Xx3 = '1') | eval_terminates(Xx17,Xx2,'0'))))) & (! [Xx18] : ($true & (~ (Xx1 = p(Xx18)) | ($true & (~ (Xx3 = '0') | member_terminates(neg(p(Xx18)),Xx2))))) & ! [Xx19] : ($true & (~ (Xx1 = p(Xx19)) | ($true & (~ (Xx3 = '1') | member_terminates(p(Xx19),Xx2)))))))))))))))).
+fof(id77,axiom,! [Xx1,Xx2,Xx3] : (false_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : ? [Xx6] : (Xx1 = or(Xx4,Xx5) & (false_succeeds(Xx4,Xx2,Xx6) & false_succeeds(Xx5,Xx6,Xx3))) | (? [Xx7] : ? [Xx8] : (Xx1 = and(Xx7,Xx8) & false_succeeds(Xx8,Xx2,Xx3)) | (? [Xx9] : ? [Xx10] : (Xx1 = and(Xx9,Xx10) & false_succeeds(Xx9,Xx2,Xx3)) | (? [Xx11] : (Xx1 = neg(Xx11) & true_succeeds(Xx11,Xx2,Xx3)) | ? [Xx12] : (Xx1 = p(Xx12) & (Xx3 = cons(neg(p(Xx12)),Xx2) & member_fails(p(Xx12),Xx2))))))))).
+fof(id78,axiom,! [Xx1,Xx2,Xx3] : (false_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : (~ (Xx1 = or(Xx4,Xx5)) | (false_fails(Xx4,Xx2,Xx6) | false_fails(Xx5,Xx6,Xx3))) & (! [Xx7] : ! [Xx8] : (~ (Xx1 = and(Xx7,Xx8)) | false_fails(Xx8,Xx2,Xx3)) & (! [Xx9] : ! [Xx10] : (~ (Xx1 = and(Xx9,Xx10)) | false_fails(Xx9,Xx2,Xx3)) & (! [Xx11] : (~ (Xx1 = neg(Xx11)) | true_fails(Xx11,Xx2,Xx3)) & ! [Xx12] : (~ (Xx1 = p(Xx12)) | (~ (Xx3 = cons(neg(p(Xx12)),Xx2)) | member_succeeds(p(Xx12),Xx2))))))))).
+fof(id79,axiom,! [Xx1,Xx2,Xx3] : (false_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ($true & (~ (Xx1 = or(Xx4,Xx5)) | (false_terminates(Xx4,Xx2,Xx6) & (false_fails(Xx4,Xx2,Xx6) | false_terminates(Xx5,Xx6,Xx3))))) & (! [Xx7] : ! [Xx8] : ($true & (~ (Xx1 = and(Xx7,Xx8)) | false_terminates(Xx8,Xx2,Xx3))) & (! [Xx9] : ! [Xx10] : ($true & (~ (Xx1 = and(Xx9,Xx10)) | false_terminates(Xx9,Xx2,Xx3))) & (! [Xx11] : ($true & (~ (Xx1 = neg(Xx11)) | true_terminates(Xx11,Xx2,Xx3))) & ! [Xx12] : ($true & (~ (Xx1 = p(Xx12)) | ($true & (~ (Xx3 = cons(neg(p(Xx12)),Xx2)) | (member_terminates(p(Xx12),Xx2) & (gr(p(Xx12)) & gr(Xx2))))))))))))).
+fof(id80,axiom,! [Xx1,Xx2,Xx3] : (true_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = or(Xx4,Xx5) & true_succeeds(Xx5,Xx2,Xx3)) | (? [Xx6] : ? [Xx7] : (Xx1 = or(Xx6,Xx7) & true_succeeds(Xx6,Xx2,Xx3)) | (? [Xx8] : ? [Xx9] : ? [Xx10] : (Xx1 = and(Xx8,Xx9) & (true_succeeds(Xx8,Xx2,Xx10) & true_succeeds(Xx9,Xx10,Xx3))) | (? [Xx11] : (Xx1 = neg(Xx11) & false_succeeds(Xx11,Xx2,Xx3)) | ? [Xx12] : (Xx1 = p(Xx12) & (Xx3 = cons(p(Xx12),Xx2) & member_fails(neg(p(Xx12)),Xx2))))))))).
+fof(id81,axiom,! [Xx1,Xx2,Xx3] : (true_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = or(Xx4,Xx5)) | true_fails(Xx5,Xx2,Xx3)) & (! [Xx6] : ! [Xx7] : (~ (Xx1 = or(Xx6,Xx7)) | true_fails(Xx6,Xx2,Xx3)) & (! [Xx8] : ! [Xx9] : ! [Xx10] : (~ (Xx1 = and(Xx8,Xx9)) | (true_fails(Xx8,Xx2,Xx10) | true_fails(Xx9,Xx10,Xx3))) & (! [Xx11] : (~ (Xx1 = neg(Xx11)) | false_fails(Xx11,Xx2,Xx3)) & ! [Xx12] : (~ (Xx1 = p(Xx12)) | (~ (Xx3 = cons(p(Xx12),Xx2)) | member_succeeds(neg(p(Xx12)),Xx2))))))))).
+fof(id82,axiom,! [Xx1,Xx2,Xx3] : (true_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = or(Xx4,Xx5)) | true_terminates(Xx5,Xx2,Xx3))) & (! [Xx6] : ! [Xx7] : ($true & (~ (Xx1 = or(Xx6,Xx7)) | true_terminates(Xx6,Xx2,Xx3))) & (! [Xx8] : ! [Xx9] : ! [Xx10] : ($true & (~ (Xx1 = and(Xx8,Xx9)) | (true_terminates(Xx8,Xx2,Xx10) & (true_fails(Xx8,Xx2,Xx10) | true_terminates(Xx9,Xx10,Xx3))))) & (! [Xx11] : ($true & (~ (Xx1 = neg(Xx11)) | false_terminates(Xx11,Xx2,Xx3))) & ! [Xx12] : ($true & (~ (Xx1 = p(Xx12)) | ($true & (~ (Xx3 = cons(p(Xx12),Xx2)) | (member_terminates(neg(p(Xx12)),Xx2) & (gr(neg(p(Xx12))) & gr(Xx2))))))))))))).
+fof(id83,axiom,! [Xx1] : (satisfiable_succeeds(Xx1) <=> ? [Xx2] : true_succeeds(Xx1,nil,Xx2))).
+fof(id84,axiom,! [Xx1] : (satisfiable_fails(Xx1) <=> ! [Xx2] : true_fails(Xx1,nil,Xx2))).
+fof(id85,axiom,! [Xx1] : (satisfiable_terminates(Xx1) <=> ! [Xx2] : true_terminates(Xx1,nil,Xx2))).
+fof(id86,axiom,! [Xx1] : (valid_succeeds(Xx1) <=> satisfiable_fails(neg(Xx1)))).
+fof(id87,axiom,! [Xx1] : (valid_fails(Xx1) <=> satisfiable_succeeds(neg(Xx1)))).
+fof(id88,axiom,! [Xx1] : (valid_terminates(Xx1) <=> (satisfiable_terminates(neg(Xx1)) & gr(neg(Xx1))))).
+fof(id89,axiom,! [Xx1] : (incon_succeeds(Xx1) <=> ? [Xx2] : (member_succeeds(p(Xx2),Xx1) & member_succeeds(neg(p(Xx2)),Xx1)))).
+fof(id90,axiom,! [Xx1] : (incon_fails(Xx1) <=> ! [Xx2] : (member_fails(p(Xx2),Xx1) | member_fails(neg(p(Xx2)),Xx1)))).
+fof(id91,axiom,! [Xx1] : (incon_terminates(Xx1) <=> ! [Xx2] : (member_terminates(p(Xx2),Xx1) & (member_fails(p(Xx2),Xx1) | member_terminates(neg(p(Xx2)),Xx1))))).
+fof(id92,axiom,! [Xx1] : (interpretation_succeeds(Xx1) <=> (literal_list_succeeds(Xx1) & incon_fails(Xx1)))).
+fof(id93,axiom,! [Xx1] : (interpretation_fails(Xx1) <=> (literal_list_fails(Xx1) | incon_succeeds(Xx1)))).
+fof(id94,axiom,! [Xx1] : (interpretation_terminates(Xx1) <=> (literal_list_terminates(Xx1) & (literal_list_fails(Xx1) | (incon_terminates(Xx1) & gr(Xx1)))))).
+fof(id95,axiom,! [Xx1] : (literal_list_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = cons(Xx2,Xx3) & (literal_succeeds(Xx2) & literal_list_succeeds(Xx3))) | Xx1 = nil))).
+fof(id96,axiom,! [Xx1] : (literal_list_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = cons(Xx2,Xx3)) | (literal_fails(Xx2) | literal_list_fails(Xx3))) & ~ (Xx1 = nil)))).
+fof(id97,axiom,! [Xx1] : (literal_list_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = cons(Xx2,Xx3)) | (literal_terminates(Xx2) & (literal_fails(Xx2) | literal_list_terminates(Xx3))))) & $true))).
+fof(id98,axiom,! [Xx1] : (literal_succeeds(Xx1) <=> (? [Xx2] : Xx1 = neg(p(Xx2)) | ? [Xx3] : Xx1 = p(Xx3)))).
+fof(id99,axiom,! [Xx1] : (literal_fails(Xx1) <=> (! [Xx2] : ~ (Xx1 = neg(p(Xx2))) & ! [Xx3] : ~ (Xx1 = p(Xx3))))).
+fof(id100,axiom,! [Xx1] : (literal_terminates(Xx1) <=> (! [Xx2] : $true & ! [Xx3] : $true))).
+fof(id101,axiom,! [Xx1] : (formula_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = or(Xx2,Xx3) & (formula_succeeds(Xx2) & formula_succeeds(Xx3))) | (? [Xx4] : ? [Xx5] : (Xx1 = and(Xx4,Xx5) & (formula_succeeds(Xx4) & formula_succeeds(Xx5))) | (? [Xx6] : (Xx1 = neg(Xx6) & formula_succeeds(Xx6)) | ? [Xx7] : Xx1 = p(Xx7)))))).
+fof(id102,axiom,! [Xx1] : (formula_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = or(Xx2,Xx3)) | (formula_fails(Xx2) | formula_fails(Xx3))) & (! [Xx4] : ! [Xx5] : (~ (Xx1 = and(Xx4,Xx5)) | (formula_fails(Xx4) | formula_fails(Xx5))) & (! [Xx6] : (~ (Xx1 = neg(Xx6)) | formula_fails(Xx6)) & ! [Xx7] : ~ (Xx1 = p(Xx7))))))).
+fof(id103,axiom,! [Xx1] : (formula_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = or(Xx2,Xx3)) | (formula_terminates(Xx2) & (formula_fails(Xx2) | formula_terminates(Xx3))))) & (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = and(Xx4,Xx5)) | (formula_terminates(Xx4) & (formula_fails(Xx4) | formula_terminates(Xx5))))) & (! [Xx6] : ($true & (~ (Xx1 = neg(Xx6)) | formula_terminates(Xx6))) & ! [Xx7] : $true))))).
+fof(id104,axiom,! [Xx1,Xx2] : (member_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx2 = cons(Xx3,Xx4) & member_succeeds(Xx1,Xx4)) | ? [Xx5] : Xx2 = cons(Xx1,Xx5)))).
+fof(id105,axiom,! [Xx1,Xx2] : (member_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx2 = cons(Xx3,Xx4)) | member_fails(Xx1,Xx4)) & ! [Xx5] : ~ (Xx2 = cons(Xx1,Xx5))))).
+fof(id106,axiom,! [Xx1,Xx2] : (member_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx2 = cons(Xx3,Xx4)) | member_terminates(Xx1,Xx4))) & ! [Xx5] : $true))).
+fof(id107,axiom,! [Xx1] : (list_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = cons(Xx2,Xx3) & list_succeeds(Xx3)) | Xx1 = nil))).
+fof(id108,axiom,! [Xx1] : (list_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = cons(Xx2,Xx3)) | list_fails(Xx3)) & ~ (Xx1 = nil)))).
+fof(id109,axiom,! [Xx1] : (list_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = cons(Xx2,Xx3)) | list_terminates(Xx3))) & $true))).
+fof('sub/2',axiom,! [Xl1,Xl2] : (sub(Xl1,Xl2) <=> ! [Xx] : (member_succeeds(Xx,Xl1) => member_succeeds(Xx,Xl2)))).
+fof('lemma-(member:termination)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => member_terminates(Xx,Xl))).
+fof('lemma-(member:success:no)',axiom,! [Xx,Xy,Xl] : ((member_succeeds(Xx,cons(Xy,Xl)) & ~ (Xx = Xy)) => member_succeeds(Xx,Xl))).
+fof('lemma-(sub:cons)',axiom,! [Xx,Xi] : sub(Xi,cons(Xx,Xi))).
+fof('lemma-(sub:trans)',axiom,! [Xi,Xj,Xk] : ((sub(Xi,Xj) & sub(Xj,Xk)) => sub(Xi,Xk))).
+fof('lemma-(sub:nil)',axiom,! [Xl] : sub(nil,Xl)).
+fof('lemma-(sub:member)',axiom,! [Xx,Xi,Xj] : ((sub(Xi,Xj) & member_succeeds(Xx,Xj)) => sub(cons(Xx,Xi),Xj))).
+fof('lemma-(incon:termination)',axiom,! [Xi] : (list_succeeds(Xi) => incon_terminates(Xi))).
+fof('lemma-(literal_list:list)',axiom,! [Xi] : (literal_list_succeeds(Xi) => list_succeeds(Xi))).
+fof('lemma-(interpretation:elimination)',axiom,! [Xi] : (interpretation_succeeds(Xi) => (literal_list_succeeds(Xi) & ~ (? [Xx] : (member_succeeds(p(Xx),Xi) & member_succeeds(neg(p(Xx)),Xi)))))).
+fof('lemma-(interpretation:introduction)',axiom,! [Xi] : ((literal_list_succeeds(Xi) & ~ (? [Xx] : (member_succeeds(p(Xx),Xi) & member_succeeds(neg(p(Xx)),Xi)))) => interpretation_succeeds(Xi))).
+fof('lemma-(interpretation:pos:success)',axiom,! [Xx,Xi] : ((interpretation_succeeds(Xi) & ~ (member_succeeds(neg(p(Xx)),Xi))) => interpretation_succeeds(cons(p(Xx),Xi)))).
+fof('corollary-(interpretation:pos:failure)',axiom,! [Xx,Xi] : ((interpretation_succeeds(Xi) & member_fails(neg(p(Xx)),Xi)) => interpretation_succeeds(cons(p(Xx),Xi)))).
+fof('lemma-(interpretation:(neg):success)',axiom,! [Xx,Xi] : ((interpretation_succeeds(Xi) & ~ (member_succeeds(p(Xx),Xi))) => interpretation_succeeds(cons(neg(p(Xx)),Xi)))).
+fof('corollary-(interpretation:(neg):failure)',axiom,! [Xx,Xi] : ((interpretation_succeeds(Xi) & member_fails(p(Xx),Xi)) => interpretation_succeeds(cons(neg(p(Xx)),Xi)))).
+fof('lemma-(interpretation:nil)',axiom,interpretation_succeeds(nil)).
+fof('lemma-(truefalse:interpretation:literal_list:sub)',axiom,(! [Xa,Xi,Xj] : (true_succeeds(Xa,Xi,Xj) => (((interpretation_succeeds(Xi) => interpretation_succeeds(Xj)) & (literal_list_succeeds(Xi) => literal_list_succeeds(Xj))) & sub(Xi,Xj))) & ! [Xa,Xi,Xj] : (false_succeeds(Xa,Xi,Xj) => (((interpretation_succeeds(Xi) => interpretation_succeeds(Xj)) & (literal_list_succeeds(Xi) => literal_list_succeeds(Xj))) & sub(Xi,Xj))))).
+fof('corollary-(true:interpretation)',axiom,! [Xa,Xi,Xj] : ((true_succeeds(Xa,Xi,Xj) & interpretation_succeeds(Xi)) => interpretation_succeeds(Xj))).
+fof('corollary-(false:interpretation)',axiom,! [Xa,Xi,Xj] : ((false_succeeds(Xa,Xi,Xj) & interpretation_succeeds(Xi)) => interpretation_succeeds(Xj))).
+fof('corollary-(true:literal_list)',axiom,! [Xa,Xi,Xj] : ((true_succeeds(Xa,Xi,Xj) & literal_list_succeeds(Xi)) => literal_list_succeeds(Xj))).
+fof('corollary-(false:literal_list)',axiom,! [Xa,Xi,Xj] : ((false_succeeds(Xa,Xi,Xj) & literal_list_succeeds(Xi)) => literal_list_succeeds(Xj))).
+fof('corollary-(true:sub)',axiom,! [Xa,Xi,Xj] : (true_succeeds(Xa,Xi,Xj) => sub(Xi,Xj))).
+fof('corollary-(false:sub)',axiom,! [Xa,Xi,Xj] : (false_succeeds(Xa,Xi,Xj) => sub(Xi,Xj))).
+fof('lemma-(true:false:gr)',axiom,(! [Xa,Xi,Xj] : (true_succeeds(Xa,Xi,Xj) => ((gr(Xa) & gr(Xi)) => gr(Xj))) & ! [Xa,Xi,Xj] : (false_succeeds(Xa,Xi,Xj) => ((gr(Xa) & gr(Xi)) => gr(Xj))))).
+fof('corollary-(true:gr)',axiom,! [Xa,Xi,Xj] : (((true_succeeds(Xa,Xi,Xj) & gr(Xa)) & gr(Xi)) => gr(Xj))).
+fof('corollary-(false:gr)',axiom,! [Xa,Xi,Xj] : (((false_succeeds(Xa,Xi,Xj) & gr(Xa)) & gr(Xi)) => gr(Xj))).
+fof('lemma-(true:termination)',axiom,! [Xa] : (formula_succeeds(Xa) => ! [Xi,Xj] : (((gr(Xa) & literal_list_succeeds(Xi)) & gr(Xi)) => (true_terminates(Xa,Xi,Xj) & false_terminates(Xa,Xi,Xj))))).
+fof('corollary-(satisfiable:termination)',axiom,! [Xa] : ((formula_succeeds(Xa) & gr(Xa)) => satisfiable_terminates(Xa))).
+fof('theorem-(valid:termination)',axiom,! [Xa] : ((formula_succeeds(Xa) & gr(Xa)) => valid_terminates(Xa))).
+fof('lemma-(eval:termination)',axiom,! [Xa] : (formula_succeeds(Xa) => ! [Xi,Xx] : (list_succeeds(Xi) => eval_terminates(Xa,Xi,Xx)))).
+fof('lemma-(eval:sub)',axiom,! [Xa,Xi,Xx] : (eval_succeeds(Xa,Xi,Xx) => ! [Xj] : (sub(Xi,Xj) => eval_succeeds(Xa,Xj,Xx)))).
+fof('corollary-(eval:sub)',axiom,! [Xa,Xi,Xj,Xx] : ((eval_succeeds(Xa,Xi,Xx) & sub(Xi,Xj)) => eval_succeeds(Xa,Xj,Xx))).
+fof('lemma-(truefalse:eval)',axiom,(! [Xa,Xi,Xj] : (true_succeeds(Xa,Xi,Xj) => eval_succeeds(Xa,Xj,'1')) & ! [Xa,Xi,Xj] : (false_succeeds(Xa,Xi,Xj) => eval_succeeds(Xa,Xj,'0')))).
+fof('lemma-(eval:tnd)',axiom,! [Xa,Xi] : (defined_succeeds(Xa,Xi) => (eval_succeeds(Xa,Xi,'1') | eval_succeeds(Xa,Xi,'0')))).
+fof('lemma-(eval:function)',axiom,! [Xa,Xi,Xx] : (eval_succeeds(Xa,Xi,Xx) => (interpretation_succeeds(Xi) => ! [Xy] : (eval_succeeds(Xa,Xi,Xy) => Xx = Xy)))).
+fof('lemma-(int:sub)',axiom,! [Xa,Xi] : (defined_succeeds(Xa,Xi) => ! [Xj] : (sub(Xi,Xj) => defined_succeeds(Xa,Xj)))).
+fof('corollary-(int:sub)',axiom,! [Xa,Xi,Xj] : ((defined_succeeds(Xa,Xi) & sub(Xi,Xj)) => defined_succeeds(Xa,Xj))).
+fof('theorem-(valid:fail)',axiom,! [Xa] : (valid_fails(Xa) <=> ? [Xi] : false_succeeds(Xa,nil,Xi))).
+fof('theorem-(valid:eval)',axiom,! [Xa] : (valid_fails(Xa) => ? [Xi] : (interpretation_succeeds(Xi) & eval_succeeds(Xa,Xi,'0')))).
+fof('lemma-(eval:truefalse)',axiom,! [Xa,Xh,Xx] : (eval_succeeds(Xa,Xh,Xx) => (interpretation_succeeds(Xh) => ! [Xi] : ((literal_list_succeeds(Xi) & sub(Xi,Xh)) => ((Xx = '1' => ? [Xj] : (sub(Xj,Xh) & true_succeeds(Xa,Xi,Xj))) & (Xx = '0' => ? [Xj] : (sub(Xj,Xh) & false_succeeds(Xa,Xi,Xj)))))))).
+fof('corollary-(eval:true)',axiom,! [Xa,Xh] : ((eval_succeeds(Xa,Xh,'1') & interpretation_succeeds(Xh)) => ? [Xj] : (sub(Xj,Xh) & true_succeeds(Xa,nil,Xj)))).
+fof('corollary-(eval:false)',axiom,! [Xa,Xh] : ((eval_succeeds(Xa,Xh,'0') & interpretation_succeeds(Xh)) => ? [Xj] : (sub(Xj,Xh) & false_succeeds(Xa,nil,Xj)))).
+fof('lemma-(eval:valid)',axiom,! [Xa,Xi] : ((eval_succeeds(Xa,Xi,'0') & interpretation_succeeds(Xi)) => valid_fails(Xa))).
+fof(induction,axiom,(! [Xa] : (satisfiable_fails(neg(Xa)) => ! [Xi] : ((defined_succeeds(Xa,Xi) & interpretation_succeeds(Xi)) => eval_succeeds(Xa,Xi,'1'))) => ! [Xa] : (valid_succeeds(Xa) => ! [Xi] : ((defined_succeeds(Xa,Xi) & interpretation_succeeds(Xi)) => eval_succeeds(Xa,Xi,'1'))))).
+fof('theorem-(valid:success)',conjecture,! [Xa] : (valid_succeeds(Xa) => ! [Xi] : ((defined_succeeds(Xa,Xi) & interpretation_succeeds(Xi)) => eval_succeeds(Xa,Xi,'1')))).

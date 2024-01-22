@@ -1,0 +1,12 @@
+target conjecture: "./src/gcd/gcd-all1.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all1.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all2.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all2.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all3.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all3.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all4.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all4.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/gcd/gcd-all5.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all5.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/gcd/gcd-all6.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all6.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all7.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all7.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/gcd/gcd-all8.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all8.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all9.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all9.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/gcd/gcd-all10.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all10.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+target conjecture: "./src/gcd/gcd-all11.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/gcd/gcd-all11.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+11 lemmas, 4 proved,  ratio: 36.36363636363637
