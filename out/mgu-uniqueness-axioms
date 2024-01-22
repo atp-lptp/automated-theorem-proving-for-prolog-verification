@@ -1,0 +1,57 @@
+43
+# pred=("$( \cat ./src/example_mgu/mgu-all1.fof | grep -v 'axiom-' | grep '<=>' | grep '(id' | \grep terminates | sed -E 's#fof\([^,]*,axiom,! [^:]*: \(##g' | sed -E 's#_terminates.+##g' | sort | grep -v 'delete\|@=\|@<\|append\|plus\|nat\|nat_list\|length\|member\|list\|times' )")
+# pattern=$(echo $pred | xargs -I{} echo {}_fails | tr $'\n' '|' | sed -E 's#\|#\\|#g' | sed -E 's#\\\|$##g')
+# \cat ./src/example_mgu/mgu-all1.fof | grep -v 'terminates' | grep "${pattern}" | grep 'succeeds\|fails' | grep ',! [^:!]* : ~' 
+
+# pred=("$( \cat ./src/example_mgu/mgu-all1.fof | grep -v 'axiom-' | grep '<=>' | grep '(id' | \grep terminates | sed -E 's#fof\([^,]*,axiom,! [^:]*: \(##g' | sed -E 's#_terminates.+##g' | sort | grep -v 'delete\|@=\|@<\|append\|plus\|nat\|nat_list\|length\|member\|list\|times' )")
+# \cat ./src/example_mgu/mgu-all1.fof | grep -v 'axiom-(plus' | \
+# grep -v 'axiom-(times' | \
+# grep -Ev 'axiom-\((nat|list|less|lh:|sub:|leq:|append:|length|delete|app|member)' | \
+# grep -v "fof('[^\/]*\/" | grep ': ~' | grep '&' | grep -v 'times\|@\|plus\|delete\|nat_list\|length\|append\|list\|nat_\|(member_\|assoc_fails\|class_member_fails'
+fof(id67,axiom,! [Xx120,Xx121,Xx122] : ~ ((partition_termL_succeeds(Xx120,Xx121,Xx122) & partition_termL_fails(Xx120,Xx121,Xx122)))).
+fof(id69,axiom,! [Xx123,Xx124,Xx125] : ~ ((partition_term_succeeds(Xx123,Xx124,Xx125) & partition_term_fails(Xx123,Xx124,Xx125)))).
+fof(id71,axiom,! [Xx126,Xx127,Xx128,Xx129] : ~ ((class_sub_succeeds(Xx126,Xx127,Xx128,Xx129) & class_sub_fails(Xx126,Xx127,Xx128,Xx129)))).
+fof(id73,axiom,! [Xx130,Xx131,Xx132,Xx133] : ~ ((partition_sub_succeeds(Xx130,Xx131,Xx132,Xx133) & partition_sub_fails(Xx130,Xx131,Xx132,Xx133)))).
+fof(id77,axiom,! [Xx136,Xx137,Xx138,Xx139,Xx140] : ~ ((cycle_freeL_succeeds(Xx136,Xx137,Xx138,Xx139,Xx140) & cycle_freeL_fails(Xx136,Xx137,Xx138,Xx139,Xx140)))).
+fof(id79,axiom,! [Xx141,Xx142] : ~ ((roots_succeeds(Xx141,Xx142) & roots_fails(Xx141,Xx142)))).
+fof(id81,axiom,! [Xx143] : ~ ((cycle_free_succeeds(Xx143) & cycle_free_fails(Xx143)))).
+fof(id85,axiom,! [Xx148,Xx149,Xx150] : ~ ((find_succeeds(Xx148,Xx149,Xx150) & find_fails(Xx148,Xx149,Xx150)))).
+fof(id87,axiom,! [Xx151,Xx152] : ~ ((partition_member_succeeds(Xx151,Xx152) & partition_member_fails(Xx151,Xx152)))).
+fof(id91,axiom,! [Xx155,Xx156,Xx157,Xx158] : ~ ((union_findL_succeeds(Xx155,Xx156,Xx157,Xx158) & union_findL_fails(Xx155,Xx156,Xx157,Xx158)))).
+fof(id93,axiom,! [Xx159,Xx160,Xx161,Xx162] : ~ ((union_find_succeeds(Xx159,Xx160,Xx161,Xx162) & union_find_fails(Xx159,Xx160,Xx161,Xx162)))).
+fof(id95,axiom,! [Xx163,Xx164,Xx165] : ~ ((unify_terms_sub_succeeds(Xx163,Xx164,Xx165) & unify_terms_sub_fails(Xx163,Xx164,Xx165)))).
+fof(id97,axiom,! [Xx166,Xx167,Xx168] : ~ ((unify_terms_part_succeeds(Xx166,Xx167,Xx168) & unify_terms_part_fails(Xx166,Xx167,Xx168)))).
+fof(id99,axiom,! [Xx169,Xx170] : ~ ((unifiable_terms_succeeds(Xx169,Xx170) & unifiable_terms_fails(Xx169,Xx170)))).
+fof(id101,axiom,! [Xx171,Xx172,Xx173] : ~ ((parent_terms_succeeds(Xx171,Xx172,Xx173) & parent_terms_fails(Xx171,Xx172,Xx173)))).
+fof(id103,axiom,! [Xx174,Xx175] : ~ ((parent_partition_succeeds(Xx174,Xx175) & parent_partition_fails(Xx174,Xx175)))).
+fof(id105,axiom,! [Xx176,Xx177] : ~ ((parent_star_succeeds(Xx176,Xx177) & parent_star_fails(Xx176,Xx177)))).
+fof(id107,axiom,! [Xx178,Xx179] : ~ ((parent_succeeds(Xx178,Xx179) & parent_fails(Xx178,Xx179)))).
+fof(id109,axiom,! [Xx180,Xx181,Xx182] : ~ ((equivalentL_succeeds(Xx180,Xx181,Xx182) & equivalentL_fails(Xx180,Xx181,Xx182)))).
+fof(id111,axiom,! [Xx183,Xx184,Xx185] : ~ ((equivalent_succeeds(Xx183,Xx184,Xx185) & equivalent_fails(Xx183,Xx184,Xx185)))).
+fof(id113,axiom,! [Xx186] : ~ ((not_solved_succeeds(Xx186) & not_solved_fails(Xx186)))).
+fof(id115,axiom,! [Xx187] : ~ ((solved_succeeds(Xx187) & solved_fails(Xx187)))).
+fof(id117,axiom,! [Xx188,Xx189,Xx190] : ~ ((unifierL_succeeds(Xx188,Xx189,Xx190) & unifierL_fails(Xx188,Xx189,Xx190)))).
+fof(id119,axiom,! [Xx191,Xx192,Xx193] : ~ ((unifier_succeeds(Xx191,Xx192,Xx193) & unifier_fails(Xx191,Xx192,Xx193)))).
+fof(id121,axiom,! [Xx194,Xx195] : ~ ((partition_solution_succeeds(Xx194,Xx195) & partition_solution_fails(Xx194,Xx195)))).
+fof(id123,axiom,! [Xx196,Xx197] : ~ ((not_class_solution_succeeds(Xx196,Xx197) & not_class_solution_fails(Xx196,Xx197)))).
+fof(id125,axiom,! [Xx198,Xx199] : ~ ((class_solution_succeeds(Xx198,Xx199) & class_solution_fails(Xx198,Xx199)))).
+fof(id127,axiom,! [Xx200,Xx201] : ~ ((not_disjoint_succeeds(Xx200,Xx201) & not_disjoint_fails(Xx200,Xx201)))).
+fof(id129,axiom,! [Xx202,Xx203] : ~ ((disjoint_succeeds(Xx202,Xx203) & disjoint_fails(Xx202,Xx203)))).
+fof(id131,axiom,! [Xx204] : ~ ((partition_succeeds(Xx204) & partition_fails(Xx204)))).
+fof(id133,axiom,! [Xx205,Xx206] : ~ ((not_var_class_succeeds(Xx205,Xx206) & not_var_class_fails(Xx205,Xx206)))).
+fof(id135,axiom,! [Xx207] : ~ ((class_succeeds(Xx207) & class_fails(Xx207)))).
+fof(id139,axiom,! [Xx211,Xx212,Xx213] : ~ ((applyL_succeeds(Xx211,Xx212,Xx213) & applyL_fails(Xx211,Xx212,Xx213)))).
+fof(id141,axiom,! [Xx214,Xx215,Xx216] : ~ ((apply_succeeds(Xx214,Xx215,Xx216) & apply_fails(Xx214,Xx215,Xx216)))).
+fof(id143,axiom,! [Xx217,Xx218] : ~ ((domain_succeeds(Xx217,Xx218) & domain_fails(Xx217,Xx218)))).
+fof(id145,axiom,! [Xx219] : ~ ((substitution_succeeds(Xx219) & substitution_fails(Xx219)))).
+fof(id147,axiom,! [Xx220,Xx221] : ~ ((sizeL_succeeds(Xx220,Xx221) & sizeL_fails(Xx220,Xx221)))).
+fof(id149,axiom,! [Xx222,Xx223] : ~ ((size_succeeds(Xx222,Xx223) & size_fails(Xx222,Xx223)))).
+fof(id151,axiom,! [Xx224] : ~ ((var_form_succeeds(Xx224) & var_form_fails(Xx224)))).
+fof(id153,axiom,! [Xx225,Xx226] : ~ ((subtermL_succeeds(Xx225,Xx226) & subtermL_fails(Xx225,Xx226)))).
+fof(id155,axiom,! [Xx227,Xx228] : ~ ((subterm_succeeds(Xx227,Xx228) & subterm_fails(Xx227,Xx228)))).
+fof(id157,axiom,! [Xx229] : ~ ((termL_succeeds(Xx229) & termL_fails(Xx229)))).
+fof(id159,axiom,! [Xx230] : ~ ((term_succeeds(Xx230) & term_fails(Xx230)))).
+fof(id161,axiom,! [Xx231] : ~ ((atomic_succeeds(Xx231) & atomic_fails(Xx231)))).
+fof(id163,axiom,! [Xx232] : ~ ((atomic_succeeds(Xx232) & atomic_fails(Xx232)))).
+fof(id165,axiom,! [Xx233] : ~ ((atomic_succeeds(Xx233) & atomic_fails(Xx233)))).
+

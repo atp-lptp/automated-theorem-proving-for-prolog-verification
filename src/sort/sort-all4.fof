@@ -1,0 +1,356 @@
+fof(id1,axiom,~ ('0' = nil)).
+fof(id2,axiom,! [Xx3] : ~ ('0' = s(Xx3))).
+fof(id3,axiom,! [Xx4,Xx5] : ~ ('0' = cons(Xx4,Xx5))).
+fof(id4,axiom,! [Xx6] : ~ (nil = s(Xx6))).
+fof(id5,axiom,! [Xx7,Xx8] : ~ (nil = cons(Xx7,Xx8))).
+fof(id6,axiom,! [Xx9] : ! [Xx10] : (s(Xx9) = s(Xx10) => Xx9 = Xx10)).
+fof(id7,axiom,! [Xx11] : ! [Xx12,Xx13] : ~ (s(Xx11) = cons(Xx12,Xx13))).
+fof(id8,axiom,! [Xx14,Xx15] : ! [Xx16,Xx17] : (cons(Xx14,Xx15) = cons(Xx16,Xx17) => Xx15 = Xx17)).
+fof(id9,axiom,! [Xx18,Xx19] : ! [Xx20,Xx21] : (cons(Xx18,Xx19) = cons(Xx20,Xx21) => Xx18 = Xx20)).
+fof(id10,axiom,gr('0')).
+fof(id11,axiom,gr(nil)).
+fof(id12,axiom,! [Xx22] : (gr(Xx22) <=> gr(s(Xx22)))).
+fof(id13,axiom,! [Xx23,Xx24] : ((gr(Xx23) & gr(Xx24)) <=> gr(cons(Xx23,Xx24)))).
+fof(id14,axiom,! [Xx25,Xx26,Xx27] : ~ ((member2_succeeds(Xx25,Xx26,Xx27) & member2_fails(Xx25,Xx26,Xx27)))).
+fof(id15,axiom,! [Xx25,Xx26,Xx27] : (member2_terminates(Xx25,Xx26,Xx27) => (member2_succeeds(Xx25,Xx26,Xx27) | member2_fails(Xx25,Xx26,Xx27)))).
+fof(id16,axiom,! [Xx28,Xx29,Xx30] : ~ ((occ_succeeds(Xx28,Xx29,Xx30) & occ_fails(Xx28,Xx29,Xx30)))).
+fof(id17,axiom,! [Xx28,Xx29,Xx30] : (occ_terminates(Xx28,Xx29,Xx30) => (occ_succeeds(Xx28,Xx29,Xx30) | occ_fails(Xx28,Xx29,Xx30)))).
+fof(id18,axiom,! [Xx31,Xx32] : ~ ((not_same_occ_succeeds(Xx31,Xx32) & not_same_occ_fails(Xx31,Xx32)))).
+fof(id19,axiom,! [Xx31,Xx32] : (not_same_occ_terminates(Xx31,Xx32) => (not_same_occ_succeeds(Xx31,Xx32) | not_same_occ_fails(Xx31,Xx32)))).
+fof(id20,axiom,! [Xx33,Xx34] : ~ ((same_occ_succeeds(Xx33,Xx34) & same_occ_fails(Xx33,Xx34)))).
+fof(id21,axiom,! [Xx33,Xx34] : (same_occ_terminates(Xx33,Xx34) => (same_occ_succeeds(Xx33,Xx34) | same_occ_fails(Xx33,Xx34)))).
+fof(id22,axiom,! [Xx35,Xx36] : ~ ((permutation_succeeds(Xx35,Xx36) & permutation_fails(Xx35,Xx36)))).
+fof(id23,axiom,! [Xx35,Xx36] : (permutation_terminates(Xx35,Xx36) => (permutation_succeeds(Xx35,Xx36) | permutation_fails(Xx35,Xx36)))).
+fof(id24,axiom,! [Xx37] : ~ ((nat_list_succeeds(Xx37) & nat_list_fails(Xx37)))).
+fof(id25,axiom,! [Xx37] : (nat_list_terminates(Xx37) => (nat_list_succeeds(Xx37) | nat_list_fails(Xx37)))).
+fof(id26,axiom,! [Xx38,Xx39,Xx40] : ~ ((times_succeeds(Xx38,Xx39,Xx40) & times_fails(Xx38,Xx39,Xx40)))).
+fof(id27,axiom,! [Xx38,Xx39,Xx40] : (times_terminates(Xx38,Xx39,Xx40) => (times_succeeds(Xx38,Xx39,Xx40) | times_fails(Xx38,Xx39,Xx40)))).
+fof(id28,axiom,! [Xx41,Xx42,Xx43] : ~ ((plus_succeeds(Xx41,Xx42,Xx43) & plus_fails(Xx41,Xx42,Xx43)))).
+fof(id29,axiom,! [Xx41,Xx42,Xx43] : (plus_terminates(Xx41,Xx42,Xx43) => (plus_succeeds(Xx41,Xx42,Xx43) | plus_fails(Xx41,Xx42,Xx43)))).
+fof(id30,axiom,! [Xx44,Xx45] : ~ (('@=<_succeeds'(Xx44,Xx45) & '@=<_fails'(Xx44,Xx45)))).
+fof(id31,axiom,! [Xx44,Xx45] : ('@=<_terminates'(Xx44,Xx45) => ('@=<_succeeds'(Xx44,Xx45) | '@=<_fails'(Xx44,Xx45)))).
+fof(id32,axiom,! [Xx46,Xx47] : ~ (('@<_succeeds'(Xx46,Xx47) & '@<_fails'(Xx46,Xx47)))).
+fof(id33,axiom,! [Xx46,Xx47] : ('@<_terminates'(Xx46,Xx47) => ('@<_succeeds'(Xx46,Xx47) | '@<_fails'(Xx46,Xx47)))).
+fof(id34,axiom,! [Xx48] : ~ ((nat_succeeds(Xx48) & nat_fails(Xx48)))).
+fof(id35,axiom,! [Xx48] : (nat_terminates(Xx48) => (nat_succeeds(Xx48) | nat_fails(Xx48)))).
+fof(id36,axiom,! [Xx49,Xx50,Xx51] : ~ ((delete_succeeds(Xx49,Xx50,Xx51) & delete_fails(Xx49,Xx50,Xx51)))).
+fof(id37,axiom,! [Xx49,Xx50,Xx51] : (delete_terminates(Xx49,Xx50,Xx51) => (delete_succeeds(Xx49,Xx50,Xx51) | delete_fails(Xx49,Xx50,Xx51)))).
+fof(id38,axiom,! [Xx52,Xx53] : ~ ((length_succeeds(Xx52,Xx53) & length_fails(Xx52,Xx53)))).
+fof(id39,axiom,! [Xx52,Xx53] : (length_terminates(Xx52,Xx53) => (length_succeeds(Xx52,Xx53) | length_fails(Xx52,Xx53)))).
+fof(id40,axiom,! [Xx54,Xx55,Xx56] : ~ ((append_succeeds(Xx54,Xx55,Xx56) & append_fails(Xx54,Xx55,Xx56)))).
+fof(id41,axiom,! [Xx54,Xx55,Xx56] : (append_terminates(Xx54,Xx55,Xx56) => (append_succeeds(Xx54,Xx55,Xx56) | append_fails(Xx54,Xx55,Xx56)))).
+fof(id42,axiom,! [Xx57,Xx58] : ~ ((member_succeeds(Xx57,Xx58) & member_fails(Xx57,Xx58)))).
+fof(id43,axiom,! [Xx57,Xx58] : (member_terminates(Xx57,Xx58) => (member_succeeds(Xx57,Xx58) | member_fails(Xx57,Xx58)))).
+fof(id44,axiom,! [Xx59] : ~ ((list_succeeds(Xx59) & list_fails(Xx59)))).
+fof(id45,axiom,! [Xx59] : (list_terminates(Xx59) => (list_succeeds(Xx59) | list_fails(Xx59)))).
+fof(id46,axiom,! [Xx60,Xx61,Xx62,Xx63] : ~ ((split_succeeds(Xx60,Xx61,Xx62,Xx63) & split_fails(Xx60,Xx61,Xx62,Xx63)))).
+fof(id47,axiom,! [Xx60,Xx61,Xx62,Xx63] : (split_terminates(Xx60,Xx61,Xx62,Xx63) => (split_succeeds(Xx60,Xx61,Xx62,Xx63) | split_fails(Xx60,Xx61,Xx62,Xx63)))).
+fof(id48,axiom,! [Xx64,Xx65,Xx66] : ~ ((quick_sort_succeeds(Xx64,Xx65,Xx66) & quick_sort_fails(Xx64,Xx65,Xx66)))).
+fof(id49,axiom,! [Xx64,Xx65,Xx66] : (quick_sort_terminates(Xx64,Xx65,Xx66) => (quick_sort_succeeds(Xx64,Xx65,Xx66) | quick_sort_fails(Xx64,Xx65,Xx66)))).
+fof(id50,axiom,! [Xx67,Xx68] : ~ ((quick_sort_succeeds(Xx67,Xx68) & quick_sort_fails(Xx67,Xx68)))).
+fof(id51,axiom,! [Xx67,Xx68] : (quick_sort_terminates(Xx67,Xx68) => (quick_sort_succeeds(Xx67,Xx68) | quick_sort_fails(Xx67,Xx68)))).
+fof(id52,axiom,! [Xx69,Xx70,Xx71] : ~ ((insert_succeeds(Xx69,Xx70,Xx71) & insert_fails(Xx69,Xx70,Xx71)))).
+fof(id53,axiom,! [Xx69,Xx70,Xx71] : (insert_terminates(Xx69,Xx70,Xx71) => (insert_succeeds(Xx69,Xx70,Xx71) | insert_fails(Xx69,Xx70,Xx71)))).
+fof(id54,axiom,! [Xx72,Xx73] : ~ ((insert_sort_succeeds(Xx72,Xx73) & insert_sort_fails(Xx72,Xx73)))).
+fof(id55,axiom,! [Xx72,Xx73] : (insert_sort_terminates(Xx72,Xx73) => (insert_sort_succeeds(Xx72,Xx73) | insert_sort_fails(Xx72,Xx73)))).
+fof(id56,axiom,! [Xx74] : ~ ((ordered_succeeds(Xx74) & ordered_fails(Xx74)))).
+fof(id57,axiom,! [Xx74] : (ordered_terminates(Xx74) => (ordered_succeeds(Xx74) | ordered_fails(Xx74)))).
+fof(id58,axiom,! [Xx75,Xx76] : ~ ((permutation_sort_succeeds(Xx75,Xx76) & permutation_sort_fails(Xx75,Xx76)))).
+fof(id59,axiom,! [Xx75,Xx76] : (permutation_sort_terminates(Xx75,Xx76) => (permutation_sort_succeeds(Xx75,Xx76) | permutation_sort_fails(Xx75,Xx76)))).
+fof(id60,axiom,! [Xx1,Xx2,Xx3] : (member2_succeeds(Xx1,Xx2,Xx3) <=> (member_succeeds(Xx1,Xx3) | member_succeeds(Xx1,Xx2)))).
+fof(id61,axiom,! [Xx1,Xx2,Xx3] : (member2_fails(Xx1,Xx2,Xx3) <=> (member_fails(Xx1,Xx3) & member_fails(Xx1,Xx2)))).
+fof(id62,axiom,! [Xx1,Xx2,Xx3] : (member2_terminates(Xx1,Xx2,Xx3) <=> (member_terminates(Xx1,Xx3) & member_terminates(Xx1,Xx2)))).
+fof(id63,axiom,! [Xx1,Xx2,Xx3] : (occ_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx2 = cons(Xx4,Xx5) & (~ (Xx1 = Xx4) & occ_succeeds(Xx1,Xx5,Xx3))) | (? [Xx6] : ? [Xx7] : (Xx2 = cons(Xx1,Xx6) & (Xx3 = s(Xx7) & occ_succeeds(Xx1,Xx6,Xx7))) | (Xx2 = nil & Xx3 = '0'))))).
+fof(id64,axiom,! [Xx1,Xx2,Xx3] : (occ_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx2 = cons(Xx4,Xx5)) | (Xx1 = Xx4 | occ_fails(Xx1,Xx5,Xx3))) & (! [Xx6] : ! [Xx7] : (~ (Xx2 = cons(Xx1,Xx6)) | (~ (Xx3 = s(Xx7)) | occ_fails(Xx1,Xx6,Xx7))) & (~ (Xx2 = nil) | ~ (Xx3 = '0')))))).
+fof(id65,axiom,! [Xx1,Xx2,Xx3] : (occ_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx2 = cons(Xx4,Xx5)) | (($true & (gr(Xx1) & gr(Xx4))) & (Xx1 = Xx4 | occ_terminates(Xx1,Xx5,Xx3))))) & (! [Xx6] : ! [Xx7] : ($true & (~ (Xx2 = cons(Xx1,Xx6)) | ($true & (~ (Xx3 = s(Xx7)) | occ_terminates(Xx1,Xx6,Xx7))))) & ($true & (~ (Xx2 = nil) | $true)))))).
+fof(id66,axiom,! [Xx1,Xx2] : (not_same_occ_succeeds(Xx1,Xx2) <=> ? [Xx3] : ? [Xx4] : ? [Xx5] : (member2_succeeds(Xx3,Xx1,Xx2) & (occ_succeeds(Xx3,Xx1,Xx4) & (occ_succeeds(Xx3,Xx2,Xx5) & ~ (Xx4 = Xx5)))))).
+fof(id67,axiom,! [Xx1,Xx2] : (not_same_occ_fails(Xx1,Xx2) <=> ! [Xx3] : ! [Xx4] : ! [Xx5] : (member2_fails(Xx3,Xx1,Xx2) | (occ_fails(Xx3,Xx1,Xx4) | (occ_fails(Xx3,Xx2,Xx5) | Xx4 = Xx5))))).
+fof(id68,axiom,! [Xx1,Xx2] : (not_same_occ_terminates(Xx1,Xx2) <=> ! [Xx3] : ! [Xx4] : ! [Xx5] : (member2_terminates(Xx3,Xx1,Xx2) & (member2_fails(Xx3,Xx1,Xx2) | (occ_terminates(Xx3,Xx1,Xx4) & (occ_fails(Xx3,Xx1,Xx4) | (occ_terminates(Xx3,Xx2,Xx5) & (occ_fails(Xx3,Xx2,Xx5) | ($true & (gr(Xx4) & gr(Xx5))))))))))).
+fof(id69,axiom,! [Xx1,Xx2] : (same_occ_succeeds(Xx1,Xx2) <=> not_same_occ_fails(Xx1,Xx2))).
+fof(id70,axiom,! [Xx1,Xx2] : (same_occ_fails(Xx1,Xx2) <=> not_same_occ_succeeds(Xx1,Xx2))).
+fof(id71,axiom,! [Xx1,Xx2] : (same_occ_terminates(Xx1,Xx2) <=> (not_same_occ_terminates(Xx1,Xx2) & (gr(Xx1) & gr(Xx2))))).
+fof(id72,axiom,! [Xx1,Xx2] : (permutation_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : ? [Xx5] : (Xx2 = cons(Xx3,Xx4) & (delete_succeeds(Xx3,Xx1,Xx5) & permutation_succeeds(Xx5,Xx4))) | (Xx1 = nil & Xx2 = nil)))).
+fof(id73,axiom,! [Xx1,Xx2] : (permutation_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : (~ (Xx2 = cons(Xx3,Xx4)) | (delete_fails(Xx3,Xx1,Xx5) | permutation_fails(Xx5,Xx4))) & (~ (Xx1 = nil) | ~ (Xx2 = nil))))).
+fof(id74,axiom,! [Xx1,Xx2] : (permutation_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : ($true & (~ (Xx2 = cons(Xx3,Xx4)) | (delete_terminates(Xx3,Xx1,Xx5) & (delete_fails(Xx3,Xx1,Xx5) | permutation_terminates(Xx5,Xx4))))) & ($true & (~ (Xx1 = nil) | $true))))).
+fof(id75,axiom,! [Xx1] : (nat_list_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = cons(Xx2,Xx3) & (nat_succeeds(Xx2) & nat_list_succeeds(Xx3))) | Xx1 = nil))).
+fof(id76,axiom,! [Xx1] : (nat_list_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = cons(Xx2,Xx3)) | (nat_fails(Xx2) | nat_list_fails(Xx3))) & ~ (Xx1 = nil)))).
+fof(id77,axiom,! [Xx1] : (nat_list_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = cons(Xx2,Xx3)) | (nat_terminates(Xx2) & (nat_fails(Xx2) | nat_list_terminates(Xx3))))) & $true))).
+fof(id78,axiom,! [Xx1,Xx2,Xx3] : (times_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = s(Xx4) & (times_succeeds(Xx4,Xx2,Xx5) & plus_succeeds(Xx2,Xx5,Xx3))) | (Xx1 = '0' & Xx3 = '0')))).
+fof(id79,axiom,! [Xx1,Xx2,Xx3] : (times_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = s(Xx4)) | (times_fails(Xx4,Xx2,Xx5) | plus_fails(Xx2,Xx5,Xx3))) & (~ (Xx1 = '0') | ~ (Xx3 = '0'))))).
+fof(id80,axiom,! [Xx1,Xx2,Xx3] : (times_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = s(Xx4)) | (times_terminates(Xx4,Xx2,Xx5) & (times_fails(Xx4,Xx2,Xx5) | plus_terminates(Xx2,Xx5,Xx3))))) & ($true & (~ (Xx1 = '0') | $true))))).
+fof(id81,axiom,! [Xx1,Xx2,Xx3] : (plus_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : (Xx1 = s(Xx4) & (Xx3 = s(Xx5) & plus_succeeds(Xx4,Xx2,Xx5))) | (Xx1 = '0' & Xx3 = Xx2)))).
+fof(id82,axiom,! [Xx1,Xx2,Xx3] : (plus_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : (~ (Xx1 = s(Xx4)) | (~ (Xx3 = s(Xx5)) | plus_fails(Xx4,Xx2,Xx5))) & (~ (Xx1 = '0') | ~ (Xx3 = Xx2))))).
+fof(id83,axiom,! [Xx1,Xx2,Xx3] : (plus_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = s(Xx4)) | ($true & (~ (Xx3 = s(Xx5)) | plus_terminates(Xx4,Xx2,Xx5))))) & ($true & (~ (Xx1 = '0') | $true))))).
+fof(id84,axiom,! [Xx1,Xx2] : ('@=<_succeeds'(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx1 = s(Xx3) & (Xx2 = s(Xx4) & '@=<_succeeds'(Xx3,Xx4))) | Xx1 = '0'))).
+fof(id85,axiom,! [Xx1,Xx2] : ('@=<_fails'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx1 = s(Xx3)) | (~ (Xx2 = s(Xx4)) | '@=<_fails'(Xx3,Xx4))) & ~ (Xx1 = '0')))).
+fof(id86,axiom,! [Xx1,Xx2] : ('@=<_terminates'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = s(Xx3)) | ($true & (~ (Xx2 = s(Xx4)) | '@=<_terminates'(Xx3,Xx4))))) & $true))).
+fof(id87,axiom,! [Xx1,Xx2] : ('@<_succeeds'(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx1 = s(Xx3) & (Xx2 = s(Xx4) & '@<_succeeds'(Xx3,Xx4))) | ? [Xx5] : (Xx1 = '0' & Xx2 = s(Xx5))))).
+fof(id88,axiom,! [Xx1,Xx2] : ('@<_fails'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx1 = s(Xx3)) | (~ (Xx2 = s(Xx4)) | '@<_fails'(Xx3,Xx4))) & ! [Xx5] : (~ (Xx1 = '0') | ~ (Xx2 = s(Xx5)))))).
+fof(id89,axiom,! [Xx1,Xx2] : ('@<_terminates'(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = s(Xx3)) | ($true & (~ (Xx2 = s(Xx4)) | '@<_terminates'(Xx3,Xx4))))) & ! [Xx5] : ($true & (~ (Xx1 = '0') | $true))))).
+fof(id90,axiom,! [Xx1] : (nat_succeeds(Xx1) <=> (? [Xx2] : (Xx1 = s(Xx2) & nat_succeeds(Xx2)) | Xx1 = '0'))).
+fof(id91,axiom,! [Xx1] : (nat_fails(Xx1) <=> (! [Xx2] : (~ (Xx1 = s(Xx2)) | nat_fails(Xx2)) & ~ (Xx1 = '0')))).
+fof(id92,axiom,! [Xx1] : (nat_terminates(Xx1) <=> (! [Xx2] : ($true & (~ (Xx1 = s(Xx2)) | nat_terminates(Xx2))) & $true))).
+fof(id93,axiom,! [Xx1,Xx2,Xx3] : (delete_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : ? [Xx6] : (Xx2 = cons(Xx4,Xx5) & (Xx3 = cons(Xx4,Xx6) & delete_succeeds(Xx1,Xx5,Xx6))) | Xx2 = cons(Xx1,Xx3)))).
+fof(id94,axiom,! [Xx1,Xx2,Xx3] : (delete_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : (~ (Xx2 = cons(Xx4,Xx5)) | (~ (Xx3 = cons(Xx4,Xx6)) | delete_fails(Xx1,Xx5,Xx6))) & ~ (Xx2 = cons(Xx1,Xx3))))).
+fof(id95,axiom,! [Xx1,Xx2,Xx3] : (delete_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ($true & (~ (Xx2 = cons(Xx4,Xx5)) | ($true & (~ (Xx3 = cons(Xx4,Xx6)) | delete_terminates(Xx1,Xx5,Xx6))))) & $true))).
+fof(id96,axiom,! [Xx1,Xx2] : (length_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : ? [Xx5] : (Xx1 = cons(Xx3,Xx4) & (Xx2 = s(Xx5) & length_succeeds(Xx4,Xx5))) | (Xx1 = nil & Xx2 = '0')))).
+fof(id97,axiom,! [Xx1,Xx2] : (length_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : (~ (Xx1 = cons(Xx3,Xx4)) | (~ (Xx2 = s(Xx5)) | length_fails(Xx4,Xx5))) & (~ (Xx1 = nil) | ~ (Xx2 = '0'))))).
+fof(id98,axiom,! [Xx1,Xx2] : (length_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = cons(Xx3,Xx4)) | ($true & (~ (Xx2 = s(Xx5)) | length_terminates(Xx4,Xx5))))) & ($true & (~ (Xx1 = nil) | $true))))).
+fof(id99,axiom,! [Xx1,Xx2,Xx3] : (append_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : ? [Xx6] : (Xx1 = cons(Xx4,Xx5) & (Xx3 = cons(Xx4,Xx6) & append_succeeds(Xx5,Xx2,Xx6))) | (Xx1 = nil & Xx3 = Xx2)))).
+fof(id100,axiom,! [Xx1,Xx2,Xx3] : (append_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : (~ (Xx1 = cons(Xx4,Xx5)) | (~ (Xx3 = cons(Xx4,Xx6)) | append_fails(Xx5,Xx2,Xx6))) & (~ (Xx1 = nil) | ~ (Xx3 = Xx2))))).
+fof(id101,axiom,! [Xx1,Xx2,Xx3] : (append_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ($true & (~ (Xx1 = cons(Xx4,Xx5)) | ($true & (~ (Xx3 = cons(Xx4,Xx6)) | append_terminates(Xx5,Xx2,Xx6))))) & ($true & (~ (Xx1 = nil) | $true))))).
+fof(id102,axiom,! [Xx1,Xx2] : (member_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : (Xx2 = cons(Xx3,Xx4) & member_succeeds(Xx1,Xx4)) | ? [Xx5] : Xx2 = cons(Xx1,Xx5)))).
+fof(id103,axiom,! [Xx1,Xx2] : (member_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : (~ (Xx2 = cons(Xx3,Xx4)) | member_fails(Xx1,Xx4)) & ! [Xx5] : ~ (Xx2 = cons(Xx1,Xx5))))).
+fof(id104,axiom,! [Xx1,Xx2] : (member_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ($true & (~ (Xx2 = cons(Xx3,Xx4)) | member_terminates(Xx1,Xx4))) & ! [Xx5] : $true))).
+fof(id105,axiom,! [Xx1] : (list_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : (Xx1 = cons(Xx2,Xx3) & list_succeeds(Xx3)) | Xx1 = nil))).
+fof(id106,axiom,! [Xx1] : (list_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : (~ (Xx1 = cons(Xx2,Xx3)) | list_fails(Xx3)) & ~ (Xx1 = nil)))).
+fof(id107,axiom,! [Xx1] : (list_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ($true & (~ (Xx1 = cons(Xx2,Xx3)) | list_terminates(Xx3))) & $true))).
+fof(id108,axiom,! [Xx1,Xx2,Xx3,Xx4] : (split_succeeds(Xx1,Xx2,Xx3,Xx4) <=> (? [Xx5] : ? [Xx6] : ? [Xx7] : (Xx2 = cons(Xx5,Xx6) & (Xx4 = cons(Xx5,Xx7) & ('@=<_fails'(Xx1,Xx5) & split_succeeds(Xx1,Xx6,Xx3,Xx7)))) | (? [Xx8] : ? [Xx9] : ? [Xx10] : (Xx2 = cons(Xx8,Xx9) & (Xx3 = cons(Xx8,Xx10) & ('@=<_succeeds'(Xx1,Xx8) & split_succeeds(Xx1,Xx9,Xx10,Xx4)))) | (Xx2 = nil & (Xx3 = nil & Xx4 = nil)))))).
+fof(id109,axiom,! [Xx1,Xx2,Xx3,Xx4] : (split_fails(Xx1,Xx2,Xx3,Xx4) <=> (! [Xx5] : ! [Xx6] : ! [Xx7] : (~ (Xx2 = cons(Xx5,Xx6)) | (~ (Xx4 = cons(Xx5,Xx7)) | ('@=<_succeeds'(Xx1,Xx5) | split_fails(Xx1,Xx6,Xx3,Xx7)))) & (! [Xx8] : ! [Xx9] : ! [Xx10] : (~ (Xx2 = cons(Xx8,Xx9)) | (~ (Xx3 = cons(Xx8,Xx10)) | ('@=<_fails'(Xx1,Xx8) | split_fails(Xx1,Xx9,Xx10,Xx4)))) & (~ (Xx2 = nil) | (~ (Xx3 = nil) | ~ (Xx4 = nil))))))).
+fof(id110,axiom,! [Xx1,Xx2,Xx3,Xx4] : (split_terminates(Xx1,Xx2,Xx3,Xx4) <=> (! [Xx5] : ! [Xx6] : ! [Xx7] : ($true & (~ (Xx2 = cons(Xx5,Xx6)) | ($true & (~ (Xx4 = cons(Xx5,Xx7)) | (('@=<_terminates'(Xx1,Xx5) & (gr(Xx1) & gr(Xx5))) & ('@=<_succeeds'(Xx1,Xx5) | split_terminates(Xx1,Xx6,Xx3,Xx7))))))) & (! [Xx8] : ! [Xx9] : ! [Xx10] : ($true & (~ (Xx2 = cons(Xx8,Xx9)) | ($true & (~ (Xx3 = cons(Xx8,Xx10)) | ('@=<_terminates'(Xx1,Xx8) & ('@=<_fails'(Xx1,Xx8) | split_terminates(Xx1,Xx9,Xx10,Xx4))))))) & ($true & (~ (Xx2 = nil) | ($true & (~ (Xx3 = nil) | $true)))))))).
+fof(id111,axiom,! [Xx1,Xx2,Xx3] : (quick_sort_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : ? [Xx6] : ? [Xx7] : ? [Xx8] : (Xx1 = cons(Xx4,Xx5) & (split_succeeds(Xx4,Xx5,Xx6,Xx7) & (quick_sort_succeeds(Xx6,Xx2,Xx8) & quick_sort_succeeds(Xx7,cons(Xx4,Xx8),Xx3)))) | (Xx1 = nil & Xx3 = Xx2)))).
+fof(id112,axiom,! [Xx1,Xx2,Xx3] : (quick_sort_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ! [Xx7] : ! [Xx8] : (~ (Xx1 = cons(Xx4,Xx5)) | (split_fails(Xx4,Xx5,Xx6,Xx7) | (quick_sort_fails(Xx6,Xx2,Xx8) | quick_sort_fails(Xx7,cons(Xx4,Xx8),Xx3)))) & (~ (Xx1 = nil) | ~ (Xx3 = Xx2))))).
+fof(id113,axiom,! [Xx1,Xx2,Xx3] : (quick_sort_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ! [Xx7] : ! [Xx8] : ($true & (~ (Xx1 = cons(Xx4,Xx5)) | (split_terminates(Xx4,Xx5,Xx6,Xx7) & (split_fails(Xx4,Xx5,Xx6,Xx7) | (quick_sort_terminates(Xx6,Xx2,Xx8) & (quick_sort_fails(Xx6,Xx2,Xx8) | quick_sort_terminates(Xx7,cons(Xx4,Xx8),Xx3))))))) & ($true & (~ (Xx1 = nil) | $true))))).
+fof(id114,axiom,! [Xx1,Xx2] : (quick_sort_succeeds(Xx1,Xx2) <=> quick_sort_succeeds(Xx1,nil,Xx2))).
+fof(id115,axiom,! [Xx1,Xx2] : (quick_sort_fails(Xx1,Xx2) <=> quick_sort_fails(Xx1,nil,Xx2))).
+fof(id116,axiom,! [Xx1,Xx2] : (quick_sort_terminates(Xx1,Xx2) <=> quick_sort_terminates(Xx1,nil,Xx2))).
+fof(id117,axiom,! [Xx1,Xx2,Xx3] : (insert_succeeds(Xx1,Xx2,Xx3) <=> (? [Xx4] : ? [Xx5] : ? [Xx6] : (Xx2 = cons(Xx4,Xx5) & (Xx3 = cons(Xx4,Xx6) & ('@=<_fails'(Xx1,Xx4) & insert_succeeds(Xx1,Xx5,Xx6)))) | (? [Xx7] : ? [Xx8] : (Xx2 = cons(Xx7,Xx8) & (Xx3 = cons(Xx1,cons(Xx7,Xx8)) & '@=<_succeeds'(Xx1,Xx7))) | (Xx2 = nil & Xx3 = cons(Xx1,nil)))))).
+fof(id118,axiom,! [Xx1,Xx2,Xx3] : (insert_fails(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : (~ (Xx2 = cons(Xx4,Xx5)) | (~ (Xx3 = cons(Xx4,Xx6)) | ('@=<_succeeds'(Xx1,Xx4) | insert_fails(Xx1,Xx5,Xx6)))) & (! [Xx7] : ! [Xx8] : (~ (Xx2 = cons(Xx7,Xx8)) | (~ (Xx3 = cons(Xx1,cons(Xx7,Xx8))) | '@=<_fails'(Xx1,Xx7))) & (~ (Xx2 = nil) | ~ (Xx3 = cons(Xx1,nil))))))).
+fof(id119,axiom,! [Xx1,Xx2,Xx3] : (insert_terminates(Xx1,Xx2,Xx3) <=> (! [Xx4] : ! [Xx5] : ! [Xx6] : ($true & (~ (Xx2 = cons(Xx4,Xx5)) | ($true & (~ (Xx3 = cons(Xx4,Xx6)) | (('@=<_terminates'(Xx1,Xx4) & (gr(Xx1) & gr(Xx4))) & ('@=<_succeeds'(Xx1,Xx4) | insert_terminates(Xx1,Xx5,Xx6))))))) & (! [Xx7] : ! [Xx8] : ($true & (~ (Xx2 = cons(Xx7,Xx8)) | ($true & (~ (Xx3 = cons(Xx1,cons(Xx7,Xx8))) | '@=<_terminates'(Xx1,Xx7))))) & ($true & (~ (Xx2 = nil) | $true)))))).
+fof(id120,axiom,! [Xx1,Xx2] : (insert_sort_succeeds(Xx1,Xx2) <=> (? [Xx3] : ? [Xx4] : ? [Xx5] : (Xx1 = cons(Xx3,Xx4) & (insert_sort_succeeds(Xx4,Xx5) & insert_succeeds(Xx3,Xx5,Xx2))) | (Xx1 = nil & Xx2 = nil)))).
+fof(id121,axiom,! [Xx1,Xx2] : (insert_sort_fails(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : (~ (Xx1 = cons(Xx3,Xx4)) | (insert_sort_fails(Xx4,Xx5) | insert_fails(Xx3,Xx5,Xx2))) & (~ (Xx1 = nil) | ~ (Xx2 = nil))))).
+fof(id122,axiom,! [Xx1,Xx2] : (insert_sort_terminates(Xx1,Xx2) <=> (! [Xx3] : ! [Xx4] : ! [Xx5] : ($true & (~ (Xx1 = cons(Xx3,Xx4)) | (insert_sort_terminates(Xx4,Xx5) & (insert_sort_fails(Xx4,Xx5) | insert_terminates(Xx3,Xx5,Xx2))))) & ($true & (~ (Xx1 = nil) | $true))))).
+fof(id123,axiom,! [Xx1] : (ordered_succeeds(Xx1) <=> (? [Xx2] : ? [Xx3] : ? [Xx4] : (Xx1 = cons(Xx2,cons(Xx3,Xx4)) & ('@=<_succeeds'(Xx2,Xx3) & ordered_succeeds(cons(Xx3,Xx4)))) | (? [Xx5] : Xx1 = cons(Xx5,nil) | Xx1 = nil)))).
+fof(id124,axiom,! [Xx1] : (ordered_fails(Xx1) <=> (! [Xx2] : ! [Xx3] : ! [Xx4] : (~ (Xx1 = cons(Xx2,cons(Xx3,Xx4))) | ('@=<_fails'(Xx2,Xx3) | ordered_fails(cons(Xx3,Xx4)))) & (! [Xx5] : ~ (Xx1 = cons(Xx5,nil)) & ~ (Xx1 = nil))))).
+fof(id125,axiom,! [Xx1] : (ordered_terminates(Xx1) <=> (! [Xx2] : ! [Xx3] : ! [Xx4] : ($true & (~ (Xx1 = cons(Xx2,cons(Xx3,Xx4))) | ('@=<_terminates'(Xx2,Xx3) & ('@=<_fails'(Xx2,Xx3) | ordered_terminates(cons(Xx3,Xx4)))))) & (! [Xx5] : $true & $true)))).
+fof(id126,axiom,! [Xx1,Xx2] : (permutation_sort_succeeds(Xx1,Xx2) <=> (permutation_succeeds(Xx1,Xx2) & ordered_succeeds(Xx2)))).
+fof(id127,axiom,! [Xx1,Xx2] : (permutation_sort_fails(Xx1,Xx2) <=> (permutation_fails(Xx1,Xx2) | ordered_fails(Xx2)))).
+fof(id128,axiom,! [Xx1,Xx2] : (permutation_sort_terminates(Xx1,Xx2) <=> (permutation_terminates(Xx1,Xx2) & (permutation_fails(Xx1,Xx2) | ordered_terminates(Xx2))))).
+fof('axiom-(app:associative)',axiom,! [Xl1,Xl2,Xl3] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => '**'('**'(Xl1,Xl2),Xl3) = '**'(Xl1,'**'(Xl2,Xl3)))).
+fof('axiom-(app:cons)',axiom,! [Xx,Xl1,Xl2] : (list_succeeds(Xl1) => '**'(cons(Xx,Xl1),Xl2) = cons(Xx,'**'(Xl1,Xl2)))).
+fof('axiom-(app:ground:1)',axiom,! [Xl1,Xl2] : (((list_succeeds(Xl1) & gr(Xl1)) & gr(Xl2)) => gr('**'(Xl1,Xl2)))).
+fof('axiom-(app:ground:2)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & gr('**'(Xl1,Xl2))) => (gr(Xl1) & gr(Xl2)))).
+fof('axiom-(app:lh)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => lh('**'(Xl1,Xl2)) = '@+'(lh(Xl1),lh(Xl2)))).
+fof('axiom-(app:lh:leq:first)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => '@=<_succeeds'(lh(Xl1),lh('**'(Xl1,Xl2))))).
+fof('axiom-(app:lh:leq:second)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => '@=<_succeeds'(lh(Xl2),lh('**'(Xl1,Xl2))))).
+fof('axiom-(app:member:1)',axiom,! [Xx,Xl1,Xl2] : ((member_succeeds(Xx,Xl1) & list_succeeds(Xl1)) => member_succeeds(Xx,'**'(Xl1,Xl2)))).
+fof('axiom-(app:member:2)',axiom,! [Xx,Xl1,Xl2] : ((member_succeeds(Xx,Xl2) & list_succeeds(Xl1)) => member_succeeds(Xx,'**'(Xl1,Xl2)))).
+fof('axiom-(app:member:3)',axiom,! [Xx,Xl1,Xl2] : ((list_succeeds(Xl1) & member_succeeds(Xx,'**'(Xl1,Xl2))) => (member_succeeds(Xx,Xl1) | member_succeeds(Xx,Xl2)))).
+fof('axiom-(app:nil)',axiom,! [Xl] : '**'(nil,Xl) = Xl).
+fof('axiom-(app:nil)',axiom,! [Xl] : (list_succeeds(Xl) => '**'(Xl,nil) = Xl)).
+fof('axiom-(app:types:1)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => list_succeeds('**'(Xl1,Xl2)))).
+fof('axiom-(app:types:2)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds('**'(Xl1,Xl2))) => list_succeeds(Xl2))).
+fof('axiom-(app:uniqueness:1)',axiom,! [Xl1,Xl2,Xl3] : ((((list_succeeds(Xl1) & list_succeeds(Xl2)) & list_succeeds(Xl3)) & '**'(Xl1,Xl3) = '**'(Xl2,Xl3)) => Xl1 = Xl2)).
+fof('axiom-(append:cons:different)',axiom,! [Xx,Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => ~ (Xl2 = cons(Xx,Xl3)))).
+fof('axiom-(append:equal:nil)',axiom,! [Xl1,Xl2] : ((append_succeeds(Xl1,Xl2,Xl2) & list_succeeds(Xl2)) => Xl1 = nil)).
+fof('axiom-(append:existence)',axiom,! [Xl1,Xl2] : (list_succeeds(Xl1) => ? [Xl3] : append_succeeds(Xl1,Xl2,Xl3))).
+fof('axiom-(append:ground:1)',axiom,! [Xl1,Xl2,Xl3] : (((append_succeeds(Xl1,Xl2,Xl3) & gr(Xl1)) & gr(Xl2)) => gr(Xl3))).
+fof('axiom-(append:ground:2)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & gr(Xl3)) => (gr(Xl1) & gr(Xl2)))).
+fof('axiom-(append:lh)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => '@+'(lh(Xl1),lh(Xl2)) = lh(Xl3))).
+fof('axiom-(append:lh:leq:first)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => '@=<_succeeds'(lh(Xl1),lh(Xl3)))).
+fof('axiom-(append:lh:leq:second)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => '@=<_succeeds'(lh(Xl2),lh(Xl3)))).
+fof('axiom-(append:member)',axiom,! [Xx,Xl1,Xl2,Xl3] : (append_succeeds(Xl1,cons(Xx,Xl2),Xl3) => member_succeeds(Xx,Xl3))).
+fof('axiom-(append:member:1)',axiom,! [Xx,Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & member_succeeds(Xx,Xl1)) => member_succeeds(Xx,Xl3))).
+fof('axiom-(append:member:2)',axiom,! [Xx,Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & member_succeeds(Xx,Xl2)) => member_succeeds(Xx,Xl3))).
+fof('axiom-(append:member:3)',axiom,! [Xx,Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & member_succeeds(Xx,Xl3)) => (member_succeeds(Xx,Xl1) | member_succeeds(Xx,Xl2)))).
+fof('axiom-(append:termination:1)',axiom,! [Xl1,Xl2,Xl3] : (list_succeeds(Xl1) => append_terminates(Xl1,Xl2,Xl3))).
+fof('axiom-(append:termination:2)',axiom,! [Xl1,Xl2,Xl3] : (list_succeeds(Xl3) => append_terminates(Xl1,Xl2,Xl3))).
+fof('axiom-(append:types:1)',axiom,! [Xl1,Xl2,Xl3] : (append_succeeds(Xl1,Xl2,Xl3) => list_succeeds(Xl1))).
+fof('axiom-(append:types:2)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl2)) => list_succeeds(Xl3))).
+fof('axiom-(append:types:3)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => list_succeeds(Xl2))).
+fof('axiom-(append:types:4)',axiom,! [Xl1,Xl2,Xl3] : ((append_succeeds(Xl1,Xl2,Xl3) & list_succeeds(Xl3)) => (list_succeeds(Xl1) & list_succeeds(Xl2)))).
+fof('axiom-(append:uniqueness)',axiom,! [Xl1,Xl2,Xl3,Xl4] : ((append_succeeds(Xl1,Xl2,Xl3) & append_succeeds(Xl1,Xl2,Xl4)) => Xl3 = Xl4)).
+fof('axiom-(append:uniqueness:1)',axiom,! [Xl1,Xl2,Xl3,Xl4] : (((append_succeeds(Xl1,Xl2,Xl3) & append_succeeds(Xl4,Xl2,Xl3)) & list_succeeds(Xl3)) => Xl1 = Xl4)).
+fof('axiom-(append:uniqueness:2)',axiom,! [Xl1,Xl2,Xl3,Xl4] : ((append_succeeds(Xl1,Xl2,Xl3) & append_succeeds(Xl1,Xl4,Xl3)) => Xl2 = Xl4)).
+fof('axiom-(delete:app:1)',axiom,! [Xx,Xl1,Xl2] : (list_succeeds(Xl1) => delete_succeeds(Xx,'**'(Xl1,cons(Xx,Xl2)),'**'(Xl1,Xl2)))).
+fof('axiom-(delete:app:2)',axiom,! [Xx,Xl1,Xl2] : (delete_succeeds(Xx,Xl1,Xl2) => ? [Xl3,Xl4] : ((list_succeeds(Xl3) & Xl1 = '**'(Xl3,cons(Xx,Xl4))) & Xl2 = '**'(Xl3,Xl4)))).
+fof('axiom-(delete:ground)',axiom,! [Xx,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & gr(Xl1)) => (gr(Xx) & gr(Xl2)))).
+fof('axiom-(delete:length)',axiom,! [Xx,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & list_succeeds(Xl1)) => lh(Xl1) = s(lh(Xl2)))).
+fof('axiom-(delete:member:1)',axiom,! [Xx,Xy,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & member_succeeds(Xy,Xl1)) => (member_succeeds(Xy,Xl2) | Xy = Xx))).
+fof('axiom-(delete:member:2)',axiom,! [Xx,Xl1,Xl2] : (delete_succeeds(Xx,Xl1,Xl2) => member_succeeds(Xx,Xl1))).
+fof('axiom-(delete:member:3)',axiom,! [Xx,Xy,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & member_succeeds(Xy,Xl2)) => member_succeeds(Xy,Xl1))).
+fof('axiom-(delete:member:different)',axiom,! [Xx,Xy,Xl1,Xl2] : (((delete_succeeds(Xx,Xl1,Xl2) & member_succeeds(Xy,Xl1)) & ~ (Xx = Xy)) => member_succeeds(Xy,Xl2))).
+fof('axiom-(delete:member:existence)',axiom,! [Xx,Xl1] : (member_succeeds(Xx,Xl1) => ? [Xl2] : delete_succeeds(Xx,Xl1,Xl2))).
+fof('axiom-(delete:nat_list)',axiom,! [Xx,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & nat_list_succeeds(Xl1)) => (nat_succeeds(Xx) & nat_list_succeeds(Xl2)))).
+fof('axiom-(delete:occ:diff)',axiom,! [Xx,Xy,Xl1,Xl2] : (((list_succeeds(Xl1) & delete_succeeds(Xx,Xl1,Xl2)) & ~ (Xx = Xy)) => occ(Xy,Xl1) = occ(Xy,Xl2))).
+fof('axiom-(delete:occ:eq)',axiom,! [Xx,Xl1,Xl2] : ((list_succeeds(Xl1) & delete_succeeds(Xx,Xl1,Xl2)) => occ(Xx,Xl1) = s(occ(Xx,Xl2)))).
+fof('axiom-(delete:termination:1)',axiom,! [Xx,Xl1,Xl2] : (list_succeeds(Xl1) => delete_terminates(Xx,Xl1,Xl2))).
+fof('axiom-(delete:termination:2)',axiom,! [Xx,Xl1,Xl2] : (list_succeeds(Xl2) => delete_terminates(Xx,Xl1,Xl2))).
+fof('axiom-(delete:types:1)',axiom,! [Xx,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & list_succeeds(Xl1)) => list_succeeds(Xl2))).
+fof('axiom-(delete:types:2)',axiom,! [Xx,Xl1,Xl2] : ((delete_succeeds(Xx,Xl1,Xl2) & list_succeeds(Xl2)) => list_succeeds(Xl1))).
+fof('axiom-(length:existence)',axiom,! [Xl] : (list_succeeds(Xl) => ? [Xn] : length_succeeds(Xl,Xn))).
+fof('axiom-(length:ground)',axiom,! [Xl,Xn] : (length_succeeds(Xl,Xn) => gr(Xn))).
+fof('axiom-(length:termination)',axiom,! [Xl,Xn] : (list_succeeds(Xl) => length_terminates(Xl,Xn))).
+fof('axiom-(length:types)',axiom,! [Xl,Xn] : (length_succeeds(Xl,Xn) => (list_succeeds(Xl) & nat_succeeds(Xn)))).
+fof('axiom-(length:uniqueness)',axiom,! [Xl,Xm,Xn] : ((length_succeeds(Xl,Xm) & length_succeeds(Xl,Xn)) => Xm = Xn)).
+fof('axiom-(leq:antisymmetric)',axiom,! [Xx,Xy] : (('@=<_succeeds'(Xx,Xy) & '@=<_succeeds'(Xy,Xx)) => Xx = Xy)).
+fof('axiom-(leq:failure)',axiom,! [Xx,Xy] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & '@=<_fails'(Xx,Xy)) => '@=<_succeeds'(Xy,Xx))).
+fof('axiom-(leq:less)',axiom,! [Xx,Xy] : (('@=<_succeeds'(Xx,Xy) & nat_succeeds(Xy)) => ('@<_succeeds'(Xx,Xy) | Xx = Xy))).
+fof('axiom-(leq:less:transitive)',axiom,! [Xx,Xy,Xz] : (('@=<_succeeds'(Xx,Xy) & '@<_succeeds'(Xy,Xz)) => '@<_succeeds'(Xx,Xz))).
+fof('axiom-(leq:one:failure)',axiom,! [Xx] : (nat_succeeds(Xx) => '@=<_fails'(s(Xx),Xx))).
+fof('axiom-(leq:one:success)',axiom,! [Xx] : (nat_succeeds(Xx) => '@=<_succeeds'(Xx,s(Xx)))).
+fof('axiom-(leq:plus)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => ? [Xz] : '@+'(Xx,Xz) = Xy)).
+fof('axiom-(leq:plus)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => ? [Xz] : plus_succeeds(Xx,Xz,Xy))).
+fof('axiom-(leq:plus:first)',axiom,! [Xx,Xy,Xz] : ((('@=<_succeeds'(Xx,Xy) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@=<_succeeds'('@+'(Xx,Xz),'@+'(Xy,Xz)))).
+fof('axiom-(leq:plus:first)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@=<_succeeds'(Xx,'@+'(Xx,Xy)))).
+fof('axiom-(leq:plus:inverse)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@=<_succeeds'('@+'(Xx,Xy),'@+'(Xx,Xz))) => '@=<_succeeds'(Xy,Xz))).
+fof('axiom-(leq:plus:second)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@=<_succeeds'(Xy,Xz)) => '@=<_succeeds'('@+'(Xx,Xy),'@+'(Xx,Xz)))).
+fof('axiom-(leq:plus:second)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@=<_succeeds'(Xy,'@+'(Xx,Xy)))).
+fof('axiom-(leq:reflexive)',axiom,! [Xx] : (nat_succeeds(Xx) => '@=<_succeeds'(Xx,Xx))).
+fof('axiom-(leq:termination:1)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@=<_terminates'(Xx,Xy))).
+fof('axiom-(leq:termination:2)',axiom,! [Xx,Xy] : (nat_succeeds(Xy) => '@=<_terminates'(Xx,Xy))).
+fof('axiom-(leq:times:inverse)',axiom,! [Xx,Xy,Xz] : ((((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) & '@=<_succeeds'('@*'(s(Xx),Xy),'@*'(s(Xx),Xz))) => '@=<_succeeds'(Xy,Xz))).
+fof('axiom-(leq:totality)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ('@=<_succeeds'(Xx,Xy) | '@=<_succeeds'(Xy,Xx)))).
+fof('axiom-(leq:transitive)',axiom,! [Xx,Xy,Xz] : (('@=<_succeeds'(Xx,Xy) & '@=<_succeeds'(Xy,Xz)) => '@=<_succeeds'(Xx,Xz))).
+fof('axiom-(leq:types)',axiom,! [Xx,Xy] : ('@=<_succeeds'(Xx,Xy) => nat_succeeds(Xx))).
+fof('axiom-(less:axiom:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xy) & '@<_succeeds'(Xx,s(Xy))) => ('@<_succeeds'(Xx,Xy) | Xx = Xy))).
+fof('axiom-(less:different:zero)',axiom,! [Xx] : ((nat_succeeds(Xx) & ~ (Xx = '0')) => '@<_succeeds'('0',Xx))).
+fof('axiom-(less:failure)',axiom,! [Xx] : (nat_succeeds(Xx) => '@<_fails'(Xx,Xx))).
+fof('axiom-(less:leq)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => '@=<_succeeds'(Xx,Xy))).
+fof('axiom-(less:leq:total)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ('@<_succeeds'(Xx,Xy) | '@=<_succeeds'(Xy,Xx)))).
+fof('axiom-(less:leq:transitive)',axiom,! [Xx,Xy,Xz] : (('@<_succeeds'(Xx,Xy) & '@=<_succeeds'(Xy,Xz)) => '@<_succeeds'(Xx,Xz))).
+fof('axiom-(less:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@<_succeeds'(Xx,s(Xx)))).
+fof('axiom-(less:plus)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : '@+'(Xx,s(Xz)) = Xy)).
+fof('axiom-(less:plus)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : plus_succeeds(Xx,s(Xz),Xy))).
+fof('axiom-(less:plus:first)',axiom,! [Xx,Xy,Xz] : ((('@<_succeeds'(Xx,Xy) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@<_succeeds'('@+'(Xx,Xz),'@+'(Xy,Xz)))).
+fof('axiom-(less:plus:first)',axiom,! [Xx,Xy] : ((('@<_succeeds'('0',Xy) & nat_succeeds(Xx)) & nat_succeeds(Xy)) => '@<_succeeds'(Xx,'@+'(Xy,Xx)))).
+fof('axiom-(less:plus:inverse)',axiom,! [Xx,Xy,Xz] : ((((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) & '@<_succeeds'('@+'(Xx,Xz),'@+'(Xy,Xz))) => '@<_succeeds'(Xx,Xy))).
+fof('axiom-(less:plus:inverse)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@<_succeeds'('@+'(Xx,Xy),'@+'(Xx,Xz))) => '@<_succeeds'(Xy,Xz))).
+fof('axiom-(less:plus:second)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@<_succeeds'(Xy,Xz)) => '@<_succeeds'('@+'(Xx,Xy),'@+'(Xx,Xz)))).
+fof('axiom-(less:plus:second)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@<_succeeds'(Xx,'@+'(Xx,s(Xy))))).
+fof('axiom-(less:strictness)',axiom,! [Xx] : (nat_succeeds(Xx) => ~ ('@<_succeeds'(Xx,Xx)))).
+fof('axiom-(less:successor)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => ? [Xz] : Xy = s(Xz))).
+fof('axiom-(less:termination:1)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@<_terminates'(Xx,Xy))).
+fof('axiom-(less:termination:2)',axiom,! [Xx,Xy] : (nat_succeeds(Xy) => '@<_terminates'(Xx,Xy))).
+fof('axiom-(less:totality)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => (('@<_succeeds'(Xx,Xy) | Xx = Xy) | '@<_succeeds'(Xy,Xx)))).
+fof('axiom-(less:transitive)',axiom,! [Xx,Xy,Xz] : (('@<_succeeds'(Xx,Xy) & '@<_succeeds'(Xy,Xz)) => '@<_succeeds'(Xx,Xz))).
+fof('axiom-(less:transitive:successor)',axiom,! [Xx,Xy,Xz] : (('@<_succeeds'(Xx,Xy) & '@<_succeeds'(Xy,s(Xz))) => '@<_succeeds'(Xx,Xz))).
+fof('axiom-(less:types)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => nat_succeeds(Xx))).
+fof('axiom-(less:weakening)',axiom,! [Xx,Xy] : ('@<_succeeds'(Xx,Xy) => '@<_succeeds'(Xx,s(Xy)))).
+fof('axiom-(lh:cons)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => lh(cons(Xx,Xl)) = s(lh(Xl)))).
+fof('axiom-(lh:cons:first)',axiom,! [Xx,Xl1,Xl2,Xn] : (((list_succeeds(Xl1) & list_succeeds(Xl2)) & '@<_succeeds'('@+'(lh(cons(Xx,Xl1)),lh(Xl2)),s(Xn))) => '@<_succeeds'('@+'(lh(Xl1),lh(Xl2)),Xn))).
+fof('axiom-(lh:cons:leq)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => '@=<_succeeds'(lh(Xl),lh(cons(Xx,Xl))))).
+fof('axiom-(lh:cons:second)',axiom,! [Xl1,Xy,Xl2,Xn] : (((list_succeeds(Xl1) & list_succeeds(Xl2)) & '@<_succeeds'('@+'(lh(Xl1),lh(cons(Xy,Xl2))),s(Xn))) => '@<_succeeds'('@+'(lh(Xl1),lh(Xl2)),Xn))).
+fof('axiom-(lh:nil)',axiom,lh(nil) = '0').
+fof('axiom-(lh:successor)',axiom,! [Xn,Xl1] : ((list_succeeds(Xl1) & lh(Xl1) = s(Xn)) => ? [Xx,Xl2] : Xl1 = cons(Xx,Xl2))).
+fof('axiom-(lh:types)',axiom,! [Xl] : (list_succeeds(Xl) => nat_succeeds(lh(Xl)))).
+fof('axiom-(lh:zero)',axiom,! [Xl] : ((list_succeeds(Xl) & lh(Xl) = '0') => Xl = nil)).
+fof('axiom-(list:1)',axiom,! [Xx] : list_succeeds(cons(Xx,nil))).
+fof('axiom-(list:2)',axiom,! [Xx,Xy] : list_succeeds(cons(Xx,cons(Xy,nil)))).
+fof('axiom-(list:3)',axiom,! [Xx,Xy,Xz] : list_succeeds(cons(Xx,cons(Xy,cons(Xz,nil))))).
+fof('axiom-(list:cons)',axiom,! [Xx,Xl] : (list_succeeds(cons(Xx,Xl)) => list_succeeds(Xl))).
+fof('axiom-(list:termination)',axiom,! [Xl] : (list_succeeds(Xl) => list_terminates(Xl))).
+fof('axiom-(member2:ground)',axiom,! [Xx,Xl1,Xl2] : (((member2_succeeds(Xx,Xl1,Xl2) & gr(Xl1)) & gr(Xl2)) => gr(Xx))).
+fof('axiom-(member2:termination)',axiom,! [Xx,Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => member2_terminates(Xx,Xl1,Xl2))).
+fof('axiom-(member:append)',axiom,! [Xx,Xl3] : (member_succeeds(Xx,Xl3) => ? [Xl1,Xl2] : append_succeeds(Xl1,cons(Xx,Xl2),Xl3))).
+fof('axiom-(member:cons)',axiom,! [Xx,Xy,Xz,Xl] : ((member_succeeds(Xx,cons(Xy,Xl)) & ~ (Xx = Xy)) => member_succeeds(Xx,Xl))).
+fof('axiom-(member:ground)',axiom,! [Xx,Xl] : ((member_succeeds(Xx,Xl) & gr(Xl)) => gr(Xx))).
+fof('axiom-(member:occ:success)',axiom,! [Xx,Xl] : ((list_succeeds(Xl) & member_succeeds(Xx,Xl)) => ? [Xn] : occ(Xx,Xl) = s(Xn))).
+fof('axiom-(member:termination)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => (member_succeeds(Xx,Xl) | member_fails(Xx,Xl)))).
+fof('axiom-(member:termination)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => member_terminates(Xx,Xl))).
+fof('axiom-(nat:ground)',axiom,! [Xx] : (nat_succeeds(Xx) => gr(Xx))).
+fof('axiom-(nat:termination)',axiom,! [Xx] : (nat_succeeds(Xx) => nat_terminates(Xx))).
+fof('axiom-(nat_list:ground)',axiom,! [Xx] : (nat_list_succeeds(Xx) => gr(Xx))).
+fof('axiom-(nat_list:list)',axiom,! [Xl] : (nat_list_succeeds(Xl) => list_succeeds(Xl))).
+fof('axiom-(nat_list:termination)',axiom,! [Xl] : (nat_list_succeeds(Xl) => nat_list_terminates(Xl))).
+fof('axiom-(not_same_occ:termination)',axiom,! [Xl1,Xl2] : ((((list_succeeds(Xl1) & list_succeeds(Xl2)) & gr(Xl1)) & gr(Xl2)) => not_same_occ_terminates(Xl1,Xl2))).
+fof('axiom-(occ:app)',axiom,! [Xx,Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => occ(Xx,'**'(Xl1,Xl2)) = '@+'(occ(Xx,Xl1),occ(Xx,Xl2)))).
+fof('axiom-(occ:cons:diff)',axiom,! [Xx,Xy,Xl] : ((list_succeeds(Xl) & ~ (Xx = Xy)) => occ(Xx,cons(Xy,Xl)) = occ(Xx,Xl))).
+fof('axiom-(occ:cons:eq)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => occ(Xx,cons(Xx,Xl)) = s(occ(Xx,Xl)))).
+fof('axiom-(occ:existence)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => ? [Xn] : occ_succeeds(Xx,Xl,Xn))).
+fof('axiom-(occ:ground)',axiom,! [Xx,Xl,Xn] : (occ_succeeds(Xx,Xl,Xn) => gr(Xn))).
+fof('axiom-(occ:member)',axiom,! [Xx,Xl] : ((list_succeeds(Xl) & member_fails(Xx,Xl)) => occ(Xx,Xl) = '0')).
+fof('axiom-(occ:member:success)',axiom,! [Xx,Xl,Xn] : ((list_succeeds(Xl) & occ(Xx,Xl) = s(Xn)) => member_succeeds(Xx,Xl))).
+fof('axiom-(occ:member:success)',axiom,! [Xx,Xl,Xn] : ((list_succeeds(Xl) & occ_succeeds(Xx,Xl,s(Xn))) => member_succeeds(Xx,Xl))).
+fof('axiom-(occ:nil)',axiom,! [Xx] : occ(Xx,nil) = '0').
+fof('axiom-(occ:permutation)',axiom,! [Xl1,Xl2] : (((list_succeeds(Xl2) & list_succeeds(Xl1)) & ! [Xx] : occ(Xx,Xl1) = occ(Xx,Xl2)) => permutation_succeeds(Xl1,Xl2))).
+fof('axiom-(occ:successor)',axiom,! [Xx,Xl1,Xn] : ((list_succeeds(Xl1) & occ(Xx,Xl1) = s(Xn)) => ? [Xl2] : delete_succeeds(Xx,Xl1,Xl2))).
+fof('axiom-(occ:termination)',axiom,! [Xx,Xl,Xn] : (((list_succeeds(Xl) & gr(Xl)) & gr(Xx)) => occ_terminates(Xx,Xl,Xn))).
+fof('axiom-(occ:types)',axiom,! [Xx,Xl,Xn] : (occ_succeeds(Xx,Xl,Xn) => (list_succeeds(Xl) & nat_succeeds(Xn)))).
+fof('axiom-(occ:types)',axiom,! [Xx,Xl] : (list_succeeds(Xl) => nat_succeeds(occ(Xx,Xl)))).
+fof('axiom-(occ:uniqueness)',axiom,! [Xx,Xl,Xm,Xn] : ((occ_succeeds(Xx,Xl,Xm) & occ_succeeds(Xx,Xl,Xn)) => Xm = Xn)).
+fof('axiom-(occ:zero)',axiom,! [Xl] : ((list_succeeds(Xl) & ! [Xx] : occ(Xx,Xl) = '0') => Xl = nil)).
+fof('axiom-(permutation:app)',axiom,! [Xl1,Xl2,Xl3,Xl4] : ((permutation_succeeds(Xl1,Xl3) & permutation_succeeds(Xl2,Xl4)) => permutation_succeeds('**'(Xl1,Xl2),'**'(Xl3,Xl4)))).
+fof('axiom-(permutation:app:commutative)',axiom,! [Xl1,Xl2] : ((list_succeeds(Xl1) & list_succeeds(Xl2)) => permutation_succeeds('**'(Xl1,Xl2),'**'(Xl2,Xl1)))).
+fof('axiom-(permutation:completeness)',axiom,! [Xl2] : (list_succeeds(Xl2) => ! [Xl1] : ((list_succeeds(Xl1) & ! [Xx] : occ(Xx,Xl1) = occ(Xx,Xl2)) => permutation_succeeds(Xl1,Xl2)))).
+fof('axiom-(permutation:completeness)',axiom,! [Xl1,Xl2] : (((list_succeeds(Xl1) & list_succeeds(Xl2)) & same_occ_succeeds(Xl1,Xl2)) => permutation_succeeds(Xl1,Xl2))).
+fof('axiom-(permutation:cons)',axiom,! [Xx,Xl1,Xl2] : (permutation_succeeds(cons(Xx,Xl1),cons(Xx,Xl2)) => permutation_succeeds(Xl1,Xl2))).
+fof('axiom-(permutation:ground)',axiom,! [Xl1,Xl2] : ((permutation_succeeds(Xl1,Xl2) & gr(Xl1)) => gr(Xl2))).
+fof('axiom-(permutation:length)',axiom,! [Xl1,Xl2] : (permutation_succeeds(Xl1,Xl2) => lh(Xl1) = lh(Xl2))).
+fof('axiom-(permutation:member)',axiom,! [Xx,Xl1,Xl2] : ((permutation_succeeds(Xl1,Xl2) & member_succeeds(Xx,Xl1)) => member_succeeds(Xx,Xl2))).
+fof('axiom-(permutation:nat_list)',axiom,! [Xl1,Xl2] : ((permutation_succeeds(Xl1,Xl2) & nat_list_succeeds(Xl1)) => nat_list_succeeds(Xl2))).
+fof('axiom-(permutation:nil)',axiom,! [Xl] : (permutation_succeeds(nil,Xl) => Xl = nil)).
+fof('axiom-(permutation:occ)',axiom,! [Xl1,Xl2] : (permutation_succeeds(Xl1,Xl2) => ! [Xx] : occ(Xx,Xl1) = occ(Xx,Xl2))).
+fof('axiom-(permutation:reflexive)',axiom,! [Xl] : (list_succeeds(Xl) => permutation_succeeds(Xl,Xl))).
+fof('axiom-(permutation:soundness)',axiom,! [Xl1,Xl2] : (((permutation_succeeds(Xl1,Xl2) & gr(Xl1)) & gr(Xl2)) => same_occ_succeeds(Xl1,Xl2))).
+fof('axiom-(permutation:symmetric)',axiom,! [Xl1,Xl2] : (permutation_succeeds(Xl1,Xl2) => permutation_succeeds(Xl2,Xl1))).
+fof('axiom-(permutation:termination)',axiom,! [Xl1,Xl2] : (list_succeeds(Xl1) => permutation_terminates(Xl1,Xl2))).
+fof('axiom-(permutation:termination)',axiom,! [Xn,Xl1,Xl2] : (((nat_succeeds(Xn) & list_succeeds(Xl1)) & lh(Xl1) = Xn) => permutation_terminates(Xl1,Xl2))).
+fof('axiom-(permutation:transitive)',axiom,! [Xl1,Xl2,Xl3] : ((permutation_succeeds(Xl1,Xl2) & permutation_succeeds(Xl2,Xl3)) => permutation_succeeds(Xl1,Xl3))).
+fof('axiom-(permutation:types)',axiom,! [Xl1,Xl2] : (permutation_succeeds(Xl1,Xl2) => (list_succeeds(Xl1) & list_succeeds(Xl2)))).
+fof('axiom-(plus:associative)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@+'('@+'(Xx,Xy),Xz) = '@+'(Xx,'@+'(Xy,Xz)))).
+fof('axiom-(plus:commutative)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@+'(Xx,Xy) = '@+'(Xy,Xx))).
+fof('axiom-(plus:existence)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => ? [Xz] : plus_succeeds(Xx,Xy,Xz))).
+fof('axiom-(plus:ground:1)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => gr(Xx))).
+fof('axiom-(plus:ground:2)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & gr(Xy)) => gr(Xz))).
+fof('axiom-(plus:ground:3)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & gr(Xz)) => gr(Xy))).
+fof('axiom-(plus:injective:first)',axiom,! [Xx1,Xx2,Xy] : ((((nat_succeeds(Xx1) & nat_succeeds(Xx2)) & nat_succeeds(Xy)) & '@+'(Xx1,Xy) = '@+'(Xx2,Xy)) => Xx1 = Xx2)).
+fof('axiom-(plus:injective:second)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & '@+'(Xx,Xy) = '@+'(Xx,Xz)) => Xy = Xz)).
+fof('axiom-(plus:leq:leq)',axiom,! [Xx1,Xx2,Xy1,Xy2] : ((('@=<_succeeds'(Xx1,Xy1) & '@=<_succeeds'(Xx2,Xy2)) & nat_succeeds(Xy1)) => '@=<_succeeds'('@+'(Xx1,Xx2),'@+'(Xy1,Xy2)))).
+fof('axiom-(plus:leq:less)',axiom,! [Xx1,Xx2,Xy1,Xy2] : ((('@=<_succeeds'(Xx1,Xy1) & '@<_succeeds'(Xx2,Xy2)) & nat_succeeds(Xy1)) => '@<_succeeds'('@+'(Xx1,Xx2),'@+'(Xy1,Xy2)))).
+fof('axiom-(plus:less:leq)',axiom,! [Xx1,Xx2,Xy1,Xy2] : ((('@<_succeeds'(Xx1,Xy1) & '@=<_succeeds'(Xx2,Xy2)) & nat_succeeds(Xy1)) => '@<_succeeds'('@+'(Xx1,Xx2),'@+'(Xy1,Xy2)))).
+fof('axiom-(plus:less:less)',axiom,! [Xx1,Xx2,Xy1,Xy2] : ((('@<_succeeds'(Xx1,Xy1) & '@<_succeeds'(Xx2,Xy2)) & nat_succeeds(Xy1)) => '@<_succeeds'('@+'(Xx1,Xx2),'@+'(Xy1,Xy2)))).
+fof('axiom-(plus:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@+'(Xx,s(Xy)) = '@+'(s(Xx),Xy))).
+fof('axiom-(plus:successor)',axiom,! [Xx,Xy] : (nat_succeeds(Xx) => '@+'(s(Xx),Xy) = s('@+'(Xx,Xy)))).
+fof('axiom-(plus:termination:1)',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xx) => plus_terminates(Xx,Xy,Xz))).
+fof('axiom-(plus:termination:2)',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xz) => plus_terminates(Xx,Xy,Xz))).
+fof('axiom-(plus:termination:3)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => plus_terminates(Xx,Xy,Xz))).
+fof('axiom-(plus:times:distributive)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'(Xz,'@+'(Xx,Xy)) = '@+'('@*'(Xz,Xx),'@*'(Xz,Xy)))).
+fof('axiom-(plus:times:distributive)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'('@+'(Xx,Xy),Xz) = '@+'('@*'(Xx,Xz),'@*'(Xy,Xz)))).
+fof('axiom-(plus:types)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => nat_succeeds('@+'(Xx,Xy)))).
+fof('axiom-(plus:types:1)',axiom,! [Xx,Xy,Xz] : (plus_succeeds(Xx,Xy,Xz) => nat_succeeds(Xx))).
+fof('axiom-(plus:types:2)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & nat_succeeds(Xy)) => nat_succeeds(Xz))).
+fof('axiom-(plus:types:3)',axiom,! [Xx,Xy,Xz] : ((plus_succeeds(Xx,Xy,Xz) & nat_succeeds(Xz)) => nat_succeeds(Xy))).
+fof('axiom-(plus:uniqueness)',axiom,! [Xx,Xy,Xz1,Xz2] : ((plus_succeeds(Xx,Xy,Xz1) & plus_succeeds(Xx,Xy,Xz2)) => Xz1 = Xz2)).
+fof('axiom-(plus:zero)',axiom,! [Xx] : (nat_succeeds(Xx) => '@+'(Xx,'0') = Xx)).
+fof('axiom-(plus:zero)',axiom,! [Xy] : '@+'('0',Xy) = Xy).
+fof('axiom-(same_occ:success)',axiom,! [Xl1,Xl2] : (((list_succeeds(Xl1) & list_succeeds(Xl2)) & same_occ_succeeds(Xl1,Xl2)) => ! [Xx] : occ(Xx,Xl1) = occ(Xx,Xl2))).
+fof('axiom-(same_occ:termination)',axiom,! [Xl1,Xl2] : ((((list_succeeds(Xl1) & list_succeeds(Xl2)) & gr(Xl1)) & gr(Xl2)) => same_occ_terminates(Xl1,Xl2))).
+fof('axiom-(sub:app:1)',axiom,! [Xl1,Xl2] : (list_succeeds(Xl1) => sub(Xl1,'**'(Xl1,Xl2)))).
+fof('axiom-(sub:app:2)',axiom,! [Xl1,Xl2] : (list_succeeds(Xl1) => sub(Xl2,'**'(Xl1,Xl2)))).
+fof('axiom-(sub:cons)',axiom,! [Xx,Xi] : sub(Xi,cons(Xx,Xi))).
+fof('axiom-(sub:cons:both)',axiom,! [Xx,Xi,Xj] : (sub(Xi,Xj) => sub(cons(Xx,Xi),cons(Xx,Xj)))).
+fof('axiom-(sub:member)',axiom,! [Xx,Xi,Xj] : ((sub(Xi,Xj) & member_succeeds(Xx,Xj)) => sub(cons(Xx,Xi),Xj))).
+fof('axiom-(sub:nil)',axiom,! [Xl] : sub(nil,Xl)).
+fof('axiom-(sub:reflexive)',axiom,! [Xl] : sub(Xl,Xl)).
+fof('axiom-(sub:transitive)',axiom,! [Xi,Xj,Xk] : ((sub(Xi,Xj) & sub(Xj,Xk)) => sub(Xi,Xk))).
+fof('axiom-(times:associative)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@*'('@*'(Xx,Xy),Xz) = '@*'(Xx,'@*'(Xy,Xz)))).
+fof('axiom-(times:commutative)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@*'(Xx,Xy) = '@*'(Xy,Xx))).
+fof('axiom-(times:existence)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ? [Xz] : times_succeeds(Xx,Xy,Xz))).
+fof('axiom-(times:ground:1)',axiom,! [Xx,Xy,Xz] : (times_succeeds(Xx,Xy,Xz) => gr(Xx))).
+fof('axiom-(times:ground:2)',axiom,! [Xx,Xy,Xz] : ((times_succeeds(Xx,Xy,Xz) & gr(Xy)) => gr(Xz))).
+fof('axiom-(times:leq:first)',axiom,! [Xx,Xy,Xz] : ((('@=<_succeeds'(Xx,Xy) & nat_succeeds(Xy)) & nat_succeeds(Xz)) => '@=<_succeeds'('@*'(Xx,Xz),'@*'(Xy,Xz)))).
+fof('axiom-(times:leq:second)',axiom,! [Xx,Xy,Xz] : (((nat_succeeds(Xx) & '@=<_succeeds'(Xy,Xz)) & nat_succeeds(Xz)) => '@=<_succeeds'('@*'(Xx,Xy),'@*'(Xx,Xz)))).
+fof('axiom-(times:less:second)',axiom,! [Xx,Xy,Xz] : ((((nat_succeeds(Xx) & ~ (Xx = '0')) & '@<_succeeds'(Xy,Xz)) & nat_succeeds(Xz)) => '@<_succeeds'('@*'(Xx,Xy),'@*'(Xx,Xz)))).
+fof('axiom-(times:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(Xx,s('0')) = Xx)).
+fof('axiom-(times:one)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(s('0'),Xx) = Xx)).
+fof('axiom-(times:successor)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => '@*'(s(Xx),Xy) = '@+'(Xy,'@*'(Xx,Xy)))).
+fof('axiom-(times:successor)',axiom,! [Xy,Xx] : ((nat_succeeds(Xy) & nat_succeeds(Xx)) => '@+'('@*'(Xy,Xx),Xy) = '@*'(Xy,s(Xx)))).
+fof('axiom-(times:termination)',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => times_terminates(Xx,Xy,Xz))).
+fof('axiom-(times:types)',axiom,! [Xx,Xy] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => nat_succeeds('@*'(Xx,Xy)))).
+fof('axiom-(times:types:1)',axiom,! [Xx,Xy,Xz] : (times_succeeds(Xx,Xy,Xz) => nat_succeeds(Xx))).
+fof('axiom-(times:types:2)',axiom,! [Xx,Xy,Xz] : ((times_succeeds(Xx,Xy,Xz) & nat_succeeds(Xy)) => nat_succeeds(Xz))).
+fof('axiom-(times:uniqueness)',axiom,! [Xx,Xy,Xz1,Xz2] : ((times_succeeds(Xx,Xy,Xz1) & times_succeeds(Xx,Xy,Xz2)) => Xz1 = Xz2)).
+fof('axiom-(times:zero)',axiom,! [Xx] : (nat_succeeds(Xx) => '@*'(Xx,'0') = '0')).
+fof('axiom-(times:zero)',axiom,! [Xy] : (nat_succeeds(Xy) => '@*'('0',Xy) = '0')).
+fof('(**)/2',axiom,! [Xl1,Xl2,Xl3] : (list_succeeds(Xl1) => ('**'(Xl1,Xl2) = Xl3 <=> append_succeeds(Xl1,Xl2,Xl3)))).
+fof('(@*)/2',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ('@*'(Xx,Xy) = Xz <=> times_succeeds(Xx,Xy,Xz)))).
+fof('(@+)/2',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xx) => ('@+'(Xx,Xy) = Xz <=> plus_succeeds(Xx,Xy,Xz)))).
+fof('lh/1',axiom,! [Xl,Xn] : (list_succeeds(Xl) => (lh(Xl) = Xn <=> length_succeeds(Xl,Xn)))).
+fof('occ/2',axiom,! [Xx,Xl,Xm] : (list_succeeds(Xl) => (occ(Xx,Xl) = Xm <=> occ_succeeds(Xx,Xl,Xm)))).
+fof('sub/2',axiom,! [Xl1,Xl2] : (sub(Xl1,Xl2) <=> ! [Xx] : (member_succeeds(Xx,Xl1) => member_succeeds(Xx,Xl2)))).
+fof('lemma-(ordered:termination)',axiom,! [Xl] : (nat_list_succeeds(Xl) => ordered_terminates(Xl))).
+fof('theorem-(permutation_sort:termination)',axiom,! [Xl1,Xl2] : (nat_list_succeeds(Xl1) => permutation_sort_terminates(Xl1,Xl2))).
+fof('lemma-(insert:delete)',axiom,! [Xx,Xl1,Xl2] : (insert_succeeds(Xx,Xl1,Xl2) => delete_succeeds(Xx,Xl2,Xl1))).
+fof(induction,axiom,(! [Xl1,Xl2] : ((? [Xx3] : ? [Xx4] : ? [Xx5] : (Xl1 = cons(Xx3,Xx4) & ((insert_sort_succeeds(Xx4,Xx5) & permutation_succeeds(Xx5,Xx4)) & insert_succeeds(Xx3,Xx5,Xl2))) | (Xl1 = nil & Xl2 = nil)) => permutation_succeeds(Xl2,Xl1)) => ! [Xl1,Xl2] : (insert_sort_succeeds(Xl1,Xl2) => permutation_succeeds(Xl2,Xl1)))).
+fof('lemma-(insert_sort:permutation)',conjecture,! [Xl1,Xl2] : (insert_sort_succeeds(Xl1,Xl2) => permutation_succeeds(Xl2,Xl1))).

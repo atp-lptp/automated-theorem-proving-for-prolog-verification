@@ -1,0 +1,38 @@
+# \cat ./src/example_mgu/mgu-all1.fof | grep "fof('[^\/]*\/" | grep -c ''
+fof('(**)/2',axiom,! [Xl1,Xl2,Xl3] : (list_succeeds(Xl1) => ('**'(Xl1,Xl2) = Xl3 <=> append_succeeds(Xl1,Xl2,Xl3)))).
+fof('(@*)/2',axiom,! [Xx,Xy,Xz] : ((nat_succeeds(Xx) & nat_succeeds(Xy)) => ('@*'(Xx,Xy) = Xz <=> times_succeeds(Xx,Xy,Xz)))).
+fof('(@+)/2',axiom,! [Xx,Xy,Xz] : (nat_succeeds(Xx) => ('@+'(Xx,Xy) = Xz <=> plus_succeeds(Xx,Xy,Xz)))).
+fof('lh/1',axiom,! [Xl,Xn] : (list_succeeds(Xl) => (lh(Xl) = Xn <=> length_succeeds(Xl,Xn)))).
+fof('sub/2',axiom,! [Xl1,Xl2] : (sub(Xl1,Xl2) <=> ! [Xx] : (member_succeeds(Xx,Xl1) => member_succeeds(Xx,Xl2)))).
+fof('(doubleslash)/2',axiom,! [Xt1,Xs,Xt2] : ((term_succeeds(Xt1) & substitution_succeeds(Xs)) => (doubleslash(Xt1,Xs) = Xt2 <=> apply_succeeds(Xt1,Xs,Xt2)))).
+fof('composition/3',axiom,! [Xs1,Xs2,Xs3] : (composition(Xs1,Xs2,Xs3) <=> ! [Xx] : (atomic_succeeds(Xx) => doubleslash(doubleslash(dollar(Xx),Xs1),Xs2) = doubleslash(dollar(Xx),Xs3)))).
+fof('subterms_term/2',axiom,! [Xt,Xl] : (subterms_term(Xt,Xl) <=> ! [Xt1] : (subterm_succeeds(Xt1,Xt) => member_succeeds(Xt1,Xl)))).
+fof('subterms_termL/2',axiom,! [Xtl,Xl] : (subterms_termL(Xtl,Xl) <=> ! [Xt1] : (subtermL_succeeds(Xt1,Xtl) => member_succeeds(Xt1,Xl)))).
+fof('subterms_closed/1',axiom,! [Xtl] : (subterms_closed(Xtl) <=> (termL_succeeds(Xtl) & subterms_termL(Xtl,Xtl)))).
+fof('subterms_class/2',axiom,! [Xc,Xl] : (subterms_class(Xc,Xl) <=> ! [Xt] : (class_member_succeeds(Xt,Xc) => subterms_term(Xt,Xl)))).
+fof('subterms_partition/2',axiom,! [Xp,Xl] : (subterms_partition(Xp,Xl) <=> ! [Xt] : (partition_member_succeeds(Xt,Xp) => subterms_term(Xt,Xl)))).
+fof('disjoint_classes/2',axiom,! [Xc1,Xc2] : (disjoint_classes(Xc1,Xc2) <=> ~ (? [Xt] : (class_member_succeeds(Xt,Xc1) & class_member_succeeds(Xt,Xc2))))).
+fof('sub_partition/2',axiom,! [Xp1,Xp2] : (sub_partition(Xp1,Xp2) <=> ! [Xt1,Xt2] : (((term_succeeds(Xt1) & term_succeeds(Xt2)) & equivalent_succeeds(Xt1,Xt2,Xp1)) => equivalent_succeeds(Xt1,Xt2,Xp2)))).
+fof('field_term/3',axiom,! [Xt,Xp,Xl] : (field_term(Xt,Xp,Xl) <=> ! [Xt1] : (subterm_succeeds(Xt1,Xt) => (partition_member_succeeds(Xt1,Xp) | member_succeeds(Xt1,Xl))))).
+fof('field_termL/3',axiom,! [Xtl,Xp,Xl] : (field_termL(Xtl,Xp,Xl) <=> ! [Xt] : (member_succeeds(Xt,Xtl) => field_term(Xt,Xp,Xl)))).
+fof('field_partition/2',axiom,! [Xp,Xl] : (field_partition(Xp,Xl) <=> ! [Xt] : (partition_member_succeeds(Xt,Xp) => field_term(Xt,Xp,Xl)))).
+fof('field/4',axiom,! [Xt1,Xt2,Xp,Xl] : (field(Xt1,Xt2,Xp,Xl) <=> (((list_succeeds(Xl) & field_term(Xt1,Xp,Xl)) & field_term(Xt2,Xp,Xl)) & field_partition(Xp,Xl)))).
+fof('fieldL/4',axiom,! [Xtl1,Xtl2,Xp,Xl] : (fieldL(Xtl1,Xtl2,Xp,Xl) <=> (((list_succeeds(Xl) & field_termL(Xtl1,Xp,Xl)) & field_termL(Xtl2,Xp,Xl)) & field_partition(Xp,Xl)))).
+fof('sub_field/4',axiom,! [Xp1,Xl1,Xp2,Xl2] : (sub_field(Xp1,Xl1,Xp2,Xl2) <=> (! [Xt] : (partition_member_succeeds(Xt,Xp1) => partition_member_succeeds(Xt,Xp2)) & ! [Xt] : (member_succeeds(Xt,Xl1) => (partition_member_succeeds(Xt,Xp2) | member_succeeds(Xt,Xl2)))))).
+fof('find_delete_abr/6',axiom,! [Xt1,Xt2,Xp1,Xp2,Xc1,Xc2] : (find_delete_abr(Xt1,Xt2,Xp1,Xp2,Xc1,Xc2) <=> (((! [Xt] : (partition_member_succeeds(Xt,Xp1) => ((class_member_succeeds(Xt,Xc1) | class_member_succeeds(Xt,Xc2)) | partition_member_succeeds(Xt,Xp2))) & ! [Xt] : (partition_member_succeeds(Xt,Xp2) => partition_member_succeeds(Xt,Xp1))) & ! [Xt] : (class_member_succeeds(Xt,Xc1) => ((Xt = Xt1 | Xt = Xt2) | partition_member_succeeds(Xt,Xp1)))) & ! [Xt] : (class_member_succeeds(Xt,Xc2) => ((Xt = Xt1 | Xt = Xt2) | partition_member_succeeds(Xt,Xp1)))))).
+fof('roots_termL/3',axiom,! [Xtl,Xp,Xl] : (roots_termL(Xtl,Xp,Xl) <=> ! [Xt1,Xt2] : ((member_succeeds(Xt1,Xtl) & find_succeeds(Xp,Xt1,Xt2)) => member_succeeds(Xt2,Xl)))).
+fof('roots_list/2',axiom,! [Xp,Xl] : (roots_list(Xp,Xl) <=> ! [Xf,Xtl,Xq] : (member_succeeds(cons(Xf,Xtl),Xl) => roots_termL(Xtl,Xp,Xl)))).
+fof('roots_cover/3',axiom,! [Xtl,Xp,Xl] : (roots_cover(Xtl,Xp,Xl) <=> (roots_termL(Xtl,Xp,Xl) & roots_list(Xp,Xl)))).
+fof('roots/1',axiom,! [Xp,Xtl] : (partition_succeeds(Xp) => (roots(Xp) = Xtl <=> roots_succeeds(Xp,Xtl)))).
+fof('size/1',axiom,! [Xt,Xn] : (term_succeeds(Xt) => (size(Xt) = Xn <=> size_succeeds(Xt,Xn)))).
+fof('cycle_free_abr/6',axiom,! [Xtl,Xp,Xc,Xwf1,Xs,Xn] : (cycle_free_abr(Xtl,Xp,Xc,Xwf1,Xs,Xn) <=> (((((((termL_succeeds(Xtl) & partition_succeeds(Xp)) & substitution_succeeds(Xs)) & partition_solution_succeeds(Xp,Xs)) & termL_succeeds(Xc)) & termL_succeeds(Xwf1)) & ! [Xt] : (member_succeeds(Xt,Xtl) => '@<_succeeds'(size(doubleslash(Xt,Xs)),Xn))) & ! [Xt] : (member_succeeds(Xt,Xc) => '@=<_succeeds'(Xn,size(doubleslash(Xt,Xs))))))).
+fof('domain_disjoint_partition/2',axiom,! [Xs,Xp] : (domain_disjoint_partition(Xs,Xp) <=> ! [Xx] : (domain_succeeds(Xx,Xs) => partition_member_fails(dollar(Xx),Xp)))).
+fof('domain_disjoint_class/2',axiom,! [Xs,Xc] : (domain_disjoint_class(Xs,Xc) <=> ! [Xx] : (domain_succeeds(Xx,Xs) => class_member_fails(dollar(Xx),Xc)))).
+fof('root_term/3',axiom,! [Xt1,Xp,Xl] : (root_term(Xt1,Xp,Xl) <=> ? [Xt2] : (find_succeeds(Xp,Xt1,Xt2) & member_succeeds(Xt2,Xl)))).
+fof('topological_ordering/2',axiom,! [Xp,Xl] : (topological_ordering(Xp,Xl) <=> (list_succeeds(Xl) & ! [Xl1,Xl2,Xf,Xtl] : (append_succeeds(Xl1,cons(cons(Xf,Xtl),Xl2),Xl) => roots_termL(Xtl,Xp,Xl2))))).
+fof('subset_class/2',axiom,! [Xc,Xp] : (subset_class(Xc,Xp) <=> ! [Xt] : (class_member_succeeds(Xt,Xc) => partition_member_succeeds(Xt,Xp)))).
+fof('subset_partition/2',axiom,! [Xp1,Xp2] : (subset_partition(Xp1,Xp2) <=> ! [Xt] : (partition_member_succeeds(Xt,Xp1) => partition_member_succeeds(Xt,Xp2)))).
+fof('open/2',axiom,! [Xp,Xl] : (open(Xp,Xl) <=> ! [Xf1,Xf2,Xtl1,Xtl2] : (parent_terms_succeeds(cons(Xf1,Xtl1),cons(Xf2,Xtl2),Xp) => (member_succeeds(cons(Xf1,Xtl1),Xl) | (Xf1 = Xf2 & equivalentL_succeeds(Xtl1,Xtl2,Xp)))))).
+fof('equivalent_classes/3',axiom,! [Xc1,Xc2,Xp] : (equivalent_classes(Xc1,Xc2,Xp) <=> ! [Xf1,Xf2,Xtl1,Xtl2,Xq1,Xq2] : ((Xc1 = cl(cons(Xf1,Xtl1),Xq1) & Xc2 = cl(cons(Xf2,Xtl2),Xq2)) => (Xf1 = Xf2 & equivalentL_succeeds(Xtl1,Xtl2,Xp))))).
+fof('common_child/2',axiom,! [Xc1,Xc2] : (common_child(Xc1,Xc2) <=> ? [Xt1,Xt2,Xp1,Xp2,Xt,Xq1,Xq2] : (((Xc1 = cl(Xt1,Xp1) & Xc2 = cl(Xt2,Xp2)) & member_succeeds(cl(Xt,Xq1),Xp1)) & member_succeeds(cl(Xt,Xq2),Xp2)))).
+

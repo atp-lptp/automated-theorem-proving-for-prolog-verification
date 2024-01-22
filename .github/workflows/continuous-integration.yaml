@@ -1,0 +1,146 @@
+name: Apply ATP prover on FOF files
+
+on:
+  push:
+    tags:
+      - v*.*.*
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    name: Create release
+
+    steps:
+      - name: Set env
+        run: |
+          RELEASE_NAME="${GITHUB_REF#refs/*/}"
+          RELEASE_NAME="$(echo $RELEASE_NAME | sed 's/\//-/g')"
+          echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
+
+      - name: Create a release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          automatic_release_tag: ${{ env.RELEASE_NAME }}
+
+  push_to_registry:
+    needs: release
+
+    name: Push Docker image to Container Registry
+    runs-on: ubuntu-latest
+    outputs:
+      docker_image: ${{ steps.meta.outputs.tags }}
+      release_name: ${{ env.RELEASE_NAME }}
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - name: Set env
+        run: | 
+          RELEASE_NAME="${GITHUB_REF#refs/*/}"
+          RELEASE_NAME="$(echo $RELEASE_NAME | sed 's/\//-/g')"
+          echo "RELEASE_NAME=${RELEASE_NAME}" >> $GITHUB_ENV
+          echo "release_name=${RELEASE_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  build-fof_apply-provers:
+    needs: push_to_registry
+
+    name: Build FOF files, apply provers, parse results
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    container:
+      image: ${{ needs.push_to_registry.outputs.docker_image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+      volumes:
+        - ${{ github.workspace }}:/workspace
+      options: --cpus 2 --user 1001
+      env:
+        RELEASE_NAME: ${{ needs.push_to_registry.outputs.release_name }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Run tests
+        working-directory: /usr/local/atp-prolog-verification
+        run: make test
+
+      - name: Make FOF files
+        working-directory: /usr/local/atp-prolog-verification
+        run: |
+          echo 'release '$RELEASE_NAME
+          make build-fof-for-each-program
+
+      #- name: Applying provers on FOF files for all programs available in ./src
+      #  working-directory: /usr/local/atp-prolog-verification
+      #  run: make apply-provers-for-each-program
+
+      - name: Parse results
+        working-directory: /usr/local/atp-prolog-verification
+        run: make all-results
+
+      - name: Convert results to LaTeX
+        working-directory: /usr/local/atp-prolog-verification
+        run: make all-results-in-latex
+
+      - name: Archive FOF files, results
+        working-directory: /usr/local/atp-prolog-verification
+        run: |
+          echo 'release '$RELEASE_NAME          
+          RELEASE_NAME=$RELEASE_NAME /bin/bash -c '. .github/workflows/release/build-archive.sh'
+          cp /usr/local/atp-prolog-verification/$RELEASE_NAME /workspace/$RELEASE_NAME
+
+      - uses: actions/upload-artifact@main
+        with:
+          path: |
+            ${{ github.workspace }}/$RELEASE_NAME
+
+      - name: Publish release
+        working-directory: /usr/local/atp-prolog-verification
+        run: |
+          echo 'release '$RELEASE_NAME
+          GITHUB_TOKEN=$GITHUB_TOKEN \
+          RELEASE_NAME=$RELEASE_NAME \
+          /bin/bash -c '. ./.github/workflows/release/publish-archive.sh'

@@ -1,0 +1,6 @@
+target conjecture: "./src/example_avl/termination-all1.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/example_avl/termination-all1.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/termination-all2.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/example_avl/termination-all2.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/termination-all3.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/example_avl/termination-all3.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/termination-all4.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/example_avl/termination-all4.fof >> $(pwd)/out/tmp_output_vampire" status code: "0", successful application (yes: 1, no: 0): 1
+target conjecture: "./src/example_avl/termination-all5.fof" apply prover command: "vampire --proof off --time_limit 1s ./src/example_avl/termination-all5.fof >> $(pwd)/out/tmp_output_vampire" status code: "1", successful application (yes: 1, no: 0): 0
+5 lemmas, 4 proved,  ratio: 80
