@@ -1,10 +1,10 @@
-FROM        ghcr.io/thierrymarianne/automated-theorem-proving-for-prolog-verification:base
+FROM        ghcr.io/atp-lptp/automated-theorem-proving-for-prolog-verification:base
 
 LABEL       maintainer="Thierry Marianne <thierry.marianne@univ-reunion.fr>"
 
-LABEL       org.opencontainers.image.source="https://github.com/thierrymarianne/automated-theorem-proving-for-prolog-verification"
+LABEL       org.opencontainers.image.source="https://github.com/atp-lptp/automated-theorem-proving-for-prolog-verification"
 
-COPY        --chown=1000:1000 \
+COPY        --chown=1001:1001 \
             ./ \
             /usr/local/atp-prolog-verification
 
@@ -23,6 +23,6 @@ RUN         apt update \
             --no-install-recommends && \
             /bin/bash -c 'cd /usr/local/atp-prolog-verification && make help'
 
-USER        1000:1000
+USER        1001:1001
 
 WORKDIR     /usr/local/atp-prolog-verification

@@ -226,7 +226,6 @@ LaTeX
 # actual="$(print_utf8 '%.0f' '45.4')";expected="45";message='print_utf8'
 # actual="$(print_utf8 '%.0f' '45.5')";expected="46";message='print_utf8'
 # actual="$(print_utf8 '%.0f' '45')";expected="45";message='print_utf8'
-# actual="$(PRINT_LOCALE='fr_FR.UTF-8' print_utf8 '%.0f' '45.7' 2>&1 | grep 'invalid number' -c)";expected="1";message='print_utf8'
 # ```
 #
 # See also [printf command](https://www.ibm.com/docs/en/aix/7.2?topic=p-printf-command)

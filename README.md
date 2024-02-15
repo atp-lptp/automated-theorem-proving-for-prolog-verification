@@ -1,5 +1,7 @@
 # Automated Theorem Proving for Prolog Verification
 
+[![Apply ATP prover on FOF files](https://github.com/atp-lptp/automated-theorem-proving-for-prolog-verification/actions/workflows/continuous-integration.yaml/badge.svg)](https://github.com/atp-lptp/automated-theorem-proving-for-prolog-verification/actions/workflows/continuous-integration.yaml)
+
 [Automated Theorem Proving for Prolog Verification [PDF]](ATP-for-LP-Verif.pdf)
 
 ## Build FOF files 

@@ -2,7 +2,7 @@
 
 function build() {
   tar cvzf \
-    '/usr/local/atp-prolog-verification/'$RELEASE_NAME'.tar.gz' \
+    '/usr/local/atp-prolog-verification/'$RELEASE_NAME \
     './out/'*.out \
     './out/'results.* \
     './src/'*/*.fof \

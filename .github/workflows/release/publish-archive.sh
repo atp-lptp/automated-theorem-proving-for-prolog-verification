@@ -40,7 +40,7 @@ function publish() {
 
   curl \
     -X POST \
-    --data-binary @"${result}" \
+    --data-binary @"${results}" \
     -H 'Content-Type: application/octet-stream' \
     -H "Authorization: Bearer ${GITHUB_TOKEN}" \
     "${upload_url}?name=${archive_name}"
@@ -53,4 +53,4 @@ function publish() {
     "${upload_url}?name=${archive_name}.sha256sum"
 }
 
-publish './'"${RELEASE_NAME}"
+publish '/usr/local/atp-prolog-verification/'"${RELEASE_NAME}"

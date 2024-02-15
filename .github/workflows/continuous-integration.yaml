@@ -3,7 +3,7 @@ name: Apply ATP prover on FOF files
 on:
   push:
     tags:
-      - atp-lptp-v*.*.*
+      - v*.*.*
   pull_request:
     branches:
       - '*'
@@ -11,6 +11,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    name: Create release
 
     steps:
       - name: Set env
@@ -76,6 +78,8 @@ jobs:
   build-fof_apply-provers:
     needs: push_to_registry
 
+    name: Build FOF files, apply provers, parse results
+
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -86,20 +90,32 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
-      options: --cpus 2
+      volumes:
+        - ${{ github.workspace }}:/workspace
+      options: --cpus 2 --user 1001
       env:
         RELEASE_NAME: ${{ needs.push_to_registry.outputs.release_name }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4.1.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Run tests
+        working-directory: /usr/local/atp-prolog-verification
+        run: make test
+
       - name: Make FOF files
         working-directory: /usr/local/atp-prolog-verification
         run: |
           echo 'release '$RELEASE_NAME
           make build-fof-for-each-program
 
-      #- name: Applying provers on FOF files for all programs available in ./src
-      #  working-directory: /usr/local/atp-prolog-verification
-      #  run: make apply-provers-for-each-program
+      - name: Applying provers on FOF files for all programs available in ./src
+        working-directory: /usr/local/atp-prolog-verification
+        run: make apply-provers-for-each-program
 
       - name: Parse results
         working-directory: /usr/local/atp-prolog-verification
@@ -111,18 +127,20 @@ jobs:
 
       - name: Archive FOF files, results
         working-directory: /usr/local/atp-prolog-verification
-        env:
-          RELEASE_NAME: ${{ env.RELEASE_NAME }}
-        run: /bin/bash -c '. .github/workflows/release/build-archive.sh'
+        run: |
+          echo 'release '$RELEASE_NAME          
+          RELEASE_NAME=$RELEASE_NAME /bin/bash -c '. .github/workflows/release/build-archive.sh'
+          cp /usr/local/atp-prolog-verification/$RELEASE_NAME /workspace/$RELEASE_NAME
 
       - uses: actions/upload-artifact@main
         with:
           path: |
-            /usr/local/atp-prolog-verification/$RELEASE_NAME
+            ${{ github.workspace }}/$RELEASE_NAME
 
       - name: Publish release
         working-directory: /usr/local/atp-prolog-verification
-        run: /bin/bash -c '. ./.github/workflows/release/publish-archive.sh'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_NAME: $RELEASE_NAME
+        run: |
+          echo 'release '$RELEASE_NAME
+          GITHUB_TOKEN=$GITHUB_TOKEN \
+          RELEASE_NAME=$RELEASE_NAME \
+          /bin/bash -c '. ./.github/workflows/release/publish-archive.sh'
