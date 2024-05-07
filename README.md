@@ -1,5 +1,10 @@
 # Automated Theorem Proving for Prolog Verification
 
+## Paper 
+
+ - [ATP for Prolog Verification](/312301dc6c89cb23c56911be2626fbc30d54fcc1/ATP-for-LP-Verif-GH.pdf)
+ - [ATP for Prolog Verification - slides](/312301dc6c89cb23c56911be2626fbc30d54fcc1/ATP_for_Prolog_Verification_slides-GH.pdf)
+
 ## Build FOF files
 
 To generate the FOF files corresponding to a logic program and its associated proof file,  
