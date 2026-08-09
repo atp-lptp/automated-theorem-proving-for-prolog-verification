@@ -55,9 +55,20 @@ filename_fofs(File):-
         filename_fofs_(J,N,F).
     
 create_fof_file(File,FIfof,Indice) :-
-    open(FIfof,write,Stream),
-    filename_indice_stream(File,Indice,Stream),
-    close(Stream).
+    setup_call_cleanup(
+        open(FIfof,write,Stream),
+        filename_indice_stream(File,Indice,Stream),
+        close(Stream)),
+    !.
+create_fof_file(_File,FIfof,Indice) :-
+    % Never leave a half-written .fof behind: it parses as a plausible problem
+    % file while missing its conjecture, so a prover would just report it as
+    % satisfiable instead of failing loudly.
+    format(user_error,
+           "*** ERROR: could not generate ~w (lemma ~w); removing partial file.~n",
+           [FIfof,Indice]),
+    catch(delete_file(FIfof),_,true),
+    fail.
 
 /*
 filename_fofs('member/member').
@@ -76,12 +87,18 @@ filename_fofs_run(File):-
     shell('rm tmp_outputV; touch tmp_outputV'),
     write(N), writeln(' lemmas'),
     filename_fofs_(1,N,File,0/SuccessV,0/SuccessE),
-    write(N), writeln(' lemmas, '), 
-    write(SuccessV), write(' proved by Vampire, '), 
-    Pv is (SuccessV*100)/N, write(' ratio: '), writeln(Pv),
-    write(SuccessE), write(' proved by Eprover, '), 
-    Pe is (SuccessE*100)/N, write(' ratio: '), writeln(Pe). 
-    
+    write(N), writeln(' lemmas, '),
+    report_ratio('Vampire',SuccessV,N),
+    report_ratio('Eprover',SuccessE,N).
+
+    % report_ratio(+Prover,+Success,+N): guarded against N =:= 0
+    report_ratio(Prover,Success,N) :-
+        write(Success), write(' proved by '), write(Prover),
+        (   N > 0
+        ->  Ratio is (Success*100)/N, write(', ratio: '), writeln(Ratio)
+        ;   writeln(', ratio: n/a (no lemma)')
+        ).
+
     filename_fofs_(P,N,_,Sv/Sv,Se/Se) :- P > N, !.
     filename_fofs_(I,N,F,Sv0/Sv,Se0/Se) :- I =< N, J is I +1,
         atom_concat(F,I,FI),atom_concat(FI,'.fof',FIfof),
@@ -99,9 +116,9 @@ filename_fofs_run(File):-
         shell(CmdE,StatusE),
         write('status eprover: '),writeln(StatusE),
         %
-        ((StatusV==0,StatusE==7) -> (write('**** for file '), write(FI),
+        ((StatusV==0,StatusE\==0) -> (write('**** for file '), write(FI),
             writeln(', Vampire > Eprover')); true),
-        ((StatusV==1,StatusE==0) -> (write('**** for file '), write(FI),
+        ((StatusV\==0,StatusE==0) -> (write('**** for file '), write(FI),
             writeln(', Eprover > Vampire')); true),
         %
         (StatusV == 0 -> Sv1 is Sv0+1 ; Sv1 is Sv0),
@@ -144,8 +161,9 @@ filename_nbLemmas('list/list',N).
 filename_indice_stream(File,Indice,_Stream) :-
     filename_nbLemmas(File,N), Indice > N, !,
     writeln('Error: index > #lemmas'), fail.
-filename_indice_stream(File,Indice,Stream) :-  
-    Indice > 0,  
+filename_indice_stream(File,Indice,Stream) :-
+    Indice > 0,
+    reset_gensym(id),   % fof names restart at id1 in every generated file
     filename_ax1_8(File,Axioms1_to_8),
     write_ax1_ax8_as_TPTP_axioms(Axioms1_to_8,Stream),
     filename_indice_defs_lemmas_induction_conjecture(File,Indice,Defs,Axs,Lemmas,InductionAxioms,Conjecture),
@@ -258,10 +276,11 @@ To be written as:
 
 filename_lemmas_defns_axs(File,Lms,Defns,Axs) :-
     atom_concat(File,'.pr',FilePr),
-    open(FilePr,read,Stream),
-    read(Stream,T),
-    filename_lemmas_defns_axs(T,Stream,[],Lms,[],Defns,[],Axs),
-    close(Stream).
+    setup_call_cleanup(
+        open(FilePr,read,Stream),
+        ( read(Stream,T),
+          filename_lemmas_defns_axs(T,Stream,[],Lms,[],Defns,[],Axs) ),
+        close(Stream)).
 
     filename_lemmas_defns_axs(end_of_file,_,Lms,Lemmas,Dfs,Defns,Axs,Axioms) :- !, 
         reverse(Lms,Lemmas),
@@ -348,8 +367,8 @@ write_LPTP_formula_to_TPTP(S,LPTPFormula) :- write_(S,LPTPFormula).
 
         write_(S,L = R) :- !, write__term(S,L), write(S,' = '), write__term(S,R).
         write_(S,L <> R) :- !, write_(S, ~ (L = R) ).   
-        write_(S,L #< R) :- !,write(S,"'#<'("),write__term(S,L),write(S,','),write__term(S,R),write(S,')').
-        write_(S,L #=< R) :- !,write(S,"'#=<'("),write__term(S,L),write(S,','),write__term(S,R),write(S,')').
+        write_(S,L #< R) :- !,write_quoted_functor(S,'#<'),write(S,'('),write__term(S,L),write(S,','),write__term(S,R),write(S,')').
+        write_(S,L #=< R) :- !,write_quoted_functor(S,'#=<'),write(S,'('),write__term(S,L),write(S,','),write__term(S,R),write(S,')').
 
         write_(S,gr(T)) :- !, write(S,'gr('), write__term(S,T), write(S,')').
         write_(S,~ F) :- !, write(S,'~ ('),write_(S,F),write(S,')').
@@ -357,43 +376,81 @@ write_LPTP_formula_to_TPTP(S,LPTPFormula) :- write_(S,LPTPFormula).
         write_(S,F \/ G) :- !, write(S,'('),write_(S,F),write(S,' | '),write_(S,G),write(S,')').    
         write_(S,F => G) :- !, write(S,'('),write_(S,F),write(S,' => '),write_(S,G),write(S,')').    
         write_(S,F <=> G) :- !, write(S,'('),write_(S,F),write(S,' <=> '),write_(S,G),write(S,')').    
-        write_(S,all [X|Xs] : F) :- !, write(S,'! ['),  write_variables(S,[X|Xs]), write(S,'] : '),write_(S,F).    
-        write_(S,all Id : F) :- !, write(S,'! ['), write__term(S,?(Id)), write(S,'] : '),write_(S,F).         
-        write_(S,ex [X|Xs] : F) :- !, write(S,'? ['),  write_variables(S,[X|Xs]), write(S,'] : '),write_(S,F).    
-        write_(S,ex Id : F) :- !, write(S,'? ['), write__term(S,?(Id)), write(S,'] : '),write_(S,F).    
-        write_(S,F) :- atomic(F), !, write_canonical(S,F).
-        write_(S,succeeds(At)) :- !, 
-            At =.. [P|Args], atom_concat(P,'_succeeds',Ps), 
-            write_canonical(S,Ps),write(S,'('), write_terms(S,Args),write(S,')').
-        write_(S,fails(At)) :- !, 
-            At =.. [P|Args], atom_concat(P,'_fails',Ps),
-            write_canonical(S,Ps),write(S,'('), write_terms(S,Args),write(S,')').
-        write_(S,terminates(At)) :- !, 
-            At =.. [P|Args], atom_concat(P,'_terminates',Ps), 
-            write_canonical(S,Ps),write(S,'('), write_terms(S,Args),write(S,')').
-        write_(S,Atom) :- Atom =.. [P|Args], write_canonical(S,P), write(S,'('), write_terms(S,Args),write(S,')').
-            
+        % An empty quantifier prefix is no prefix at all: TPTP has no '! [] : F'.
+        write_(S,all [] : F) :- !, write_(S,F).
+        write_(S,ex [] : F) :- !, write_(S,F).
+        write_(S,all [X|Xs] : F) :- !, write(S,'! ['),  write_variables(S,[X|Xs]), write(S,'] : '),write_(S,F).
+        write_(S,all Id : F) :- !, write(S,'! ['), write__term(S,?(Id)), write(S,'] : '),write_(S,F).
+        write_(S,ex [X|Xs] : F) :- !, write(S,'? ['),  write_variables(S,[X|Xs]), write(S,'] : '),write_(S,F).
+        write_(S,ex Id : F) :- !, write(S,'? ['), write__term(S,?(Id)), write(S,'] : '),write_(S,F).
+        write_(S,F) :- atomic(F), !, write_functor(S,F).
+        % A 0-ary predicate must be written 'p_succeeds', never 'p_succeeds()':
+        % the latter is a TPTP syntax error, and write_terms/2 used to just fail
+        % on the empty list, truncating the file in the middle of a formula.
+        write_(S,succeeds(At)) :- !,
+            At =.. [P|Args], atom_concat(P,'_succeeds',Ps), write_functor(S,Ps),
+            write_args(S,Args).
+        write_(S,fails(At)) :- !,
+            At =.. [P|Args], atom_concat(P,'_fails',Ps), write_functor(S,Ps),
+            write_args(S,Args).
+        write_(S,terminates(At)) :- !,
+            At =.. [P|Args], atom_concat(P,'_terminates',Ps), write_functor(S,Ps),
+            write_args(S,Args).
+        write_(S,Atom) :-
+            Atom =.. [P|Args], write_functor(S,P), write_args(S,Args).
+
+            write_args(_,[]) :- !.
+            write_args(S,[A|As]) :- write(S,'('), write_terms(S,[A|As]), write(S,')').
+
+            write_terms(_,[]) :- !.
             write_terms(S,[T]) :- !, write__term(S,T).
             write_terms(S,[T1,T2|Us]) :- write__term(S,T1), write(S,','),write_terms(S,[T2|Us]).
-            
+
+            % write_quoted_functor(+Stream,+Functor): emit 'F' with the quotes,
+            % as TPTP requires for non-alphanumeric functors. Written character by
+            % character so that the code stays valid under --traditional / ISO,
+            % where "..." is a code list rather than a string object.
+            write_quoted_functor(S,F) :- write(S,''''), write(S,F), write(S,'''').
+
+            % write_functor(+Stream,+Functor): quote unless the functor is a plain
+            % TPTP identifier. write_canonical/2 is NOT enough here: it leaves a
+            % purely symbolic atom such as '@=<' or '#<' unquoted, which is legal
+            % Prolog but a TPTP syntax error -- E stops on "just read '@'".
+            write_functor(S,F) :-
+                (   tptp_plain_functor(F)
+                ->  write(S,F)
+                ;   write_quoted_functor(S,F)
+                ).
+
+                tptp_plain_functor(F) :-
+                    atom(F),
+                    atom_codes(F,[C|Cs]),
+                    C >= 0'a, C =< 0'z,
+                    forall(member(D,Cs), tptp_alnum(D)).
+
+                    tptp_alnum(D) :- D >= 0'a, D =< 0'z.
+                    tptp_alnum(D) :- D >= 0'A, D =< 0'Z.
+                    tptp_alnum(D) :- D >= 0'0, D =< 0'9.
+                    tptp_alnum(0'_).
+
             %write__term(S,[]) :- !, term_to_atom([],At), write_canonical(S,At).
             write__term(S,[]) :- !, write(S,nil).
-            write__term(S,Cst) :- integer(Cst), term_to_atom(Cst,QuotedInt),!, write_canonical(S,QuotedInt).
-            write__term(S,Cst) :- atomic(Cst), !, write_canonical(S,Cst).
+            write__term(S,Cst) :- integer(Cst), term_to_atom(Cst,QuotedInt),!, write_functor(S,QuotedInt).
+            write__term(S,Cst) :- atomic(Cst), !, write_functor(S,Cst).
             write__term(S,?(Id)) :-  !, atom_concat('X',Id,A),write(S,A).
-            write__term(S,#- X) :- !, write(S,"'#-'"),write(S,'('),write__term(S,X),write(S,')').
-            write__term(S,-(X)) :- !, write(S,"'-'"),write(S,'('),write__term(S,X),write(S,')').
+            write__term(S,#- X) :- !, write_quoted_functor(S,'#-'),write(S,'('),write__term(S,X),write(S,')').
+            write__term(S,-(X)) :- !, write_quoted_functor(S,'-'),write(S,'('),write__term(S,X),write(S,')').
 
             write__term(S,[X|Xs]) :- !, write(S,'cons('),write__term(S,X),write(S,','),write__term(S,Xs),write(S,')').
-            write__term(S,X ** Y) :- !, write(S,"'**'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
-            write__term(S,X @+ Y) :- !, write(S,"'@+'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
-            write__term(S,X @* Y) :- !, write(S,"'@*'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
-            write__term(S,X #+ Y) :- !, write(S,"'#+'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
-            write__term(S,X #* Y) :- !, write(S,"'#*'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').            
-            write__term(S,X #- Y) :- !, write(S,"'#-'"),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').            
+            write__term(S,X ** Y) :- !, write_quoted_functor(S,'**'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
+            write__term(S,X @+ Y) :- !, write_quoted_functor(S,'@+'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
+            write__term(S,X @* Y) :- !, write_quoted_functor(S,'@*'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
+            write__term(S,X #+ Y) :- !, write_quoted_functor(S,'#+'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
+            write__term(S,X #* Y) :- !, write_quoted_functor(S,'#*'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
+            write__term(S,X #- Y) :- !, write_quoted_functor(S,'#-'),write(S,'('),write__term(S,X),write(S,','),write__term(S,Y),write(S,')').
 
-            write__term(S,Term) :- 
-                Term =.. [F|Args], write_canonical(S,F), 
+            write__term(S,Term) :-
+                Term =.. [F|Args], write_functor(S,F),
                 write(S,'('), write_terms(S,Args),write(S,')').
             
              write_variables(S,[X]) :- !,write__term(S,?(X)).
@@ -438,20 +495,30 @@ filename_lemmas_defns_axs('add_peano/add_peano',L,_,_),append(L1,[C],L),write_le
 % Lemma and Completion in LPTP syntax
 induction_for_lemma(Lemma, Completion, Closed, Sub) :-
     Lemma = lemma(_Id,FLemma),
-    split_lemma(FLemma, AtomVars-Atom, RightVars-Right), !,
-    (RightVars = [] -> 
-        Phi = Right 
-    ;   
-        Phi = (all RightVars : Right) ),
-    Sub = (all AtomVars : (succeeds Atom => Phi)),
+    split_lemma(FLemma, AtomVars-Atom, RightVars-Right),
+    % The cut must come AFTER definition/4: a lemma may well mention a predicate
+    % that has no completion here (one imported through needs_gr/needs_thm).
+    % Cutting before it commits to this clause and then fails, which silently
+    % aborts the whole .fof file instead of falling back to the trivial axiom.
     definition(Completion, Atom, AtomDef, Definition),
+    !,
+    (RightVars = [] ->
+        Phi = Right
+    ;
+        Phi = (all RightVars : Right) ),
+    quantify_all(AtomVars, (succeeds Atom => Phi), Sub),
     renaming(AtomDef,Atom,Renaming),
     apply_renaming(Definition,Renaming,DefinitionR),
     success(DefinitionR, SuccessDef),
     success(Atom,Atom_succeeds),
     add_property(SuccessDef, Atom_succeeds, Phi, SDP),
-    Closed = (all AtomVars : (SDP => Phi)).
+    quantify_all(AtomVars, (SDP => Phi), Closed).
 induction_for_lemma(_Lemma, _Completion, true, true).
+
+    % quantify_all(+Vars,+Formula,-QuantifiedFormula): a 0-ary predicate yields
+    % Vars = [], and 'all [] : F' is neither an LPTP nor a TPTP formula.
+    quantify_all([], F, F) :- !.
+    quantify_all([V|Vs], F, (all [V|Vs] : F)).
       
     split_lemma( (all Vars : (succeeds Atom => Right)), AtomVars-Atom, RightVars-Right) :- !,
         Atom =.. [_|AVars], lptp_variables_id(AVars,AtomVars),
@@ -513,16 +580,33 @@ renaming(Pure_Atom1,Pure_Atom2,Subst) :-
 
 
 % copy_term_lptp(+PureLPTPAtom-Form,-RenamedPureLPTPAtom-RenamedForm)
+%   The fresh names MUST avoid every identifier already occurring in the pair,
+%   the quantified ones included. gensym(y,...) alone is not enough: LPTP proof
+%   files routinely quantify over y1, y2, ..., and when a generated name hits one
+%   of them apply_renaming/4 treats it as bound and silently captures it, which
+%   corrupts the induction hypothesis (seen on nat.pr, lemma plus:leq:leq).
 copy_term_lptp(PureLPTPAtom-Form,RenamedPureLPTPAtom-RenamedForm) :-
     PureLPTPAtom =.. [_|Args],
-    build_renaming(Args,Renaming),
+    lptp_names(PureLPTPAtom-Form,Used),
+    build_renaming(Args,Used,Renaming),
     apply_renaming(PureLPTPAtom,Renaming,RenamedPureLPTPAtom),
     apply_renaming(Form,Renaming,RenamedForm).
-        
-build_renaming([],[]).
-build_renaming([?(X)|LPTPVars],[X - ?(GS)|Renaming]) :-
-    gensym(y,GS),
-    build_renaming(LPTPVars,Renaming).
+
+build_renaming([],_Used,[]).
+build_renaming([?(X)|LPTPVars],Used,[X - ?(GS)|Renaming]) :-
+    fresh_name(Used,GS),
+    build_renaming(LPTPVars,[GS|Used],Renaming).
+
+    fresh_name(Used,GS) :- repeat, gensym(y,GS), \+ memberchk(GS,Used), !.
+
+% lptp_names(+Term,-Names): the identifiers occurring in Term. Over-approximated
+% by every atom in it -- cheap, and only ever used to steer clear of collisions.
+lptp_names(Term,Names) :-
+    findall(A, (lptp_subterm(Term,S), atom(S), A = S), As),
+    sort(As,Names).
+
+    lptp_subterm(T,T).
+    lptp_subterm(T,S) :- compound(T), arg(_,T,A), lptp_subterm(A,S).
 
 
 % ?- copy_term_lptp(nat_succeeds(?x)-gr(?x), A-F).
@@ -546,8 +630,10 @@ apply_renaming(S = T, R, QV, Rs = Rt) :- !, apply_renaming_term(S, R, QV, Rs), a
 apply_renaming((~ F), R, QV, (~ Rf)) :- !, apply_renaming(F, R, QV, Rf).
 apply_renaming((F & G), R, QV, (Rf & Rg)) :- !, apply_renaming(F, R, QV, Rf), apply_renaming(G, R, QV, Rg).
 apply_renaming((F \/ G), R, QV, (Rf \/ Rg)) :- !, apply_renaming(F, R, QV, Rf), apply_renaming(G, R, QV, Rg).
-apply_renaming((ex [V|Vs] : F), R, QV, (ex [V|Vs] : Rf)) :- !, append([V|Vs], QV, QV2), apply_renaming(F, R, QV2, Rf). 
-apply_renaming((ex V : F), R, QV, (ex [V] : Rf)) :- atom(V), !, apply_renaming(F, R, [V|QV], Rf). 
+apply_renaming((ex [] : F), R, QV, Rf) :- !, apply_renaming(F, R, QV, Rf).
+apply_renaming((all [] : F), R, QV, Rf) :- !, apply_renaming(F, R, QV, Rf).
+apply_renaming((ex [V|Vs] : F), R, QV, (ex [V|Vs] : Rf)) :- !, append([V|Vs], QV, QV2), apply_renaming(F, R, QV2, Rf).
+apply_renaming((ex V : F), R, QV, (ex [V] : Rf)) :- atom(V), !, apply_renaming(F, R, [V|QV], Rf).
 apply_renaming((all [V|Vs] : F), R, QV, (all [V|Vs] : Rf)) :- !, append([V|Vs], QV, QV2), apply_renaming(F, R, QV2, Rf).
 apply_renaming((all V : F), R, QV, (all [V] : Rf)) :- atom(V), !, apply_renaming(F, R, [V|QV], Rf).
 apply_renaming(Atom, R, QV, Ratom) :-
@@ -581,9 +667,9 @@ filename_completion(File,Comp) :-
 
 defs_ground_variables([],[]).
 defs_ground_variables([D|Ds],[CleanDef|CleanDefs]) :- 
-    term_variables(D,Vars), 
-    reset_gensym, 
-    ground_vars(Vars), 
+    term_variables(D,Vars),
+    reset_gensym(x),   % NOT reset_gensym/0: that also resets the 'id' and 'y' counters
+    ground_vars(Vars),
     clean_defn(D,CleanDef),
     defs_ground_variables(Ds,CleanDefs).
 
@@ -687,26 +773,24 @@ same_predicate(H1,H2) :- functor(H1,P,N), functor(H2,P,N).
 % After constructing the list of undefined literals occuring in clause bodies, 
 % each of them is transformed into a formula of the form !X1...!Xn: ¬p(X1,...,Xn)
 
-handle_undefined(Program,Heads,CompDefs,Comp,UndefPIs) :- 
-    findall(L,
+handle_undefined(Program,Heads,CompDefs,Comp,UndefPIs) :-
+    findall(P/N,
             ( member((_H :- B),Program),           % pick a clause body,
-                ( (member(L,B), \+ (L = \+(_)))    % either an unnegated litteral 
-                ; member(\+(L),B) ),               % or a negated one, 
-                \+ member(L,Heads),                % which is undefined
-                functor(L,P,_N),dif(P,=)),          % and is not equality   
-            Undefs),
-    defined_pred(Undefs,UndefPIs),
-    undef_formulas(Undefs,CompDefs,Comp).
+              body_literal(B,L),                   % any literal in it, at any depth
+              \+ member(L,Heads),                  % which is undefined
+              functor(L,P,N), dif(P,=) ),          % and is not equality
+            PIs),
+    sort(PIs,UndefPIs),                            % one axiom per predicate, not per call
+    undef_formulas(UndefPIs,CompDefs,Comp).
 
-undef_formulas([],Comp,Comp). 
-undef_formulas([L|Ls],Comp0,Comp) :-
-    quantify(L,F),
-    undef_formulas(Ls,[F|Comp0],Comp).
+undef_formulas([],Comp,Comp).
+undef_formulas([PI|PIs],Comp0,Comp) :-
+    quantify(PI,F),
+    undef_formulas(PIs,[F|Comp0],Comp).
 
-quantify(L,(L <=> false)) :- functor(L,_P,0), !.
-quantify(L,F) :- 
-    L =.. [P|_As], 
-    functor(L,P,N),
+% quantify(+PredicateIndicator,-Formula)
+quantify(P/0,(P <=> false)) :- !.
+quantify(P/N,F) :-
     N > 0,
     length(Vars,N),
     NewL =.. [P|Vars],
@@ -772,10 +856,66 @@ existential_quantifiers(Body,HeadVars,NewBody) :-
 varsin(Term,Vs) :- term_variables(Term,Vs).
 
 body_form([], true).
-body_form([\+ Lit], (~ Lit) ) :- !. 
-body_form([Lit], Lit) :- !.
-body_form([\+ Lit|List], (~ Lit) & Conj) :- !, body_form(List,Conj). 
-body_form([Lit|List], Lit & Conj) :- body_form(List,Conj).
+body_form([G], F) :- !, goal_form(G,F).
+body_form([G|List], F & Conj) :- goal_form(G,F), body_form(List,Conj).
+
+% goal_form(+PrologGoal,-LPTPFormula):
+%   translate one body element into an LPTP goal formula.
+%   Control constructs follow LPTP's own translation, see lptp/src/gnd.pl,
+%   gnd__disjunction/5 and gnd__goal/4:
+%       ( C -> T ; E )  ==>  (C & T) \/ (~ C & E)
+%       ( C -> T )      ==>  (C & T)                 [ i.e. ( C -> T ; fail ) ]
+%       ( A ; B )       ==>  A \/ B
+%       \+ A , not A    ==>  ~ A
+%   Once here, the completion is a pure LPTP formula, so gr/2, success/2,
+%   failure/2 and termination/2 need no if-then-else clause of their own.
+
+goal_form(G,F) :- var(G), !, F = G.
+goal_form(\+ A, (~ Fa)) :- !, goal_form(A,Fa).
+goal_form(not A, (~ Fa)) :- !, goal_form(A,Fa).
+goal_form((C -> T ; E), ((Fc & Ft) \/ ((~ Fc) & Fe))) :- !,
+    goal_form(C,Fc), goal_form(T,Ft), goal_form(E,Fe).
+goal_form((C -> T), (Fc & Ft)) :- !, goal_form(C,Fc), goal_form(T,Ft).
+goal_form((A ; B), (Fa \/ Fb)) :- !, goal_form(A,Fa), goal_form(B,Fb).
+goal_form((A , B), (Fa & Fb)) :- !, goal_form(A,Fa), goal_form(B,Fb).
+goal_form(true, true) :- !.
+goal_form(fail, fail) :- !.
+goal_form(false, fail) :- !.
+goal_form(Atom, Atom).
+
+% control_goal(+Goal): Goal is a control construct, not a callable atom.
+control_goal(G) :- nonvar(G), control_goal_(G).
+
+    control_goal_((_ -> _ ; _)).
+    control_goal_((_ -> _)).
+    control_goal_((_ ; _)).
+    control_goal_((_ , _)).
+    control_goal_((\+ _)).
+    control_goal_((not _)).
+
+% control_subgoals(+ControlGoal,-ImmediateSubgoals)
+control_subgoals((C -> T ; E),[C,T,E]) :- !.
+control_subgoals((C -> T),[C,T]) :- !.
+control_subgoals((A ; B),[A,B]) :- !.
+control_subgoals((A , B),[A,B]) :- !.
+control_subgoals((\+ A),[A]) :- !.
+control_subgoals((not A),[A]) :- !.
+
+% control_atom_goal(+Goal): a goal that denotes no predicate of the program.
+control_atom_goal(true).
+control_atom_goal(fail).
+control_atom_goal(false).
+
+% body_literal(+BodyGoalList,-Literal):
+%   enumerate, on backtracking, the callable literals of a clause body,
+%   descending through negations and control constructs.
+body_literal(Body,L) :- member(G,Body), goal_literal(G,L).
+
+    goal_literal(G,_) :- var(G), !, fail.
+    goal_literal(G,L) :- control_goal(G), !,
+        control_subgoals(G,Gs), member(G2,Gs), goal_literal(G2,L).
+    goal_literal(G,_) :- control_atom_goal(G), !, fail.
+    goal_literal(L,L).
 
 % body_quants(BV,HV,C,QC):
 %       QC is conj. C extended with existential quant.s for all
@@ -823,11 +963,15 @@ program_fns([C|Cs],FNs0,FNs) :-
     body_fnsyms(Body,FNs1,FNs2),
     program_fns(Cs,FNs2,FNs).
 
-atom_fnsyms((\+ H),Fs0,Fs) :-
-    !, H =.. [_P|Args],
-    terms_fnsyms(Args,Fs0,Fs).
+atom_fnsyms(H,Fs,Fs) :-
+    var(H), !.
 atom_fnsyms(H,Fs0,Fs) :-
-    functor(H,F,_), dif(F,\+),
+    control_goal(H), !,                 % descend into \+, ',', ';' and if-then-else
+    control_subgoals(H,Gs),
+    body_fnsyms(Gs,Fs0,Fs).
+atom_fnsyms(H,Fs,Fs) :-
+    control_atom_goal(H), !.            % true/fail/false denote no function symbol
+atom_fnsyms(H,Fs0,Fs) :-
     H =.. [_P|Args],
     terms_fnsyms(Args,Fs0,Fs).
     
@@ -891,7 +1035,7 @@ filename_clauses('list/list.pl',L),ground_completion(L,F,PIs,UPIs,FNs),write_lis
 %%%%%
 gr(true, true):-!.
 gr(fail, true):-!.
-gr(s = t, gr(s) & gr(t)):-!.
+gr(S = T, gr(S) & gr(T)):-!.
 gr((G & H), (GrG & GrH)) :- !, gr(G,GrG), gr(H,GrH).
 gr((G \/ H), (GrG & GrH)) :- !, gr(G,GrG), gr(H,GrH).
 gr((ex V :G), (ex V :GrG)):- !, gr(G,GrG).
@@ -1112,7 +1256,10 @@ axioms6and7(DefPIs,UndefPIs,Ax67) :-
         atom_concat(P,'_fails',PF), 
         atom_concat(P,'_terminates',PT), 
         Ax6 = ~(PS & PF),
-        Ax7 =  (PT => (PS | PS)),
+        % '|' is not the LPTP disjunction (it would be written out as an
+        % uninterpreted predicate '|'/2), and the disjunct is PF, not PS again.
+        % Compare with the N > 0 clause below.
+        Ax7 =  (PT => (PS \/ PF)),
         axioms6and7(PIs, Ax).
     axioms6and7([P/N|PIs], [Ax6,Ax7|Ax]) :-
         N > 0,
@@ -1261,10 +1408,11 @@ write_list(S,[X|Xs]) :-
 %   Non-ground representation.
 
 filename_clauses(File,Cls) :-
-    open(File,read,Stream),
-    read(Stream,T),
-    filename_clauses_aux(T,Stream,[],Cls),
-    close(Stream).
+    setup_call_cleanup(
+        open(File,read,Stream),
+        ( read(Stream,T),
+          filename_clauses_aux(T,Stream,[],Cls) ),
+        close(Stream)).
 
     filename_clauses_aux(end_of_file,_,Cls,Cls) :- !.
     filename_clauses_aux(T,Stream,Cls0,Cls) :- 
@@ -1279,6 +1427,7 @@ filename_clauses(File,Cls) :-
 
     rnd_sq((not(B),Br),[(\+ B)|Bs]) :- !, rnd_sq(Br,Bs).
     rnd_sq((B,Br),[B|Bs]) :- !, rnd_sq(Br,Bs).
+    rnd_sq(not(B),[(\+ B)]) :- !.   % 'not' as the last body literal, too
     rnd_sq(At,[At]).
     
     rewrite_preds(directive(_),Cls,Cls).
@@ -1289,11 +1438,27 @@ filename_clauses(File,Cls) :-
         rewrite_body([],[]).
         rewrite_body([A|As],[B|Bs]) :- rewrite_pred(A,B), rewrite_body(As,Bs).
 
-        rewrite_pred(Atom,Atom2) :- 
-            Atom =.. [P|Args], 
+        rewrite_pred(G,G) :- var(G), !.
+        rewrite_pred(G,G2) :-
+            control_goal(G), !,                 % rewrite the branches as goals,
+            rewrite_control(G,G2).              % not as terms
+        rewrite_pred(G,G) :- control_atom_goal(G), !.
+        rewrite_pred(Atom,Atom2) :-
+            Atom =.. [P|Args],
             term_to_atom(P,PAt),
-            rewrite_terms(Args,Args2), 
+            rewrite_terms(Args,Args2),
             Atom2 =.. [PAt|Args2].
+
+            rewrite_control((C -> T ; E),(C2 -> T2 ; E2)) :- !,
+                rewrite_pred(C,C2), rewrite_pred(T,T2), rewrite_pred(E,E2).
+            rewrite_control((C -> T),(C2 -> T2)) :- !,
+                rewrite_pred(C,C2), rewrite_pred(T,T2).
+            rewrite_control((A ; B),(A2 ; B2)) :- !,
+                rewrite_pred(A,A2), rewrite_pred(B,B2).
+            rewrite_control((A , B),(A2 , B2)) :- !,
+                rewrite_pred(A,A2), rewrite_pred(B,B2).
+            rewrite_control((\+ A),(\+ A2)) :- !, rewrite_pred(A,A2).
+            rewrite_control((not A),(\+ A2)) :- !, rewrite_pred(A,A2).
                 
             rewrite_term(X,X) :- var(X),!.
             rewrite_term([],nil) :- !.
