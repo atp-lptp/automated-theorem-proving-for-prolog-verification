@@ -1,0 +1,3 @@
+:- lemma(p_q_loop:fail, succeeds p => fail, [trivial]).
+:- lemma(p_q_loop:var, all [x]: succeeds p => ?x = 0, [trivial]).
+:- lemma(p_q_loop:iff, succeeds p <=> fail, [trivial]).

@@ -1,0 +1,25 @@
+# Expected results of test/indp/run.sh
+#
+# <program> <lemma> <induction axioms> <status>
+#   program           path of the .pl/.pr pair, relative to test/indp, without extension
+#   lemma             index of the lemma in the .pr file (the conjecture of <program><lemma>.fof)
+#   induction axioms  number of fof(induction,...) lines written in the .fof file
+#   status            Theorem: both E and Vampire must prove the conjecture
+#                     Unproved: neither of them must prove it (known limitation)
+
+# 0-ary predicates
+zero_ary/p_loop    1 1 Theorem
+zero_ary/p_loop    2 1 Theorem
+zero_ary/p_q_loop  1 1 Theorem
+zero_ary/p_q_loop  2 1 Theorem
+zero_ary/p_q_loop  3 2 Theorem
+zero_ary/p_undef   1 1 Theorem
+zero_ary/p_undef   2 1 Theorem
+zero_ary/mixed     1 1 Theorem
+zero_ary/mixed     2 1 Theorem
+zero_ary/mixed     3 1 Theorem
+zero_ary/mixed     4 0 Theorem
+zero_ary/mixed     5 0 Theorem
+
+# mutual recursion: not supported yet, update this line once it is
+mutual/r_s_loop    1 2 Unproved

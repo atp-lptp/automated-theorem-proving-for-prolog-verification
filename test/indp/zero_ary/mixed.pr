@@ -1,0 +1,6 @@
+:- lemma(mixed:p, succeeds p => fail, [trivial]).
+:- lemma(mixed:r, succeeds r => succeeds n(0), [trivial]).
+:- lemma(mixed:n, all [x]: succeeds n(?x) => succeeds q, [trivial]).
+% closed lemmas whose induction atom is not 0-ary: no induction axiom
+:- lemma(mixed:ground, succeeds n(0) => succeeds q, [trivial]).
+:- lemma(mixed:gr, gr(0) => succeeds q, [trivial]).

@@ -1,0 +1,2 @@
+:- lemma(p_loop:fail, succeeds p => fail, [trivial]).
+:- lemma(p_loop:var, all [x]: succeeds p => ?x = 0, [trivial]).

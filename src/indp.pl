@@ -213,6 +213,13 @@ filename_indice_defs_lemmas_induction_conjecture(File,Indice,Defs,Axs,Lemmas,Ind
         induction_for_lemma(Lemma,Comp,Closed,Sub),
         InductionAxioms = [lemma(induction,(Closed => Sub))].
     name_fconjecture_comp_induction(Name,FConjecture0,Comp,InductionAxioms) :-
+        % a lemma without variables on a 0-ary predicate p,
+        % e.g. succeeds p => fail or succeeds p <=> fail:
+        % treat it as all [] : F; quantify_all/3 drops the empty prefix
+        ( FConjecture0 = (L => R) ; FConjecture0 = (L <=> R) ),
+        zero_ary_induction_atom(L => R), !,
+        name_fconjecture_comp_induction(Name,(all [] : FConjecture0),Comp,InductionAxioms).
+    name_fconjecture_comp_induction(Name,FConjecture0,Comp,InductionAxioms) :-
         FConjecture0 = (all Vars:(L <=> R)), !,
         FConjectures = ((all Vars : L => R) & (all Vars : R => L)),
         name_fconjecture_comp_induction(Name,FConjectures,Comp,InductionAxioms).
@@ -225,6 +232,12 @@ filename_indice_defs_lemmas_induction_conjecture(File,Indice,Defs,Axs,Lemmas,Ind
     name_fconjecture_comp_induction(_Name,_FConjecture0,_Comp,InductionAxioms) :-
         InductionAxioms = [].
 
+    % zero_ary_induction_atom(+Implication): the atom on which induction_for_lemma/4
+    % would induct for Implication (see split_lemma/3) is 0-ary
+    zero_ary_induction_atom(Implication) :-
+        split_lemma((all [] : Implication), _-Atom, _),
+        atom(Atom).
+		
 /*
 filename_indice_defs_lemmas_induction_conjecture('member/member',1,Defs,Lemmas,InductionAxioms,Conjecture),writeln(InductionAxioms).
 filename_indice_defs_lemmas_induction_conjecture('even_odd/even_odd',1,Defs,Lemmas,InductionAxioms,Conjecture),writeln(InductionAxioms).
@@ -489,6 +502,22 @@ filename_lemmas_defns_axs('add_peano/add_peano',L,_,_),append(L1,[C],L),write_le
         Sub := [all [x] : (success p(?x) => Phi(?x)) ]   
         (NB : it is the lemma to be proved)
         Induction Axiom :=  [Closed => Sub]
+
+- for a 0-ary predicate p, the same scheme applies with p in place of p(?x),
+  hence without the prefix all [x] (Phi may still quantify over [y,...]):
+    - the completion of p is (p <=> D_p), without quantifier,
+      see definition/4;
+    - a lemma without any variable, e.g. (success p => fail), is first
+      rewritten as all [] : (success p => fail),
+      see name_fconjecture_comp_induction/4;
+    - Closed and Sub get no quantifier prefix (see quantify_all/3):
+        Closed := [S D_p => Phi], where on the left
+            each "success p" is replaced by "success p & Phi"
+        Sub := [success p => Phi]
+      e.g. for the clause (p :- q, p) and the lemma (success p => fail),
+      so that Phi = fail:
+        Closed := [(success q & (success p & fail)) => fail]
+        Sub := [success p => fail]
 */
 
 % induction_for_lemma(+Lemma,+Completion, -Closed, -Sub)
@@ -536,7 +565,9 @@ induction_for_lemma(_Lemma, _Completion, true, true).
             lptp_variables_id([],[]).
             lptp_variables_id([?(Y)|Xs],[Y|Ys]) :-  lptp_variables_id(Xs,Ys).
 
-    definition([all _:(Atom <=> Def)|_], Atom0, Atom, Def) :- functor(Atom,P,N), functor(Atom0,P,N), !.
+    % a completion is quantified iff its predicate has arity N > 0
+    definition([all _:(Atom <=> Def)|_], Atom0, Atom, Def) :- functor(Atom,P,N), N> 0, functor(Atom0,P,N), !.
+    definition([(Atom <=> Def)|_], Atom0, Atom, Def) :- functor(Atom,P,0), functor(Atom0,P,0), !.
     definition([_|L], Atom, AtomDef, Def) :- definition(L, Atom, AtomDef, Def).
 
     %add_property(+SuccessDef,+Atom,+Phi,-SDP)
@@ -556,13 +587,46 @@ induction_for_lemma(_Lemma, _Completion, true, true).
         apply_renaming(Phi2,Subst,Phi3).
       
 /*
+add_property(member_succeeds(?a, ?b), member_succeeds(?x, ?l), gr(?l)=>gr(?x), F).		
+*/		
+		
+/*
 induction_for_lemma(lemma(1, all[x, l]:succeeds member(?x, ?l)&gr(?l)=>gr(?x)), 
-    [all[?x1,?x2]:member(?x1, ?x2)<=>(ex[?x3]:ex[?x4]: ?x2=cons(?x3, ?x4)&member(?x1, ?x4))\/(ex[?x5]: ?x2=cons(?x1, ?x5))], Closed,Sub),
-    writeln(Closed).
-          
-add_property(member_succeeds(?a, ?b), member_succeeds(?x, ?l), gr(?l)=>gr(?x), F).
-*/
+    [all[?x1,?x2]:member(?x1, ?x2)<=>(ex[?x3]:ex[?x4]: ?x2=cons(?x3, ?x4)&member(?x1, ?x4))\/(ex[?x5]: ?x2=cons(?x1, ?x5))], Closed,Sub).
 
+% p :- p.
+induction_for_lemma(lemma(1, all[]:succeeds p => fail),
+    [p <=> p], Closed,Sub).
+% p_succeeds&fail=>fail
+% succeeds p=>fail
+
+% p :- q, p.   q.
+induction_for_lemma(lemma(2, all[]:succeeds p => fail),
+    [p <=> q & p, q <=> true], Closed,Sub).
+% q_succeeds&(p_succeeds&fail)=>fail
+% succeeds p=>fail
+
+% p :- q, p.   q.   (0-ary atom, but Phi quantifies over x)
+induction_for_lemma(lemma(3, all[x]:succeeds p => ?x = 0),
+    [p <=> q & p, q <=> true], Closed,Sub).
+% q_succeeds&(p_succeeds&(all[x]: ?x=0))=>(all[x]: ?x=0)
+% succeeds p=>(all[x]: ?x=0)
+
+% p :- q ; p.   q.
+induction_for_lemma(lemma(4, all[]:succeeds p => succeeds q),
+    [p <=> q \/ p, q <=> true], Closed,Sub).
+% q_succeeds\/p_succeeds&succeeds q=>succeeds q
+% succeeds p=>succeeds q
+
+% r :- n(s(0)).   n(0).   n(s(X)) :- n(X).   (0-ary r defined by an n-ary n)
+induction_for_lemma(lemma(5, all[]:succeeds r => succeeds n(0)),
+    [r <=> n(s(0)), all[x1]:n(?x1)<=>(ex[x2]: ?x1=s(?x2)&n(?x2))\/ ?x1=0], Closed,Sub).
+% n_succeeds(s(0))=>succeeds n(0)
+% succeeds r=>succeeds n(0)
+*/
+		
+		
+		
 % renaming(+Pure_Atom1,+Pure_Atom2,-Subst)
 % with vars(Pure_Atom1) disjoint from vars(Pure_Atom2)           
 renaming(Pure_Atom1,Pure_Atom2,Subst) :- 

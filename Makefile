@@ -25,7 +25,8 @@ MAKEFLAGS += -j2
 	run-prover-container  \
 	start  \
 	stop  \
-	test
+	test  \
+	test-indp
 
 help: ### Show available commands short description
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -125,3 +126,6 @@ test:
 ### Build tests from examples provided in comments before running them
 	. ./bin/build.sh && \
 	run_tests
+
+test-indp: ### Run the non-regression tests of src/indp.pl with E and Vampire (TIME_LIMIT, default 10s)
+	@./test/indp/run.sh

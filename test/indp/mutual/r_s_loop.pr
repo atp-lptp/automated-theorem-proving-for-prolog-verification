@@ -1,0 +1,3 @@
+% NOT YET SUPPORTED: indp.pl generates one induction axiom per predicate,
+% not a mutual induction, so this lemma is expected to stay unproved.
+:- lemma(r_s_loop:fail, (succeeds r => fail) & (succeeds s => fail), [trivial]).
