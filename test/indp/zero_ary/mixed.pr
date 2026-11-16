@@ -1,6 +1,36 @@
-:- lemma(mixed:p, succeeds p => fail, [trivial]).
-:- lemma(mixed:r, succeeds r => succeeds n(0), [trivial]).
-:- lemma(mixed:n, all [x]: succeeds n(?x) => succeeds q, [trivial]).
+:- initialize.
+:- compile_gr(mixed).
+:- needs_gr(mixed).
+
+:- lemma(mixed:p, succeeds p => ff,
+induction([all []: succeeds p => ff],
+ [step([],
+   [ff,
+    succeeds q,
+    succeeds p],
+   [],
+   ff)])).
+
+:- lemma(mixed:r, succeeds r => succeeds n(0),
+assume(succeeds r,
+ [def succeeds r by completion,
+  def succeeds n(s(0)) by completion],
+ succeeds n(0))).
+
+:- lemma(mixed:n, all [x]: succeeds n(?x) => succeeds q,
+assume(succeeds n(?x),
+ succeeds q by completion,
+ succeeds q)).
+
 % closed lemmas whose induction atom is not 0-ary: no induction axiom
-:- lemma(mixed:ground, succeeds n(0) => succeeds q, [trivial]).
-:- lemma(mixed:gr, gr(0) => succeeds q, [trivial]).
+:- lemma(mixed:ground, succeeds n(0) => succeeds q,
+assume(succeeds n(0),
+ succeeds q by completion,
+ succeeds q)).
+
+:- lemma(mixed:gr, gr(0) => succeeds q,
+assume(gr(0),
+ succeeds q by completion,
+ succeeds q)).
+
+:- bye(mixed).

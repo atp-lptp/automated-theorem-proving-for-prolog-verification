@@ -13,3 +13,4 @@ ATP-LPTP-LaTeX-1/.texpadtmp
 *-all.gr
 tmp_*
 *\.env.local
+test/indp/**/*.gr

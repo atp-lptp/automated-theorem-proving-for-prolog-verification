@@ -1,2 +1,28 @@
-:- lemma(p_undef:fail, succeeds p => fail, [trivial]).
-:- lemma(p_undef:var, all [x]: succeeds p => ?x = 0, [trivial]).
+:- initialize.
+:- compile_gr(p_undef).
+:- needs_gr(p_undef).
+
+% q has no clauses: LPTP knows nothing about q (no completion for q/0),
+% so succeeds p is refuted by induction on p.
+:- lemma(p_undef:fail, succeeds p => ff,
+induction([all []: succeeds p => ff],
+ [step([],
+   [ff,
+    succeeds q,
+    succeeds p],
+   [],
+   ff)])).
+
+:- lemma(p_undef:var, all [x]: succeeds p => ?x = 0,
+[induction([all []: succeeds p => (all x: ?x = 0)],
+  [step([],
+    [all x: ?x = 0,
+     succeeds q,
+     succeeds p],
+    [],
+    all x: ?x = 0)]),
+ assume(succeeds p,
+  all x: ?x = 0,
+  ?x = 0)]).
+
+:- bye(p_undef).

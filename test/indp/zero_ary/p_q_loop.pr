@@ -1,3 +1,40 @@
-:- lemma(p_q_loop:fail, succeeds p => fail, [trivial]).
-:- lemma(p_q_loop:var, all [x]: succeeds p => ?x = 0, [trivial]).
-:- lemma(p_q_loop:iff, succeeds p <=> fail, [trivial]).
+:- initialize.
+:- compile_gr(p_q_loop).
+:- needs_gr(p_q_loop).
+
+:- lemma(p_q_loop:fail, succeeds p => ff,
+induction([all []: succeeds p => ff],
+ [step([],
+   [ff,
+    succeeds q,
+    succeeds p],
+   [],
+   ff)])).
+
+:- lemma(p_q_loop:var, all [x]: succeeds p => ?x = 0,
+[induction([all []: succeeds p => (all x: ?x = 0)],
+  [step([],
+    [all x: ?x = 0,
+     succeeds q,
+     succeeds p],
+    [],
+    all x: ?x = 0)]),
+ assume(succeeds p,
+  all x: ?x = 0,
+  ?x = 0)]).
+
+:- lemma(p_q_loop:iff, succeeds p <=> ff,
+[induction([all []: succeeds p => ff],
+  [step([],
+    [ff,
+     succeeds q,
+     succeeds p],
+    [],
+    ff)]),
+ succeeds p => ff,
+ assume(ff,
+  [],
+  succeeds p),
+ succeeds p <=> ff]).
+
+:- bye(p_q_loop).
