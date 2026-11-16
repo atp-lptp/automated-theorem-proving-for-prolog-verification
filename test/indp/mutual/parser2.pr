@@ -1,0 +1,372 @@
+:- initialize.
+:- compile_gr(parser2).
+:- needs_gr(parser2).
+
+:- lemma(append:types,
+all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) => succeeds list(?l1),
+induction(
+ [all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) => succeeds list(?l1)],
+ [step([l],
+   [],
+   [],
+   succeeds list([])),
+  step([x,l1,l2,l3],
+   [succeeds list(?l1),
+    succeeds append(?l1,?l2,?l3)],
+   [],
+   succeeds list([?x|?l1]))])).
+
+:- lemma(append:existence,
+all l1: succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)),
+induction(
+ [all l1: succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3))],
+ [step([],
+   [],
+   [succeeds append([],?l2,?l2),
+    ex l3: succeeds append([],?l2,?l3)],
+   all l2: ex l3: succeeds append([],?l2,?l3)),
+  step([x,l],
+   [all l2: ex l3: succeeds append(?l,?l2,?l3),
+    succeeds list(?l)],
+   [ex l3: succeeds append(?l,?l2,?l3),
+    exist(l3,
+     succeeds append(?l,?l2,?l3),
+     [succeeds append([?x|?l],?l2,[?x|?l3]),
+      ex l3: succeeds append([?x|?l],?l2,?l3)],
+     ex l3: succeeds append([?x|?l],?l2,?l3))],
+   all l2: ex l3: succeeds append([?x|?l],?l2,?l3))])).
+
+:- lemma(append:nil,
+all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) => (?l2 = [] => ?l1 = ?l3),
+induction(
+ [all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) => (?l2 = [] => ?l1 = ?l3)],
+ [step([l],
+   [],
+   assume(?l = [],
+    [],
+    [] = ?l),
+   ?l = [] => [] = ?l),
+  step([x,l1,l2,l3],
+   [?l2 = [] => ?l1 = ?l3,
+    succeeds append(?l1,?l2,?l3)],
+   assume(?l2 = [],
+    ?l1 = ?l3,
+    [?x|?l1] = [?x|?l3]),
+   ?l2 = [] => [?x|?l1] = [?x|?l3])])).
+
+:- lemma(append:associative,
+all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) =>
+  (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append(?l3,?u,?w)),
+induction(
+ [all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+       succeeds append(?l3,?u,?w))],
+ [step([l],
+   [],
+   assume(succeeds append([],?v,?w) & succeeds append(?l,?u,?v),
+    [def succeeds append([],?v,?w) by completion],
+    succeeds append(?l,?u,?w)),
+   all [u,v,w]: succeeds append([],?v,?w) & succeeds append(?l,?u,?v) =>
+     succeeds append(?l,?u,?w)),
+  step([x,l1,l2,l3],
+   [all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+      succeeds append(?l3,?u,?w),
+    succeeds append(?l1,?l2,?l3)],
+   assume(succeeds append([?x|?l1],?v,?w) & succeeds append(?l2,?u,?v),
+    [def succeeds append([?x|?l1],?v,?w) by completion,
+     exist(w1,
+      ?w = [?x|?w1] & succeeds append(?l1,?v,?w1),
+      [succeeds append(?l1,?v,?w1) & succeeds append(?l2,?u,?v) =>
+        succeeds append(?l3,?u,?w1),
+       succeeds append(?l3,?u,?w1),
+       succeeds append([?x|?l3],?u,[?x|?w1])],
+      succeeds append([?x|?l3],?u,?w))],
+    succeeds append([?x|?l3],?u,?w)),
+   all [u,v,w]: succeeds append([?x|?l1],?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append([?x|?l3],?u,?w))])).
+
+% Formulas 7-11 of Staerk's paper: mutual induction on five predicates
+:- lemma(parser:sound,
+(all [a,b]: succeeds exp(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds exp(?l))) &
+(all [a,b]: succeeds term(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds term(?l))) &
+(all [a,b]: succeeds factor(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds factor(?l))) &
+(all [a,b]: succeeds moreexps(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) &
+      (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e)))) &
+(all [a,b]: succeeds moreterms(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) &
+      (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e)))),
+induction(
+ [all [a,b]: succeeds exp(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds exp(?l)),
+  all [a,b]: succeeds term(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds term(?l)),
+  all [a,b]: succeeds factor(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) & succeeds factor(?l)),
+  all [a,b]: succeeds moreexps(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) &
+      (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+  all [a,b]: succeeds moreterms(?a,?b) =>
+   (ex l: succeeds append(?l,?b,?a) &
+      (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e)))],
+ [step([a,c,b],
+   [(ex l: succeeds append(?l,?b,?a) & succeeds term(?l)),
+    (ex l: succeeds append(?l,?c,?b) &
+        (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+    succeeds term(?a,?b),
+    succeeds moreexps(?b,?c)],
+   exist(l1,
+    succeeds append(?l1,?b,?a) & succeeds term(?l1),
+    exist(l2,
+     succeeds append(?l2,?c,?b) &
+      (all [d,e]: succeeds append(?d,?l2,?e) & succeeds exp(?d) => succeeds exp(?e)),
+     [succeeds append(?l1,?b,?a) => succeeds list(?l1) by lemma(append:types),
+      succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?l1,?l2,?l3),
+   ex l3: succeeds append(?l1,?l2,?l3),
+      exist(l3,
+       succeeds append(?l1,?l2,?l3),
+       [succeeds append(?l1,?l2,?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+       succeeds append(?l3,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append(?l3,?u,?w),
+   succeeds append(?l1,?b,?a) & succeeds append(?l2,?c,?b) =>
+     succeeds append(?l3,?c,?a),
+        succeeds append(?l3,?c,?a),
+        succeeds exp(?l1) by sld,
+        succeeds append(?l1,?l2,?l3) & succeeds exp(?l1) => succeeds exp(?l3),
+        succeeds exp(?l3),
+        succeeds append(?l3,?c,?a) & succeeds exp(?l3),
+        ex l: succeeds append(?l,?c,?a) & succeeds exp(?l)],
+       ex l: succeeds append(?l,?c,?a) & succeeds exp(?l))],
+     ex l: succeeds append(?l,?c,?a) & succeeds exp(?l)),
+    ex l: succeeds append(?l,?c,?a) & succeeds exp(?l)),
+   ex l: succeeds append(?l,?c,?a) & succeeds exp(?l)),
+  step([a,c,b],
+   [(ex l: succeeds append(?l,?b,?a) & succeeds factor(?l)),
+    (ex l: succeeds append(?l,?c,?b) &
+        (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))),
+    succeeds factor(?a,?b),
+    succeeds moreterms(?b,?c)],
+   exist(l1,
+    succeeds append(?l1,?b,?a) & succeeds factor(?l1),
+    exist(l2,
+     succeeds append(?l2,?c,?b) &
+      (all [d,e]: succeeds append(?d,?l2,?e) & succeeds term(?d) => succeeds term(?e)),
+     [succeeds append(?l1,?b,?a) => succeeds list(?l1) by lemma(append:types),
+      succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?l1,?l2,?l3),
+   ex l3: succeeds append(?l1,?l2,?l3),
+      exist(l3,
+       succeeds append(?l1,?l2,?l3),
+       [succeeds append(?l1,?l2,?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+       succeeds append(?l3,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append(?l3,?u,?w),
+   succeeds append(?l1,?b,?a) & succeeds append(?l2,?c,?b) =>
+     succeeds append(?l3,?c,?a),
+        succeeds append(?l3,?c,?a),
+        succeeds term(?l1) by sld,
+        succeeds append(?l1,?l2,?l3) & succeeds term(?l1) => succeeds term(?l3),
+        succeeds term(?l3),
+        succeeds append(?l3,?c,?a) & succeeds term(?l3),
+        ex l: succeeds append(?l,?c,?a) & succeeds term(?l)],
+       ex l: succeeds append(?l,?c,?a) & succeeds term(?l))],
+     ex l: succeeds append(?l,?c,?a) & succeeds term(?l)),
+    ex l: succeeds append(?l,?c,?a) & succeeds term(?l)),
+   ex l: succeeds append(?l,?c,?a) & succeeds term(?l)),
+  step([a,b],
+   [(ex l: succeeds append(?l,[rpar|?b],?a) & succeeds exp(?l)),
+    succeeds exp(?a,[rpar|?b])],
+   exist(l1,
+    succeeds append(?l1,[rpar|?b],?a) & succeeds exp(?l1),
+    [succeeds append(?l1,[rpar|?b],?a) => succeeds list(?l1) by lemma(append:types),
+     succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?l1,?l2,?l3),
+   ex l3: succeeds append(?l1,[rpar],?l3),
+     exist(l3,
+      succeeds append(?l1,[rpar],?l3),
+      [succeeds append(?l1,[rpar],?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append([rpar],?u,?v) =>
+       succeeds append(?l3,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append([rpar],?u,?v) =>
+     succeeds append(?l3,?u,?w),
+   succeeds append(?l1,[rpar|?b],?a) & succeeds append([rpar],?b,[rpar|?b]) =>
+     succeeds append(?l3,?b,?a),
+       succeeds append([rpar],?b,[rpar|?b]),
+       succeeds append(?l3,?b,?a),
+       succeeds append([lpar|?l3],?b,[lpar|?a]),
+       succeeds append([lpar|?l1],[rpar],[lpar|?l3]),
+       succeeds factor([lpar|?l3]) by sld,
+       succeeds append([lpar|?l3],?b,[lpar|?a]) & succeeds factor([lpar|?l3]),
+       ex l: succeeds append(?l,?b,[lpar|?a]) & succeeds factor(?l)],
+      ex l: succeeds append(?l,?b,[lpar|?a]) & succeeds factor(?l))],
+    ex l: succeeds append(?l,?b,[lpar|?a]) & succeeds factor(?l)),
+   ex l: succeeds append(?l,?b,[lpar|?a]) & succeeds factor(?l)),
+  step([x,a],
+   [],
+   [succeeds append([l(?x)],?a,[l(?x)|?a]),
+    succeeds factor([l(?x)]),
+    succeeds append([l(?x)],?a,[l(?x)|?a]) & succeeds factor([l(?x)]),
+    ex l: succeeds append(?l,?a,[l(?x)|?a]) & succeeds factor(?l)],
+   ex l: succeeds append(?l,?a,[l(?x)|?a]) & succeeds factor(?l)),
+  step([a,c,b],
+   [(ex l: succeeds append(?l,?b,?a) & succeeds term(?l)),
+    (ex l: succeeds append(?l,?c,?b) &
+        (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+    succeeds term(?a,?b),
+    succeeds moreexps(?b,?c)],
+   exist(l1,
+    succeeds append(?l1,?b,?a) & succeeds term(?l1),
+    exist(l2,
+     succeeds append(?l2,?c,?b) &
+      (all [d,e]: succeeds append(?d,?l2,?e) & succeeds exp(?d) => succeeds exp(?e)),
+     [succeeds append(?l1,?b,?a) => succeeds list(?l1) by lemma(append:types),
+      succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?l1,?l2,?l3),
+   ex l3: succeeds append(?l1,?l2,?l3),
+      exist(l3,
+       succeeds append(?l1,?l2,?l3),
+       [succeeds append(?l1,?l2,?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+       succeeds append(?l3,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append(?l3,?u,?w),
+   succeeds append(?l1,?b,?a) & succeeds append(?l2,?c,?b) =>
+     succeeds append(?l3,?c,?a),
+        succeeds append(?l3,?c,?a),
+        succeeds append([+|?l3],?c,[+|?a]),
+        assume(succeeds append(?d,[+|?l3],?e) & succeeds exp(?d),
+         [succeeds append(?d,[+|?l3],?e) => succeeds list(?d) by lemma(append:types),
+          succeeds list(?d) => (all l2: ex l3: succeeds append(?d,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?d,?l2,?l3),
+   ex l3: succeeds append(?d,[+|?l1],?l3),
+          exist(e1,
+           succeeds append(?d,[+|?l1],?e1),
+           [succeeds append(?d,[+|?l1],?e1) =>
+    (all [u,v,w]: succeeds append(?d,?v,?w) & succeeds append([+|?l1],?u,?v) =>
+       succeeds append(?e1,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?d,?v,?w) & succeeds append([+|?l1],?u,?v) =>
+     succeeds append(?e1,?u,?w),
+   succeeds append(?d,[+|?l3],?e) & succeeds append([+|?l1],?l2,[+|?l3]) =>
+     succeeds append(?e1,?l2,?e),
+            succeeds append([+|?l1],?l2,[+|?l3]),
+            succeeds append(?e1,?l2,?e),
+            succeeds exp(?e1) by sld,
+            succeeds append(?e1,?l2,?e) & succeeds exp(?e1) => succeeds exp(?e),
+            succeeds exp(?e)],
+           succeeds exp(?e))],
+         succeeds exp(?e)),
+        all [d,e]: succeeds append(?d,[+|?l3],?e) & succeeds exp(?d) => succeeds exp(?e),
+        succeeds append([+|?l3],?c,[+|?a]) &
+         (all [d,e]: succeeds append(?d,[+|?l3],?e) & succeeds exp(?d) => succeeds exp(?e)),
+        ex l: succeeds append(?l,?c,[+|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))],
+       ex l: succeeds append(?l,?c,[+|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e)))],
+     ex l: succeeds append(?l,?c,[+|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+    ex l: succeeds append(?l,?c,[+|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+   ex l: succeeds append(?l,?c,[+|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+  step([a],
+   [fails plus(?a)],
+   [succeeds append([],?a,?a),
+    assume(succeeds append(?d,[],?e) & succeeds exp(?d),
+     [succeeds append(?d,[],?e) => ([] = [] => ?d = ?e) by lemma(append:nil),
+      [] = [] => ?d = ?e,
+      [] = [],
+      ?d = ?e],
+     succeeds exp(?e)),
+    all [d,e]: succeeds append(?d,[],?e) & succeeds exp(?d) => succeeds exp(?e),
+    succeeds append([],?a,?a) &
+     (all [d,e]: succeeds append(?d,[],?e) & succeeds exp(?d) => succeeds exp(?e)),
+    ex l: succeeds append(?l,?a,?a) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))],
+   ex l: succeeds append(?l,?a,?a) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds exp(?d) => succeeds exp(?e))),
+  step([a,c,b],
+   [(ex l: succeeds append(?l,?b,?a) & succeeds factor(?l)),
+    (ex l: succeeds append(?l,?c,?b) &
+        (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))),
+    succeeds factor(?a,?b),
+    succeeds moreterms(?b,?c)],
+   exist(l1,
+    succeeds append(?l1,?b,?a) & succeeds factor(?l1),
+    exist(l2,
+     succeeds append(?l2,?c,?b) &
+      (all [d,e]: succeeds append(?d,?l2,?e) & succeeds term(?d) => succeeds term(?e)),
+     [succeeds append(?l1,?b,?a) => succeeds list(?l1) by lemma(append:types),
+      succeeds list(?l1) => (all l2: ex l3: succeeds append(?l1,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?l1,?l2,?l3),
+   ex l3: succeeds append(?l1,?l2,?l3),
+      exist(l3,
+       succeeds append(?l1,?l2,?l3),
+       [succeeds append(?l1,?l2,?l3) =>
+    (all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+       succeeds append(?l3,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?l1,?v,?w) & succeeds append(?l2,?u,?v) =>
+     succeeds append(?l3,?u,?w),
+   succeeds append(?l1,?b,?a) & succeeds append(?l2,?c,?b) =>
+     succeeds append(?l3,?c,?a),
+        succeeds append(?l3,?c,?a),
+        succeeds append([*|?l3],?c,[*|?a]),
+        assume(succeeds append(?d,[*|?l3],?e) & succeeds term(?d),
+         [succeeds append(?d,[*|?l3],?e) => succeeds list(?d) by lemma(append:types),
+          succeeds list(?d) => (all l2: ex l3: succeeds append(?d,?l2,?l3)) by lemma(append:existence),
+   all l2: ex l3: succeeds append(?d,?l2,?l3),
+   ex l3: succeeds append(?d,[*|?l1],?l3),
+          exist(e1,
+           succeeds append(?d,[*|?l1],?e1),
+           [succeeds append(?d,[*|?l1],?e1) =>
+    (all [u,v,w]: succeeds append(?d,?v,?w) & succeeds append([*|?l1],?u,?v) =>
+       succeeds append(?e1,?u,?w)) by lemma(append:associative),
+   all [u,v,w]: succeeds append(?d,?v,?w) & succeeds append([*|?l1],?u,?v) =>
+     succeeds append(?e1,?u,?w),
+   succeeds append(?d,[*|?l3],?e) & succeeds append([*|?l1],?l2,[*|?l3]) =>
+     succeeds append(?e1,?l2,?e),
+            succeeds append([*|?l1],?l2,[*|?l3]),
+            succeeds append(?e1,?l2,?e),
+            succeeds term(?e1) by sld,
+            succeeds append(?e1,?l2,?e) & succeeds term(?e1) => succeeds term(?e),
+            succeeds term(?e)],
+           succeeds term(?e))],
+         succeeds term(?e)),
+        all [d,e]: succeeds append(?d,[*|?l3],?e) & succeeds term(?d) => succeeds term(?e),
+        succeeds append([*|?l3],?c,[*|?a]) &
+         (all [d,e]: succeeds append(?d,[*|?l3],?e) & succeeds term(?d) => succeeds term(?e)),
+        ex l: succeeds append(?l,?c,[*|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))],
+       ex l: succeeds append(?l,?c,[*|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e)))],
+     ex l: succeeds append(?l,?c,[*|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))),
+    ex l: succeeds append(?l,?c,[*|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))),
+   ex l: succeeds append(?l,?c,[*|?a]) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))),
+  step([a],
+   [fails times(?a)],
+   [succeeds append([],?a,?a),
+    assume(succeeds append(?d,[],?e) & succeeds term(?d),
+     [succeeds append(?d,[],?e) => ([] = [] => ?d = ?e) by lemma(append:nil),
+      [] = [] => ?d = ?e,
+      [] = [],
+      ?d = ?e],
+     succeeds term(?e)),
+    all [d,e]: succeeds append(?d,[],?e) & succeeds term(?d) => succeeds term(?e),
+    succeeds append([],?a,?a) &
+     (all [d,e]: succeeds append(?d,[],?e) & succeeds term(?d) => succeeds term(?e)),
+    ex l: succeeds append(?l,?a,?a) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e))],
+   ex l: succeeds append(?l,?a,?a) &
+     (all [d,e]: succeeds append(?d,?l,?e) & succeeds term(?d) => succeeds term(?e)))])).
+
+:- bye(parser2).

@@ -1,25 +1,49 @@
 # Expected results of test/indp/run.sh
 #
-# <program> <lemma> <induction axioms> <status>
+# <program> <lemma> <induction axioms> <E status> <Vampire status>
 #   program           path of the .pl/.pr pair, relative to test/indp, without extension
 #   lemma             index of the lemma in the .pr file (the conjecture of <program><lemma>.fof)
 #   induction axioms  number of fof(induction,...) lines written in the .fof file
-#   status            Theorem: both E and Vampire must prove the conjecture
-#                     Unproved: neither of them must prove it (known limitation)
+#   E status          Theorem: E must prove the conjecture
+#                     Unproved: E must not prove it (known limitation)
+#   Vampire status    the same for Vampire
 
 # 0-ary predicates
-zero_ary/p_loop    1 1 Theorem
-zero_ary/p_loop    2 1 Theorem
-zero_ary/p_q_loop  1 1 Theorem
-zero_ary/p_q_loop  2 1 Theorem
-zero_ary/p_q_loop  3 2 Theorem
-zero_ary/p_undef   1 1 Theorem
-zero_ary/p_undef   2 1 Theorem
-zero_ary/mixed     1 1 Theorem
-zero_ary/mixed     2 1 Theorem
-zero_ary/mixed     3 1 Theorem
-zero_ary/mixed     4 0 Theorem
-zero_ary/mixed     5 0 Theorem
+zero_ary/p_loop    1 1 Theorem Theorem
+zero_ary/p_loop    2 1 Theorem Theorem
+zero_ary/p_q_loop  1 1 Theorem Theorem
+zero_ary/p_q_loop  2 1 Theorem Theorem
+zero_ary/p_q_loop  3 2 Theorem Theorem
+zero_ary/p_undef   1 1 Theorem Theorem
+zero_ary/p_undef   2 1 Theorem Theorem
+zero_ary/mixed     1 1 Theorem Theorem
+zero_ary/mixed     2 1 Theorem Theorem
+zero_ary/mixed     3 1 Theorem Theorem
+zero_ary/mixed     4 0 Theorem Theorem
+zero_ary/mixed     5 0 Theorem Theorem
 
-# mutual recursion: not supported yet, update this line once it is
-mutual/r_s_loop    1 2 Unproved
+# mutual recursion: one mutual induction axiom for the whole conjunction
+mutual/r_s_loop    1 1 Theorem Theorem
+# variable capture in the induction hypothesis; E does not find the proof
+mutual/p_q_add     1 1 Unproved Theorem
+# even/odd (Staerk, Example 10.1)
+mutual/even_odd    1 1 Theorem Theorem
+mutual/even_odd    2 1 Unproved Theorem
+# two induction hypotheses in one clause
+mutual/tree_forest 1 1 Unproved Theorem
+# three predicates
+mutual/mod3        1 1 Theorem Theorem
+# limit cases: predicates that are not mutually recursive, the same predicate
+# twice (2 axioms, as in LPTP), a conjunct that is not an implication
+mutual/limits      1 1 Theorem Theorem
+mutual/limits      2 2 Theorem Theorem
+mutual/limits      3 1 Theorem Theorem
+# the simple parser (Staerk, Fig. 3): three predicates
+mutual/parser1     1 1 Theorem Theorem
+mutual/parser1     2 1 Theorem Theorem
+# the efficient parser (Staerk, Fig. 5, formulas 7-11): five predicates
+mutual/parser2     1 1 Theorem Theorem
+mutual/parser2     2 1 Unproved Theorem
+mutual/parser2     3 1 Theorem Theorem
+mutual/parser2     4 1 Unproved Unproved
+mutual/parser2     5 1 Unproved Unproved

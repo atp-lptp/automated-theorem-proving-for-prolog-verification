@@ -1,0 +1,38 @@
+:- initialize.
+:- compile_gr(p_q_add).
+:- needs_gr(p_q_add).
+
+% x and y swap their roles in the two conjuncts: for q(?y), the induction
+% hypothesis of p, which quantifies over y, is instantiated at ?y.
+% It must be renamed, not captured.
+:- lemma(p_q_add:zero,
+(all x: succeeds p(?x) => (all y: succeeds add(?x,0,?y) => ?x = ?y)) &
+(all y: succeeds q(?y) => (all x: succeeds add(?y,0,?x) => ?y = ?x)),
+induction(
+ [all x: succeeds p(?x) => (all y: succeeds add(?x,0,?y) => ?x = ?y),
+  all y: succeeds q(?y) => (all x: succeeds add(?y,0,?x) => ?y = ?x)],
+ [step([],
+   [],
+   assume(succeeds add(0,0,?y),
+    def succeeds add(0,0,?y) by completion,
+    0 = ?y),
+   all y: succeeds add(0,0,?y) => 0 = ?y),
+  step([x],
+   [all y: succeeds add(?x,0,?y) => ?x = ?y,
+    succeeds q(?x)],
+   assume(succeeds add(s(?x),0,?y),
+    [def succeeds add(s(?x),0,?y) by completion,
+     exist(z,
+      ?y = s(?z) & succeeds add(?x,0,?z),
+      [succeeds add(?x,0,?z) => ?x = ?z,
+       ?x = ?z],
+      s(?x) = ?y)],
+    s(?x) = ?y),
+   all y: succeeds add(s(?x),0,?y) => s(?x) = ?y),
+  step([x],
+   [all y: succeeds add(?x,0,?y) => ?x = ?y,
+    succeeds p(?x)],
+   [],
+   all y: succeeds add(?x,0,?y) => ?x = ?y)])).
+
+:- bye(p_q_add).

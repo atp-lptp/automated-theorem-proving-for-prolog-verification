@@ -220,11 +220,20 @@ filename_indice_defs_lemmas_induction_conjecture(File,Indice,Defs,Axs,Lemmas,Ind
         zero_ary_induction_atom(L => R), !,
         name_fconjecture_comp_induction(Name,(all [] : FConjecture0),Comp,InductionAxioms).
     name_fconjecture_comp_induction(Name,FConjecture0,Comp,InductionAxioms) :-
+        % an equivalence: one induction axiom per direction
         FConjecture0 = (all Vars:(L <=> R)), !,
-        FConjectures = ((all Vars : L => R) & (all Vars : R => L)),
-        name_fconjecture_comp_induction(Name,FConjectures,Comp,InductionAxioms).
+        name_fconjecture_comp_induction(Name,(all Vars : L => R),Comp,IAL),
+        name_fconjecture_comp_induction(Name,(all Vars : R => L),Comp,IAR),
+        append(IAL,IAR,InductionAxioms).
+    name_fconjecture_comp_induction(_Name,FConjectures,Comp,InductionAxioms) :-
+        % mutual induction: a conjunction of n >= 2 lemmas on n distinct predicates
+        FConjectures = (_ & _),
+        conjuncts(FConjectures,FLemmas0),
+        maplist(induction_lemma,FLemmas0,FLemmas),
+        mutual_induction(FLemmas,Comp,Closed,Sub), !,
+        InductionAxioms = [lemma(induction,(Closed => Sub))].
     name_fconjecture_comp_induction(Name,FConjectures,Comp,InductionAxioms) :-
-        % mutual induction for 2 predicates
+        % any other conjunction: the induction axioms of each conjunct
         FConjectures = (FConjecturesL & FConjecturesR), !,
         name_fconjecture_comp_induction(Name,FConjecturesL,Comp,IAL),
         name_fconjecture_comp_induction(Name,FConjecturesR,Comp,IAR),
@@ -237,6 +246,14 @@ filename_indice_defs_lemmas_induction_conjecture(File,Indice,Defs,Axs,Lemmas,Ind
     zero_ary_induction_atom(Implication) :-
         split_lemma((all [] : Implication), _-Atom, _),
         atom(Atom).
+
+    % conjuncts(+Conjunction,-Conjuncts)
+    conjuncts((F & G),Fs) :- !, conjuncts(F,Fs1), conjuncts(G,Fs2), append(Fs1,Fs2,Fs).
+    conjuncts(F,[F]).
+
+    % induction_lemma(+Conjunct,-FLemma): Conjunct has the shape expected by split_lemma/3
+    induction_lemma((all Vars:(L => R)), (all Vars:(L => R))) :- !.
+    induction_lemma((L => R), (all [] : (L => R))) :- zero_ary_induction_atom(L => R).
 		
 /*
 filename_indice_defs_lemmas_induction_conjecture('member/member',1,Defs,Lemmas,InductionAxioms,Conjecture),writeln(InductionAxioms).
@@ -518,31 +535,73 @@ filename_lemmas_defns_axs('add_peano/add_peano',L,_,_),append(L1,[C],L),write_le
       so that Phi = fail:
         Closed := [(success q & (success p & fail)) => fail]
         Sub := [success p => fail]
+
+- for a conjunction of n >= 2 lemmas on n distinct predicates p1, ..., pn,
+    (all [x1] : (success p1(?x1) => Phi1(?x1))) & ... &
+    (all [xn] : (success pn(?xn) => Phin(?xn))),
+  a single induction axiom is generated (mutual induction),
+  see mutual_induction/4:
+    Closed := [ all [x1] : [ S D_p1(?x1) => Phi1(?x1)] ] & ... &
+              [ all [xn] : [ S D_pn(?xn) => Phin(?xn)] ]
+        where on the left, for each j, each "success pj(t)" is replaced
+        by "success pj(t) & Phij(t)"
+    Sub := the conjunction of the n lemmas
+    Induction Axiom :=  [Closed => Sub]
+  e.g. for the clauses (r :- s) and (s :- r) and the lemma
+  (success r => fail) & (success s => fail):
+    Closed := [(success s & fail) => fail] & [(success r & fail) => fail]
+    Sub := [success r => fail] & [success s => fail]
+  If two conjuncts are about the same predicate, as in LPTP, there is no
+  mutual induction: each conjunct gets its own induction axiom.
 */
 
 % induction_for_lemma(+Lemma,+Completion, -Closed, -Sub)
 % Lemma and Completion in LPTP syntax
-induction_for_lemma(Lemma, Completion, Closed, Sub) :-
-    Lemma = lemma(_Id,FLemma),
-    split_lemma(FLemma, AtomVars-Atom, RightVars-Right),
-    % The cut must come AFTER definition/4: a lemma may well mention a predicate
-    % that has no completion here (one imported through needs_gr/needs_thm).
-    % Cutting before it commits to this clause and then fails, which silently
-    % aborts the whole .fof file instead of falling back to the trivial axiom.
-    definition(Completion, Atom, AtomDef, Definition),
-    !,
-    (RightVars = [] ->
-        Phi = Right
-    ;
-        Phi = (all RightVars : Right) ),
-    quantify_all(AtomVars, (succeeds Atom => Phi), Sub),
-    renaming(AtomDef,Atom,Renaming),
-    apply_renaming(Definition,Renaming,DefinitionR),
-    success(DefinitionR, SuccessDef),
-    success(Atom,Atom_succeeds),
-    add_property(SuccessDef, Atom_succeeds, Phi, SDP),
-    quantify_all(AtomVars, (SDP => Phi), Closed).
+induction_for_lemma(lemma(_Id,FLemma), Completion, Closed, Sub) :-
+    mutual_induction([FLemma], Completion, Closed, Sub), !.
 induction_for_lemma(_Lemma, _Completion, true, true).
+
+% mutual_induction(+FLemmas,+Completion,-Closed,-Sub)
+% FLemmas = [all [x1] : (success p1(?x1) => Phi1(?x1)), ..., all [xn] : (success pn(?xn) => Phin(?xn))]
+% with p1, ..., pn distinct and defined in Completion
+mutual_induction(FLemmas, Completion, Closed, Sub) :-
+    maplist(induction_data(Completion), FLemmas, Data),
+    distinct_predicates(Data),
+    maplist(induction_hypothesis, Data, Hypotheses),
+    maplist(closed_sub(Hypotheses), Data, Closeds, Subs),
+    conjunction(Closeds, Closed),
+    conjunction(Subs, Sub).
+
+    % induction_data(+Completion,+FLemma,-ind(AtomVars,Atom,Phi,AtomDef,Definition))
+    induction_data(Completion, FLemma, ind(AtomVars,Atom,Phi,AtomDef,Definition)) :-
+        split_lemma(FLemma, AtomVars-Atom, RightVars-Right),
+        % A lemma may well mention a predicate that has no completion here
+        % (one imported through needs_gr/needs_thm): then fail, do not abort.
+        definition(Completion, Atom, AtomDef, Definition),
+        !,
+        (RightVars = [] ->
+            Phi = Right
+        ;
+            Phi = (all RightVars : Right) ).
+
+    distinct_predicates(Data) :-
+        findall(P/N, (member(ind(_,Atom,_,_,_),Data), functor(Atom,P,N)), PNs),
+        sort(PNs, Sorted),
+        same_length(PNs, Sorted).
+
+    induction_hypothesis(ind(_,Atom,Phi,_,_), Atom_succeeds-Phi) :-
+        success(Atom, Atom_succeeds).
+
+    closed_sub(Hypotheses, ind(AtomVars,Atom,Phi,AtomDef,Definition), Closed, Sub) :-
+        quantify_all(AtomVars, (succeeds Atom => Phi), Sub),
+        renaming(AtomDef,Atom,Renaming),
+        apply_renaming(Definition,Renaming,DefinitionR),
+        success(DefinitionR, SuccessDef),
+        add_properties(SuccessDef, Hypotheses, SDP),
+        quantify_all(AtomVars, (SDP => Phi), Closed).
+
+    conjunction([F], F) :- !.
+    conjunction([F|Fs], (F & G)) :- conjunction(Fs, G).
 
     % quantify_all(+Vars,+Formula,-QuantifiedFormula): a 0-ary predicate yields
     % Vars = [], and 'all [] : F' is neither an LPTP nor a TPTP formula.
@@ -571,20 +630,24 @@ induction_for_lemma(_Lemma, _Completion, true, true).
     definition([_|L], Atom, AtomDef, Def) :- definition(L, Atom, AtomDef, Def).
 
     %add_property(+SuccessDef,+Atom,+Phi,-SDP)
-    add_property(true, _Atom, _Phi, true) :- !.
-    add_property(fail, _Atom, _Phi, fail) :- !.
-    add_property(S = T, _Atom, _Phi, S = T) :- !.
-    add_property((~ G), _Atom, _Phi, (~ G)) :- !.
-    add_property((F & G), Atom, Phi, (F2 & G2)) :- !,add_property(F,Atom,Phi,F2), add_property(G,Atom,Phi,G2).
-    add_property((F \/ G), Atom, Phi, (F2 \/ G2)) :- !,add_property(F,Atom,Phi,F2), add_property(G,Atom,Phi,G2).
-    add_property((ex V : F), Atom, Phi, (ex V : F2)) :- !, add_property(F, Atom, Phi, F2).
-    add_property(Atom, At, _Phi, Atom) :- functor(Atom,P,N), functor(At,Q,M), dif(P/N,Q/M), !.
-    add_property(Atom, At, Phi, (At3 & Phi3)) :- functor(Atom,P,N), functor(At,P,N), 
+    add_property(SuccessDef, Atom, Phi, SDP) :- add_properties(SuccessDef, [Atom-Phi], SDP).
+
+    %add_properties(+SuccessDef,+Hypotheses,-SDP)
+    % Hypotheses = [Atom1-Phi1, ..., Atomn-Phin], with distinct predicates
+    add_properties(true, _Hyps, true) :- !.
+    add_properties(fail, _Hyps, fail) :- !.
+    add_properties(S = T, _Hyps, S = T) :- !.
+    add_properties((~ G), _Hyps, (~ G)) :- !.
+    add_properties((F & G), Hyps, (F2 & G2)) :- !, add_properties(F,Hyps,F2), add_properties(G,Hyps,G2).
+    add_properties((F \/ G), Hyps, (F2 \/ G2)) :- !, add_properties(F,Hyps,F2), add_properties(G,Hyps,G2).
+    add_properties((ex V : F), Hyps, (ex V : F2)) :- !, add_properties(F, Hyps, F2).
+    add_properties(Atom, Hyps, (At3 & Phi3)) :- functor(Atom,P,N), member(At-Phi,Hyps), functor(At,P,N), !,
         % NB : At is always a pure atom pred(?x,?y,...)
         copy_term_lptp(At-Phi,At2-Phi2),
         renaming(At2,Atom,Subst),
         apply_renaming(At2,Subst,At3),
         apply_renaming(Phi2,Subst,Phi3).
+    add_properties(Atom, _Hyps, Atom).
       
 /*
 add_property(member_succeeds(?a, ?b), member_succeeds(?x, ?l), gr(?l)=>gr(?x), F).		
@@ -696,13 +759,27 @@ apply_renaming((F & G), R, QV, (Rf & Rg)) :- !, apply_renaming(F, R, QV, Rf), ap
 apply_renaming((F \/ G), R, QV, (Rf \/ Rg)) :- !, apply_renaming(F, R, QV, Rf), apply_renaming(G, R, QV, Rg).
 apply_renaming((ex [] : F), R, QV, Rf) :- !, apply_renaming(F, R, QV, Rf).
 apply_renaming((all [] : F), R, QV, Rf) :- !, apply_renaming(F, R, QV, Rf).
-apply_renaming((ex [V|Vs] : F), R, QV, (ex [V|Vs] : Rf)) :- !, append([V|Vs], QV, QV2), apply_renaming(F, R, QV2, Rf).
-apply_renaming((ex V : F), R, QV, (ex [V] : Rf)) :- atom(V), !, apply_renaming(F, R, [V|QV], Rf).
-apply_renaming((all [V|Vs] : F), R, QV, (all [V|Vs] : Rf)) :- !, append([V|Vs], QV, QV2), apply_renaming(F, R, QV2, Rf).
-apply_renaming((all V : F), R, QV, (all [V] : Rf)) :- atom(V), !, apply_renaming(F, R, [V|QV], Rf).
+apply_renaming((ex [V|Vs] : F), R, QV, (ex Ws : Rf)) :- !, rename_bound([V|Vs], F, R, QV, Ws, R2, QV2), apply_renaming(F, R2, QV2, Rf).
+apply_renaming((ex V : F), R, QV, Rf) :- atom(V), !, apply_renaming((ex [V] : F), R, QV, Rf).
+apply_renaming((all [V|Vs] : F), R, QV, (all Ws : Rf)) :- !, rename_bound([V|Vs], F, R, QV, Ws, R2, QV2), apply_renaming(F, R2, QV2, Rf).
+apply_renaming((all V : F), R, QV, Rf) :- atom(V), !, apply_renaming((all [V] : F), R, QV, Rf).
 apply_renaming(Atom, R, QV, Ratom) :-
     Atom =.. [P|Args], length(Args, N), length(Rargs, N), Ratom =.. [P|Rargs],
     apply_renaming_terms(Args, R, QV, Rargs).
+
+    % rename_bound(+Vs,+F,+R,+QV,-Ws,-R2,-QV2): Vs are the variables bound by a
+    % quantifier over F. A bound variable that also occurs in a term substituted
+    % by R would capture it: it is renamed into a fresh one (through R2, which
+    % shadows R). The other ones are kept and added to QV, as before.
+    rename_bound([], _F, R, QV, [], R, QV).
+    rename_bound([V|Vs], F, R, QV, [W|Ws], R2, QV2) :-
+        (   member(_-T, R), lptp_names(T, Names), memberchk(V, Names) ->
+            lptp_names(f(F,R,QV,Vs), Used),
+            fresh_name(Used, W),
+            R1 = [V - ?(W)|R], QV1 = QV
+        ;   W = V, R1 = R, QV1 = [V|QV]
+        ),
+        rename_bound(Vs, F, R1, QV1, Ws, R2, QV2).
 
     apply_renaming_terms([], _R, _QV, []).
     apply_renaming_terms([T|Ts], R, QV, [Rt|Rts]) :- 

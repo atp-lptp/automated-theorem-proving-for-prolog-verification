@@ -1,0 +1,30 @@
+:- initialize.
+:- compile_gr(tree_forest).
+:- needs_gr(tree_forest).
+
+% the recursive clause of forest/1 gets two induction hypotheses,
+% one for tree/1 and one for forest/1
+:- lemma(tree:forest:termination,
+(all t: succeeds tree(?t) => terminates tree(?t)) &
+(all f: succeeds forest(?f) => terminates forest(?f)),
+induction(
+ [all t: succeeds tree(?t) => terminates tree(?t),
+  all f: succeeds forest(?f) => terminates forest(?f)],
+ [step([x,f],
+   [terminates forest(?f),
+    succeeds forest(?f)],
+   terminates tree(node(?x,?f)) by completion,
+   terminates tree(node(?x,?f))),
+  step([],
+   [],
+   terminates forest([]) by completion,
+   terminates forest([])),
+  step([t,f],
+   [terminates tree(?t),
+    terminates forest(?f),
+    succeeds tree(?t),
+    succeeds forest(?f)],
+   terminates forest([?t|?f]) by completion,
+   terminates forest([?t|?f]))])).
+
+:- bye(tree_forest).

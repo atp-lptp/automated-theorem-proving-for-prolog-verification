@@ -55,7 +55,7 @@ done
 
 passed=0
 failed=0
-while read -r program lemma expected_inductions expected_status; do
+while read -r program lemma expected_inductions expected_e expected_v; do
   fof="${tmp_dir}/${program}${lemma}.fof"
   label="${program} lemma ${lemma}"
   if [ ! -f "${fof}" ]; then
@@ -67,14 +67,14 @@ while read -r program lemma expected_inductions expected_status; do
   e_status="$(prover_status E "${fof}")"
   v_status="$(prover_status Vampire "${fof}")"
   if [ "${inductions}" = "${expected_inductions}" ] && \
-     [ "${e_status}" = "${expected_status}" ] && \
-     [ "${v_status}" = "${expected_status}" ]; then
+     [ "${e_status}" = "${expected_e}" ] && \
+     [ "${v_status}" = "${expected_v}" ]; then
     printf 'OK      %-28s induction axioms: %s, E: %s, Vampire: %s\n' \
       "${label}" "${inductions}" "${e_status}" "${v_status}"
     passed=$((passed + 1))
   else
-    printf 'FAILURE %-28s induction axioms: %s (expected %s), E: %s, Vampire: %s (expected %s)\n' \
-      "${label}" "${inductions}" "${expected_inductions}" "${e_status}" "${v_status}" "${expected_status}"
+    printf 'FAILURE %-28s induction axioms: %s (expected %s), E: %s (expected %s), Vampire: %s (expected %s)\n' \
+      "${label}" "${inductions}" "${expected_inductions}" "${e_status}" "${expected_e}" "${v_status}" "${expected_v}"
     failed=$((failed + 1))
   fi
 done < <(grep -v -e '^#' -e '^[[:space:]]*$' "${test_dir}/expected.txt")

@@ -1,0 +1,75 @@
+:- initialize.
+:- compile_gr(parser1).
+:- needs_gr(parser1).
+
+:- lemma(append:types,
+all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) =>
+  (succeeds list(?l2) => succeeds list(?l3)),
+induction(
+ [all [l1,l2,l3]: succeeds append(?l1,?l2,?l3) =>
+    (succeeds list(?l2) => succeeds list(?l3))],
+ [step([l],
+   [],
+   [],
+   succeeds list(?l) => succeeds list(?l)),
+  step([x,l1,l2,l3],
+   [succeeds list(?l2) => succeeds list(?l3),
+    succeeds append(?l1,?l2,?l3)],
+   assume(succeeds list(?l2),
+    [],
+    succeeds list([?x|?l3])),
+   succeeds list(?l2) => succeeds list([?x|?l3]))])).
+
+% mutual induction on three predicates
+:- lemma(parser:types,
+(all c: succeeds exp(?c) => succeeds list(?c)) &
+(all c: succeeds term(?c) => succeeds list(?c)) &
+(all c: succeeds factor(?c) => succeeds list(?c)),
+induction(
+ [all c: succeeds exp(?c) => succeeds list(?c),
+  all c: succeeds term(?c) => succeeds list(?c),
+  all c: succeeds factor(?c) => succeeds list(?c)],
+ [step([c,a,b],
+   [succeeds list(?a),
+    succeeds list(?b),
+    succeeds append(?a,[+|?b],?c),
+    succeeds exp(?a),
+    succeeds term(?b)],
+   [succeeds list([+|?b]),
+    succeeds append(?a,[+|?b],?c) =>
+     (succeeds list([+|?b]) => succeeds list(?c)) by lemma(append:types)],
+   succeeds list(?c)),
+  step([c],
+   [succeeds list(?c),
+    succeeds term(?c)],
+   [],
+   succeeds list(?c)),
+  step([c,a,b],
+   [succeeds list(?a),
+    succeeds list(?b),
+    succeeds append(?a,[*|?b],?c),
+    succeeds term(?a),
+    succeeds factor(?b)],
+   [succeeds list([*|?b]),
+    succeeds append(?a,[*|?b],?c) =>
+     (succeeds list([*|?b]) => succeeds list(?c)) by lemma(append:types)],
+   succeeds list(?c)),
+  step([c],
+   [succeeds list(?c),
+    succeeds factor(?c)],
+   [],
+   succeeds list(?c)),
+  step([c,a],
+   [succeeds list(?a),
+    succeeds append([lpar|?a],[rpar],?c),
+    succeeds exp(?a)],
+   [succeeds list([rpar]),
+    succeeds append([lpar|?a],[rpar],?c) =>
+     (succeeds list([rpar]) => succeeds list(?c)) by lemma(append:types)],
+   succeeds list(?c)),
+  step([x],
+   [],
+   [],
+   succeeds list([l(?x)]))])).
+
+:- bye(parser1).

@@ -1,0 +1,48 @@
+:- initialize.
+:- compile_gr(even_odd).
+:- needs_gr(even_odd).
+
+:- lemma(even:odd:types,
+(all x: succeeds even(?x) => succeeds nat(?x)) &
+(all x: succeeds odd(?x) => succeeds nat(?x)),
+induction(
+ [all x: succeeds even(?x) => succeeds nat(?x),
+  all x: succeeds odd(?x) => succeeds nat(?x)],
+ [step([],
+   [],
+   [],
+   succeeds nat(0)),
+  step([x],
+   [succeeds nat(?x),
+    succeeds odd(?x)],
+   [],
+   succeeds nat(s(?x))),
+  step([x],
+   [succeeds nat(?x),
+    succeeds even(?x)],
+   [],
+   succeeds nat(s(?x)))])).
+
+% the conclusion of each conjunct is about the other predicate
+:- lemma(even:odd:exclusive,
+(all x: succeeds even(?x) => fails odd(?x)) &
+(all x: succeeds odd(?x) => fails even(?x)),
+induction(
+ [all x: succeeds even(?x) => fails odd(?x),
+  all x: succeeds odd(?x) => fails even(?x)],
+ [step([],
+   [],
+   fails odd(0) by completion,
+   fails odd(0)),
+  step([x],
+   [fails even(?x),
+    succeeds odd(?x)],
+   fails odd(s(?x)) by completion,
+   fails odd(s(?x))),
+  step([x],
+   [fails odd(?x),
+    succeeds even(?x)],
+   fails even(s(?x)) by completion,
+   fails even(s(?x)))])).
+
+:- bye(even_odd).

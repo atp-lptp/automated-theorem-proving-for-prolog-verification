@@ -1,0 +1,77 @@
+:- initialize.
+:- compile_gr(limits).
+:- needs_gr(limits).
+
+% two predicates that are not mutually recursive: one induction axiom
+:- lemma(nat:list:termination,
+(all x: succeeds nat(?x) => terminates nat(?x)) &
+(all l: succeeds list(?l) => terminates list(?l)),
+induction(
+ [all x: succeeds nat(?x) => terminates nat(?x),
+  all l: succeeds list(?l) => terminates list(?l)],
+ [step([],
+   [],
+   terminates nat(0) by completion,
+   terminates nat(0)),
+  step([x],
+   [terminates nat(?x),
+    succeeds nat(?x)],
+   terminates nat(s(?x)) by completion,
+   terminates nat(s(?x))),
+  step([],
+   [],
+   terminates list([]) by completion,
+   terminates list([])),
+  step([x,l],
+   [terminates list(?l),
+    succeeds list(?l)],
+   terminates list([?x|?l]) by completion,
+   terminates list([?x|?l]))])).
+
+% two conjuncts about the same predicate: as in LPTP, no mutual induction,
+% each conjunct gets its own induction axiom
+:- lemma(nat:termination:ground,
+(all x: succeeds nat(?x) => terminates nat(?x)) &
+(all x: succeeds nat(?x) => gr(?x)),
+[induction(
+  [all x: succeeds nat(?x) => terminates nat(?x)],
+  [step([],
+    [],
+    terminates nat(0) by completion,
+    terminates nat(0)),
+   step([x],
+    [terminates nat(?x),
+     succeeds nat(?x)],
+    terminates nat(s(?x)) by completion,
+    terminates nat(s(?x)))]),
+ induction(
+  [all x: succeeds nat(?x) => gr(?x)],
+  [step([],
+    [],
+    [],
+    gr(0)),
+   step([x],
+    [gr(?x),
+     succeeds nat(?x)],
+    [],
+    gr(s(?x)))])]).
+
+% the second conjunct is not an implication from a success atom:
+% no mutual induction, each conjunct is handled on its own
+:- lemma(nat:ground:zero,
+(all x: succeeds nat(?x) => gr(?x)) &
+succeeds nat(0),
+[induction(
+  [all x: succeeds nat(?x) => gr(?x)],
+  [step([],
+    [],
+    [],
+    gr(0)),
+   step([x],
+    [gr(?x),
+     succeeds nat(?x)],
+    [],
+    gr(s(?x)))]),
+ succeeds nat(0)]).
+
+:- bye(limits).

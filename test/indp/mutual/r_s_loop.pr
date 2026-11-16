@@ -1,3 +1,20 @@
-% NOT YET SUPPORTED: indp.pl generates one induction axiom per predicate,
-% not a mutual induction, so this lemma is expected to stay unproved.
-:- lemma(r_s_loop:fail, (succeeds r => fail) & (succeeds s => fail), [trivial]).
+:- initialize.
+:- compile_gr(r_s_loop).
+:- needs_gr(r_s_loop).
+
+:- lemma(r_s_loop:fail, (succeeds r => ff) & (succeeds s => ff),
+induction(
+ [all []: succeeds r => ff,
+  all []: succeeds s => ff],
+ [step([],
+   [ff,
+    succeeds s],
+   [],
+   ff),
+  step([],
+   [ff,
+    succeeds r],
+   [],
+   ff)])).
+
+:- bye(r_s_loop).

@@ -1,0 +1,34 @@
+:- initialize.
+:- compile_gr(mod3).
+:- needs_gr(mod3).
+
+% mutual induction on three predicates
+:- lemma(mod3:types,
+(all x: succeeds zero(?x) => succeeds nat(?x)) &
+(all x: succeeds one(?x) => succeeds nat(?x)) &
+(all x: succeeds two(?x) => succeeds nat(?x)),
+induction(
+ [all x: succeeds zero(?x) => succeeds nat(?x),
+  all x: succeeds one(?x) => succeeds nat(?x),
+  all x: succeeds two(?x) => succeeds nat(?x)],
+ [step([],
+   [],
+   [],
+   succeeds nat(0)),
+  step([x],
+   [succeeds nat(?x),
+    succeeds two(?x)],
+   [],
+   succeeds nat(s(?x))),
+  step([x],
+   [succeeds nat(?x),
+    succeeds zero(?x)],
+   [],
+   succeeds nat(s(?x))),
+  step([x],
+   [succeeds nat(?x),
+    succeeds one(?x)],
+   [],
+   succeeds nat(s(?x)))])).
+
+:- bye(mod3).
