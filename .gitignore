@@ -14,3 +14,4 @@ ATP-LPTP-LaTeX-1/.texpadtmp
 tmp_*
 *\.env.local
 test/indp/**/*.gr
+*_step[0-9]*.fof
